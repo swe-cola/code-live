@@ -1,6 +1,8 @@
 # Vim swap files
 *.swp
 
+.idea/
+
 # Nodejs modules
 node_modules/
 
