@@ -6,3 +6,8 @@
 }
 .green { background-color: green }
 .red { background-color: red; }
+
+.CodeMirror {
+  font-family: Consolas, monaco, monospace;
+  font-size: 14px;
+}
