@@ -10,4 +10,5 @@
 .CodeMirror {
   font-family: Consolas, monaco, monospace;
   font-size: 14px;
+  height: 100vh;
 }

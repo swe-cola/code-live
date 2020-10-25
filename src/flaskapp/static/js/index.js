@@ -5,8 +5,8 @@ const entry = document.getElementById('entry');
 console.log('hello world');
 console.log(entry);
 entry.innerHTML = `
-    <div>status: <span id="network-status"></span></div>
     <textarea id="placeholder" cols="30" rows="10"><pre><code></code></pre></textarea>
+    <div>status: <span id="network-status"></span></div>
     <div>peers:</div>
     <pre style="white-space: pre-wrap;"><code id="peers-holder"></code></pre>
 `;
@@ -109,6 +109,7 @@ async function main() {
     // 03. create an instance of codemirror.
     const codemirror = CodeMirror.fromTextArea(placeholder, {
       lineNumbers: true,
+      lineWrapping: true,
       mode: 'python',
       tabSize: 2,
       theme: "material",
