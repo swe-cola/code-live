@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href={{ url_for('static', filename='css/snippet.css') }}/>
+        {% if script_name %}
+            <title>{{script_name}}::Code Live</title>
+        {% else %}
+            <title>new script::Code Live</title>
+        {% endif %}
+        
+    </head>
+    <body>
+        <div class=snippetContainer>
+            <div class=snippetView>
+                <div class="snippetPanel">
+                    <a href="/index">Code Live</a>
+                </div>
+                <textarea class="snippetEdit" placeholder="Let's code!">{{script_contents}}</textarea>
+            </div>
+            <div class="snippetStatusbar">ready</div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,44 @@
+html{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.snippetContainer{
+    height: calc(100% - 1.2em);
+}
+.snippetView{
+    display:flex;
+    flex-direction:row;
+    height: 100%;
+}
+
+.snippetPanel{
+    background-color: #313838;
+    width : 15%;
+    text-align: center;
+}
+.snippetPanel a{
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.snippetEdit{
+    background-color: #1e2020;
+    color: #FFFFFF;
+    width : 100%;
+    resize:none;
+    outline:none;
+}
+
+.snippetStatusbar{
+    background-color: #FF4444;
+    color: #FFFFFF;
+    height: 1.2em;
+    font-weight: normal;
+}
