@@ -1,11 +1,13 @@
-html{
+
+*{
     margin: 0;
     padding: 0;
+    font-family: Calibri;
+}
+html{
     height: 100%;
 }
 body{
-    margin: 0;
-    padding: 0;
     height: 100%;
 }
 
@@ -18,27 +20,129 @@ body{
     height: 100%;
 }
 
-.snippetPanel{
-    background-color: #313838;
-    width : 15%;
-    text-align: center;
+.snippetPanelParent{
+    display:flex;
+    flex-direction:column;
+    width: 25%;
 }
-.snippetPanel a{
+
+.logo {
+    background-color: #FF4444;
+    padding: .2em .5em;
+    font-size: 24pt;
+}
+.logo a{
     color: #FFFFFF;
     text-decoration: none;
+}
+
+.snippetPanels{
+    display:flex;
+    flex-direction:row;
+    width: 100%;
+    height: 100%;
+}
+
+.snippetPanelTab{
+    background-color: #4a5252;
+    width : auto;
+    text-align: center;
+    display:flex;
+    flex-direction:column;
+}
+
+.snippetPanel{
+    background-color: #313838;
+    width : 100%;
+    padding: 0em .7em;
+    text-align: center;
+}
+
+.snippetPanelContents{
+    flex-direction:column;
+    display: none;
+}
+.snippetPanelContents.selected{
+    flex-direction:column;
+    display: flex;
+}
+
+.snippetPanelTab button.selected{
+    background-color: #479494;
+    color: white;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-radius: 3px;
+}
+
+.snippetPanelTab button{
+    height : 3em;
+    width : 3em;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border: 0px solid;
+    font-size: 12pt;
+}
+
+.snippetPanelTab button:hover{
+    background-color: #45b6b6;
+    border: 0px;
+}
+
+
+
+.snippetPanelContents button{
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #FFFFFF80;
+    height: 2em;
+    font-size: 12pt;
+    margin: .5em 0;
+    border-radius: 2px;
+}
+.snippetPanelContents button:hover{
+    background-color: #45b6b6;
+    border: 0px;
+}
+.snippetPanelContents select{
+    background-color: transparent;
+    color: white;
+    border: 1px solid #FFFFFF80;
+    height: 2em;
+    border-radius: 2px;
+    margin: .5em 0;
+    font-size: 12pt;
+}
+.snippetPanelContents select:hover{
+    background-color: #45b6b6;
+    border: 0px;
+}
+.snippetPanelContents select option{
+    background-color: #4a5252;
+    color: white;
+    border: 0px solid #FFFFFF80;
+    height: 2em;
+    border-radius: 2px;
+    margin: .5em 0;
+    font-size: 12pt;
 }
 
 .snippetEdit{
     background-color: #1e2020;
     color: #FFFFFF;
     width : 100%;
+    font-size: 1em;
     resize:none;
     outline:none;
+    padding: .7em;
 }
 
 .snippetStatusbar{
     background-color: #FF4444;
     color: #FFFFFF;
     height: 1.2em;
+    padding: 0 .3em;
     font-weight: normal;
 }

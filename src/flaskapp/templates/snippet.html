@@ -1,24 +1,73 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">     
         <!-- Custom CSS -->
         <link rel="stylesheet" href={{ url_for('static', filename='css/snippet.css') }}/>
-        {% if script_name %}
-            <title>{{script_name}}::Code Live</title>
-        {% else %}
-            <title>new script::Code Live</title>
-        {% endif %}
+        <title>{{ScriptData.title}} :: Code Live</title>
         
     </head>
     <body>
         <div class=snippetContainer>
             <div class=snippetView>
-                <div class="snippetPanel">
-                    <a href="/index">Code Live</a>
+                <div class="snippetPanelParent">
+                    <div class="logo"> <a href="/index">Code Live</a></div>
+
+                    <div class="snippetPanels">
+                        <div class="snippetPanelTab">
+                            <button type="button" id="tabFile" class="selected">File</button>
+                            <button type="button" id="tabView">View</button>
+                            <button type="button" id="tabChat">Chat</button>
+                            <button type="button" id="tabAccount">Login</button>
+                        </div>
+                        <div class="snippetPanel">
+                            
+                            <div class= "snippetPanelContents selected" id="contentsFile">
+                                <button type="button" id="fileCopyLink">Copy Link</button>
+                                <button type="button" id="fileExecute">Execute</button>
+                                <button type="button" id="fileClone">Clone</button>
+                                <button type="button" id="fileDownload">Download</button>
+                                <button type="button" id="fileRename">Rename</button>
+                                <button type="button" id="filePermission">Manage Permission</button>
+                                <select>
+                                    {% for lang in ViewData.langs %}
+                                        <option value="{{lang}}" {{ "selected" if lang==ScriptData.lang}}>{{lang}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class= "snippetPanelContents" id="contentsView">
+                                <button type="button" id="viewFontSize">Font Size</button>
+                                <select>
+                                    {% for theme in ViewData.themes %}
+                                        <option value="{{theme}}" {{ "selected" if loop.first}}>{{theme}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class= "snippetPanelContents" id="contentsChat">
+                                <button type="button" id="chatVoice">Start Voice Chat</button>
+                                <button type="button" id="chatVideo">Start Video Chat</button>
+                                <button type="button" id="chatText">Open Text Chat</button>
+                            </div>
+
+                            <div class= "snippetPanelContents" id="contentsAccount">
+                                {% if ViewData.session %}
+                                    <button type="button" id="AccountSignOut">Sign Out</button>
+                                {% else %}
+                                    <button type="button" id="AccountSignIn">Sign In</button>
+                                    <button type="button" id="AccountSignUp">Sign Up</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <textarea class="snippetEdit" placeholder="Let's code!">{{script_contents}}</textarea>
+                <textarea class="snippetEdit" placeholder="Let's code!">{{ScriptData.contents}}</textarea>
             </div>
             <div class="snippetStatusbar">ready</div>
         </div>
+        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>
