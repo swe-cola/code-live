@@ -6,21 +6,94 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Codemirror -->
+    <link rel="icon" href="/static/favicon.svg">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/material.css">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="/static/css/index.css"/>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.js"></script>
   </head>
 <body>
-  <div id="entry"></div>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-height">
+    <a class="navbar-brand" href="#"><i class="fas fa-code"></i>&nbsp; CodeLive</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/swe-cola/code-live">GitHub</a>
+        </li>
+      </ul>
+    </div>
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+  </nav>
+  <div class='container-fluid fixed-height'>
+    <div class='row bg-dark vertical-center'>
+      <div class="col-1">status: <span id="network-status"></span></div>
+      <div class="col-6">peers: <span id="peers-holder"></span></div>
+      <div class="col">
+        <div class='inline-block mr-4'>
+          Dark Mode
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="btn-toolbar inline-block" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-secondary">sublime</button>
+            <button type="button" class="btn btn-secondary">vim</button>
+            <button type="button" class="btn btn-secondary">emacs</button>
+          </div>
+          <div class="btn-group btn-group-sm mr-2" role="group">
+            <button id="btnLanguageGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Python
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnLanguageGroupDrop">
+              <a class="dropdown-item" href="#">Python</a>
+              <a class="dropdown-item" href="#">Javascript</a>
+              <a class="dropdown-item" href="#">C</a>
+              <a class="dropdown-item" href="#">C++</a>
+            </div>
+          </div>
+          <div class="btn-group btn-group-sm mr-2" role="group">
+            <button id="btnTabSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Tab: 2
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnTabSizeGroupDrop">
+              <a class="dropdown-item" href="#">2</a>
+              <a class="dropdown-item" href="#">4</a>
+            </div>
+          </div>
+          <div class="btn-group btn-group-sm mr-2" role="group">
+            <button id="btnFontSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Font: 14
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnFontSizeGroupDrop">
+              <a class="dropdown-item" href="#">8</a>
+              <a class="dropdown-item" href="#">9</a>
+              <a class="dropdown-item" href="#">10</a>
+              <a class="dropdown-item" href="#">11</a>
+              <a class="dropdown-item" href="#">12</a>
+              <a class="dropdown-item" href="#">14</a>
+              <a class="dropdown-item" href="#">18</a>
+              <a class="dropdown-item" href="#">24</a>
+              <a class="dropdown-item" href="#">30</a>
+              <a class="dropdown-item" href="#">36</a>
+              <a class="dropdown-item" href="#">48</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='dynamic-height'>
+    <textarea id="placeholder" cols="30" rows="10"><pre><code></code></pre></textarea>
+    <div id="chat" class='bg-dark'></div>
+  </div>
   <script src="static/js/yorkie.js"></script>
   <script src="static/js/util.js"></script>
   <script src="static/js/index.js"></script>
