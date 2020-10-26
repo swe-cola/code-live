@@ -1,16 +1,6 @@
 const colors = ['#FECEEA', '#FEF1D2', '#A9FDD8', '#D7F8FF', '#CEC5FA'];
 let nextColorIdx = 0;
 
-const entry = document.getElementById('entry');
-console.log('hello world');
-console.log(entry);
-entry.innerHTML = `
-    <textarea id="placeholder" cols="30" rows="10"><pre><code></code></pre></textarea>
-    <div>status: <span id="network-status"></span></div>
-    <div>peers:</div>
-    <pre style="white-space: pre-wrap;"><code id="peers-holder"></code></pre>
-`;
-
 const statusHolder = document.getElementById('network-status');
 const placeholder = document.getElementById('placeholder');
 const peersHolder = document.getElementById('peers-holder');
