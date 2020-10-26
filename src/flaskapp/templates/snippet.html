@@ -5,31 +5,38 @@
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">     
         <!-- Custom CSS -->
         <link rel="stylesheet" href={{ url_for('static', filename='css/snippet.css') }}/>
-        <title>{{ScriptData.title}} :: Code Live</title>
+        <title>{{ScriptData.title}} :: CodeLive</title>
         
     </head>
-    <body>
-        <div class=snippetContainer>
-            <div class=snippetView>
+    <body class="Dark">
+        <div class="snippetContainer">
+            <div class="snippetView">
                 <div class="snippetPanelParent">
-                    <div class="logo"> <a href="/index">Code Live</a></div>
+                    <div class="logo"> <a href="/index">CodeLive</a></div>
 
                     <div class="snippetPanels">
                         <div class="snippetPanelTab">
-                            <button type="button" id="tabFile" class="selected">File</button>
-                            <button type="button" id="tabView">View</button>
-                            <button type="button" id="tabChat">Chat</button>
-                            <button type="button" id="tabAccount">Login</button>
+                            <button type="button" class="tabFile selected" onclick="tabDemo(this)">File</button>
+                            <button type="button" class="tabView" onclick="tabDemo(this)">View</button>
+                            <button type="button" class="tabChat" onclick="tabDemo(this)">Chat</button>
+                            <button type="button" class="tabAccount" onclick="tabDemo(this)">Login</button>
                         </div>
                         <div class="snippetPanel">
                             
-                            <div class= "snippetPanelContents selected" id="contentsFile">
+                            <div class= "snippetPanelContents selected tabFile">
                                 <button type="button" id="fileCopyLink">Copy Link</button>
                                 <button type="button" id="fileExecute">Execute</button>
                                 <button type="button" id="fileClone">Clone</button>
                                 <button type="button" id="fileDownload">Download</button>
-                                <button type="button" id="fileRename">Rename</button>
-                                <button type="button" id="filePermission">Manage Permission</button>
+                                <button type="button" id="fileLoadTemplate">Load Template</button>
+                                {% if ViewData.isOwner %}
+                                    <button type="button" id="fileRename">Rename</button>
+                                    <button type="button" id="filePermission">Manage Permission</button>
+                                    <button type="button" id="fileDispose">Dispose</button>
+                                {% endif %}
+                                {% if ScriptData.ownerless %}
+                                    <button type="button" id="fileClaimOwner">Claim Ownership</button>
+                                {% endif %}
                                 <select>
                                     {% for lang in ViewData.langs %}
                                         <option value="{{lang}}" {{ "selected" if lang==ScriptData.lang}}>{{lang}}</option>
@@ -37,22 +44,23 @@
                                 </select>
                             </div>
 
-                            <div class= "snippetPanelContents" id="contentsView">
+                            <div class= "snippetPanelContents tabView">
                                 <button type="button" id="viewFontSize">Font Size</button>
-                                <select>
+                                <button type="button" id="viewToggleConsole">Toggle Console</button>
+                                <select onchange="themeDemo(this)">
                                     {% for theme in ViewData.themes %}
-                                        <option value="{{theme}}" {{ "selected" if loop.first}}>{{theme}}</option>
+                                        <option value="{{theme}}" {{ "selected" if loop.first}} >{{theme}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
 
-                            <div class= "snippetPanelContents" id="contentsChat">
+                            <div class= "snippetPanelContents tabChat">
                                 <button type="button" id="chatVoice">Start Voice Chat</button>
                                 <button type="button" id="chatVideo">Start Video Chat</button>
                                 <button type="button" id="chatText">Open Text Chat</button>
                             </div>
 
-                            <div class= "snippetPanelContents" id="contentsAccount">
+                            <div class= "snippetPanelContents tabAccount">
                                 {% if ViewData.session %}
                                     <button type="button" id="AccountSignOut">Sign Out</button>
                                 {% else %}
@@ -64,10 +72,28 @@
                     </div>
 
                 </div>
+                <!-- TODO: replace textarea below with CodeMirror-->
                 <textarea class="snippetEdit" placeholder="Let's code!">{{ScriptData.contents}}</textarea>
             </div>
-            <div class="snippetStatusbar">ready</div>
+            <div class="snippetStatusbar">✓ ready</div>
         </div>
-        <script src="js/bootstrap.min.js"></script>
+        <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+        function tabDemo(el){
+            var tabButtons = $('.snippetPanels .snippetPanelTab').find('button.selected');
+            var tabContents = $('.snippetPanelContents.selected');
+            tabButtons.each(function(){ this.classList.remove('selected')});
+            tabContents.each(function(){ this.classList.remove('selected')});
+            $(".snippetPanels .".concat(el.className)).each(function(){ this.classList.add('selected')});
+        }
+
+        function themeDemo(el){
+            $('body')[0].className=el.value;
+        }
+    </script>
     </body>
 </html>

@@ -1,8 +1,48 @@
+:root{
+    --white: #FFFFFF;
+    --grey4: #d2dddd;
+    --grey3: #a8b9b9;
+    --grey2: #778888;
+    --grey1: #4a5252;
+    --grey0: #313838;
+    --black: #1e2020;
+    --red: #FF4444;
+    --cobalt: #45b6b6;
+    --cobalt-strong: #3ccccc;
+    --cobalt-muted: #479494;
+}
+
+.Dark{
+    --text: var(--white);
+    --text-code: var(--white);
+    --border: var(--grey2);
+    --tabarea1: var(--grey1);
+    --tabarea0: var(--grey0);
+    --textarea: var(--black);
+    --point: var(--cobalt);
+    --point-muted: var(--cobalt-muted);
+    --point-strong: var(--cobalt-strong);
+}
+.Light{
+    --text: var(--white);
+    --text-code: var(--black);
+    --border: var(--grey4);
+    --tabarea1: var(--grey3);
+    --tabarea0: var(--grey2);
+    --textarea: var(--white);
+    --point: var(--cobalt);
+    --point-muted: var(--cobalt-muted);
+    --point-strong: var(--cobalt-strong);
+}
 
 *{
     margin: 0;
     padding: 0;
     font-family: Calibri;
+    box-sizing: border-box;
+    color: var(--text);
+    transition: background-color .05s ease-out;
+
 }
 html{
     height: 100%;
@@ -12,7 +52,7 @@ body{
 }
 
 .snippetContainer{
-    height: calc(100% - 1.2em);
+    height: calc(100% - 1.4em);
 }
 .snippetView{
     display:flex;
@@ -27,12 +67,12 @@ body{
 }
 
 .logo {
-    background-color: #FF4444;
+    background-color: var(--point-strong);
     padding: .2em .5em;
     font-size: 24pt;
 }
 .logo a{
-    color: #FFFFFF;
+    color: var(--text);
     text-decoration: none;
 }
 
@@ -44,7 +84,7 @@ body{
 }
 
 .snippetPanelTab{
-    background-color: #4a5252;
+    background-color: var(--tabarea1);
     width : auto;
     text-align: center;
     display:flex;
@@ -52,7 +92,7 @@ body{
 }
 
 .snippetPanel{
-    background-color: #313838;
+    background-color: var(--tabarea0);
     width : 100%;
     padding: 0em .7em;
     text-align: center;
@@ -68,8 +108,7 @@ body{
 }
 
 .snippetPanelTab button.selected{
-    background-color: #479494;
-    color: white;
+    background-color: var(--point-muted);
     border-top: 1px solid;
     border-bottom: 1px solid;
     border-radius: 3px;
@@ -80,13 +119,12 @@ body{
     width : 3em;
     text-align: center;
     background-color: transparent;
-    color: white;
     border: 0px solid;
     font-size: 12pt;
 }
 
 .snippetPanelTab button:hover{
-    background-color: #45b6b6;
+    background-color: var(--point);
     border: 0px;
 }
 
@@ -95,34 +133,34 @@ body{
 .snippetPanelContents button{
     text-align: center;
     background-color: transparent;
-    color: white;
-    border: 1px solid #FFFFFF80;
+    border: 1px solid  var(--border);
+
     height: 2em;
     font-size: 12pt;
     margin: .5em 0;
     border-radius: 2px;
 }
 .snippetPanelContents button:hover{
-    background-color: #45b6b6;
+    background-color: var(--point);
     border: 0px;
 }
 .snippetPanelContents select{
     background-color: transparent;
-    color: white;
-    border: 1px solid #FFFFFF80;
+    color: var(--white);
+    border: 1px solid var(--border);
     height: 2em;
     border-radius: 2px;
     margin: .5em 0;
     font-size: 12pt;
 }
 .snippetPanelContents select:hover{
-    background-color: #45b6b6;
+    background-color: var(--point);
     border: 0px;
 }
 .snippetPanelContents select option{
-    background-color: #4a5252;
-    color: white;
-    border: 0px solid #FFFFFF80;
+    background-color: var(--tabarea1);
+    color: var(--white);
+    border: 0px;
     height: 2em;
     border-radius: 2px;
     margin: .5em 0;
@@ -130,8 +168,9 @@ body{
 }
 
 .snippetEdit{
-    background-color: #1e2020;
-    color: #FFFFFF;
+    background-color: var(--textarea);
+    color: var(--text-code);
+    border: 0px;
     width : 100%;
     font-size: 1em;
     resize:none;
@@ -140,9 +179,14 @@ body{
 }
 
 .snippetStatusbar{
-    background-color: #FF4444;
-    color: #FFFFFF;
-    height: 1.2em;
+    background-color: var(--point);
+    display:flex;
     padding: 0 .3em;
+    font-size: 10pt;
     font-weight: normal;
+    position: fixed;
+    border-top: 1px solid var(--border);
+    height: 1.4rem;
+    width:100%;
+    align-items: center;
 }

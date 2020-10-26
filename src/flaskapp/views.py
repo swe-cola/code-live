@@ -80,11 +80,12 @@ def init_viewData():
     global viewData
     viewData = dict()
     viewData['langs'] = ['C','C++','C#','Python','Java','Javascript']
-    viewData['themes'] = ['Light','Dark','Cobalt']
+    viewData['themes'] = ['Dark','Light']
     return
 
 @app.route('/s/<scriptID>')
 def route_script(scriptID):
+    # TODO: redirect if scriptID is invalid.
     return render_template("snippet.html", ScriptData=get_scriptData(scriptID), ViewData=viewData, API_URL=os.environ['YORKIE_AGENT_URL'])
 
 init_viewData()
