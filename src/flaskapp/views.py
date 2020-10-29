@@ -1,20 +1,48 @@
 import os
-from flaskapp import app
-from flask import send_from_directory, render_template, redirect, url_for
+from flaskapp import app, auth, document, user
+from flask import (
+    make_response,
+    render_template,
+    redirect,
+    request,
+    send_from_directory,
+    url_for,
+)
+
+CODE_LIVE_COOKIE = 'code-live'
 
 
 @app.route('/')
 def route_index():
-    # FIXME. Should either return an existing document or a new one depending on the user's cookie
-    document_id = 'example'
+    # Cookie is used to identify a user
+    cookie = request.cookies.get(CODE_LIVE_COOKIE)
+    new_cookie = False
+    if cookie is None or not auth.cookie_is_valid(cookie):
+        cookie = auth.generate_cookie()
+        new_cookie = True
+
+    document_id = user.get_doc_id(cookie)
+    if document_id is None:
+        document_id = document.create_doc_id()
+
     url = url_for('route_document', document_id=document_id)
-    return redirect(url)
+    redirected = redirect(url)
+    response = make_response(redirected)
+    if new_cookie:
+        response.set_cookie(CODE_LIVE_COOKIE, cookie)
+    return response
+
+
+@app.route('/<document_id>')
+def route_document(document_id):
+    cookie = request.cookies.get(CODE_LIVE_COOKIE)
+    user.log_access(cookie, document_id)
+
+    key = ('code-live', document_id)
+    return render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key)
+
 
 @app.route('/favicon.ico')
 def favicon():
     dirname = os.path.join(app.root_path, 'static')
     return send_from_directory(dirname, 'favicon.ico')
-
-@app.route('/<document_id>')
-def route_document(document_id):
-    return render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'])

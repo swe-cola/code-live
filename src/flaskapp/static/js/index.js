@@ -80,7 +80,7 @@ async function main() {
     await client.activate();
 
     // 02. create a document then attach it into the client.
-    const doc = yorkie.createDocument('examples', 'codemirror');
+    const doc = yorkie.createDocument(collection, documentName);
     await client.attach(doc);
 
     client.subscribe((event) => {
