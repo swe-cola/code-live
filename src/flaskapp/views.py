@@ -36,10 +36,19 @@ def route_index():
 @app.route('/<document_id>')
 def route_document(document_id):
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
+    new_cookie = False
+    if cookie is None or not auth.cookie_is_valid(cookie):
+        cookie = auth.generate_cookie()
+        new_cookie = True
     user.log_access(cookie, document_id)
 
     key = ('code-live', document_id)
-    return render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key)
+
+    rendered = render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key)
+    response = make_response(rendered)
+    if new_cookie:
+        response.set_cookie(CODE_LIVE_COOKIE, cookie)
+    return response
 
 
 @app.route('/favicon.ico')
