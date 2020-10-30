@@ -17,6 +17,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/css/css.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/clike/clike.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/go/go.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/rust/rust.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/htmlembedded/htmlembedded.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/htmlmixed/htmlmixed.js"></script>
   </head>
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-height">
@@ -53,10 +60,10 @@
               Python
             </button>
             <div class="dropdown-menu" aria-labelledby="btnLanguageGroupDrop">
-              <a class="dropdown-item" href="#">Python</a>
-              <a class="dropdown-item" href="#">Javascript</a>
-              <a class="dropdown-item" href="#">C</a>
-              <a class="dropdown-item" href="#">C++</a>
+              <a class="dropdown-item" href="#" onclick="changeName('btnLanguageGroupDrop','Python')">Python</a>
+              <a class="dropdown-item" href="#" onclick="changeName('btnLanguageGroupDrop','Javascript')">Javascript</a>
+              <a class="dropdown-item" href="#" onclick="changeName('btnLanguageGroupDrop','C')">C</a>
+              <a class="dropdown-item" href="#" onclick="changeName('btnLanguageGroupDrop','C++')">C++</a>
             </div>
           </div>
           <div class="btn-group btn-group-sm mr-2" role="group">
@@ -64,8 +71,8 @@
               Tab: 2
             </button>
             <div class="dropdown-menu" aria-labelledby="btnTabSizeGroupDrop">
-              <a class="dropdown-item" href="#">2</a>
-              <a class="dropdown-item" href="#">4</a>
+              <a class="dropdown-item" href="#" onclick="changeTab('btnTabSizeGroupDrop','Tab: 2')">2</a>
+              <a class="dropdown-item" href="#" onclick="changeTab('btnTabSizeGroupDrop','Tab: 4')">4</a>
             </div>
           </div>
           <div class="btn-group btn-group-sm mr-2" role="group">
