@@ -34,7 +34,7 @@
     <div class='row bg-dark vertical-center'>
       <div class="col-1">status: <span id="network-status"></span></div>
       <div class="col-6">peers: <span id="peers-holder"></span></div>
-      <div class="col">
+      <!--<div class="col">
         <div class='inline-block mr-4'>
           Dark Mode
           <label class="switch">
@@ -48,19 +48,9 @@
             <button type="button" class="btn btn-secondary">vim</button>
             <button type="button" class="btn btn-secondary">emacs</button>
           </div>
+          
           <div class="btn-group btn-group-sm mr-2" role="group">
-            <button id="btnLanguageGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Python
-            </button>
-            <div class="dropdown-menu" aria-labelledby="btnLanguageGroupDrop">
-              <a class="dropdown-item" href="#">Python</a>
-              <a class="dropdown-item" href="#">Javascript</a>
-              <a class="dropdown-item" href="#">C</a>
-              <a class="dropdown-item" href="#">C++</a>
-            </div>
-          </div>
-          <div class="btn-group btn-group-sm mr-2" role="group">
-            <button id="btnTabSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button id="btnTabSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Tab" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Tab: 2
             </button>
             <div class="dropdown-menu" aria-labelledby="btnTabSizeGroupDrop">
@@ -69,7 +59,73 @@
             </div>
           </div>
           <div class="btn-group btn-group-sm mr-2" role="group">
-            <button id="btnFontSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button id="btnFontSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Font: 14
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnFontSizeGroupDrop">
+              <a class="dropdown-item" href="#">8</a>
+              <a class="dropdown-item" href="#">9</a>
+              <a class="dropdown-item" href="#">10</a>
+              <a class="dropdown-item" href="#">11</a>
+              <a class="dropdown-item" href="#">12</a>
+              <a class="dropdown-item" href="#">14</a>
+              <a class="dropdown-item" href="#">18</a>
+              <a class="dropdown-item" href="#">24</a>
+              <a class="dropdown-item" href="#">30</a>
+              <a class="dropdown-item" href="#">36</a>
+              <a class="dropdown-item" href="#">48</a>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <div class='dynamic-height'>
+    <div class='container-fluid vertical-container'>
+      <textarea id="placeholder" cols="30" rows="10"><pre><code></code></pre></textarea>
+      <textarea id="console" readonly > </textarea>
+    </div>
+    <div class='tab-content bg-dark'>
+      <div class="tab-pane active" id="tabFile">
+        <div class="btn-group btn-group-sm mr-2" role="group">
+          <button id="btnLanguageGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Language: python
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnLanguageGroupDrop" id="dropdownLang">
+            {% for lang in langs %}
+              <a class="dropdown-item{{' active' if loop.first}}" href="#">{{lang}}</a>
+            {% endfor %}
+          </div>
+        </div>
+        <textarea id="script-input" placeholder="standard input:"></textarea>
+        <button type="button" class="btn btn-secondary" id="executeScript">Execute</button>
+      </div>
+      <div class="tab-pane" id="tabView">
+        <div class='inline-block mr-4'>
+          Dark Mode
+          <label class="switch">
+            <input type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="btn-toolbar inline-block" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-secondary">sublime</button>
+            <button type="button" class="btn btn-secondary">vim</button>
+            <button type="button" class="btn btn-secondary">emacs</button>
+          </div>
+          
+          <div class="btn-group btn-group-sm mr-2" role="group">
+            <button id="btnTabSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Tab" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Tab: 2
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnTabSizeGroupDrop">
+              <a class="dropdown-item" href="#">2</a>
+              <a class="dropdown-item" href="#">4</a>
+            </div>
+          </div>
+          <div class="btn-group btn-group-sm mr-2" role="group">
+            <button id="btnFontSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Font: 14
             </button>
             <div class="dropdown-menu" aria-labelledby="btnFontSizeGroupDrop">
@@ -88,12 +144,29 @@
           </div>
         </div>
       </div>
+      <div class="tab-pane" id="tabChat">
+        <div id="chat" class='bg-dark'></div>
+      </div>
+      <div class="tab-pane" id="tabAccount">
+        account
+      </div>
     </div>
+      <nav class = "nav nav-pills flex-column tabs-buttons bg-dark">
+        <a class="nav-link active" href="#tabFile" data-toggle="tab">
+          <i class="fas fa-file" data-toggle="tooltip" data-placement="left" title="File"></i>
+        </a>
+        <a class="nav-link" href="#tabView" data-toggle="tab">
+          <i class="fas fa-font" data-toggle="tooltip" data-placement="left" title="View"></i>
+        </a>
+        <a class="nav-link" href="#tabChat" data-toggle="tab">
+          <i class="far fa-comment-alt" data-toggle="tooltip" data-placement="left" title="Chat"></i>
+        </a>
+        <a class="nav-link" href="#tabAccount" data-toggle="tab">
+          <i class="fas fa-user-circle" data-toggle="tooltip" data-placement="left" title="Account"></i>
+        </a>
+      </nav>
   </div>
-  <div class='dynamic-height'>
-    <textarea id="placeholder" cols="30" rows="10"><pre><code></code></pre></textarea>
-    <div id="chat" class='bg-dark'></div>
-  </div>
+
   <script src="static/js/yorkie.js"></script>
   <script src="static/js/util.js"></script>
   <script src="static/js/index.js"></script>
@@ -108,5 +181,19 @@
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="static/js/runner.js"></script>
+  <script>
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('.btn-group .dropdown-menu .dropdown-item').on('click',function() {
+          var id = $(this).parent().attr('aria-labelledby');
+          var dropLabel = $('#'+id);
+          $(this).addClass('active');
+          $(this).siblings().removeClass('active');
+          dropLabel.text(dropLabel.data('desc')+': '+$(this).text()+' ');
+        });
+      });
+
+  </script>
   </body>
 </html>
