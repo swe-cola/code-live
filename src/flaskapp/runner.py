@@ -1,30 +1,32 @@
-available_langs="""python
-c
-cpp
-objective-c
-java
-kotlin
-scala
-swift
-csharp
-go
-haskell
-erlang
-perl
-python3
-ruby
-php
-bash
-r
-javascript
-coeffeescript
-vb
-cibik
-fsharp
-d
-clojure
-elixir
-mysql
-rust
-scheme
-commonlisp""".split('\n')
+available_langs = [
+    'python',
+    'c',
+    'cpp',
+    'objective-c',
+    'java',
+    'kotlin',
+    'scala',
+    'swift',
+    'csharp',
+    'go',
+    'haskell',
+    'erlang',
+    'perl',
+    'python3',
+    'ruby',
+    'php',
+    'bash',
+    'r',
+    'javascript',
+    'coffeescript',
+    'vb',
+    'cibik',
+    'fsharp',
+    'd',
+    'clojure',
+    'elixir',
+    'mysql',
+    'rust',
+    'scheme',
+    'commonlisp',
+]
