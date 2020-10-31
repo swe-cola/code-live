@@ -224,9 +224,9 @@ async function main() {
 }
 
 function colortheme(element){
-  document.documentElement.classList.toggle("dark");
+  document.documentElement.classList.toggle("light");
 }
 
-if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.documentElement.classList.add("dark");
+if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+    document.documentElement.classList.add("light");
 }

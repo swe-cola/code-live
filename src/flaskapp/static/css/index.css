@@ -171,6 +171,10 @@ input:checked + .slider:before {
   border:none;
 }
 
-html.dark #console{
+html.light #console, html.light .CodeMirror-gutter-filler{
   background-color: #fff;
+}
+
+html.light .bg-dark{
+  background-color: #fff !important;
 }
