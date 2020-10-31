@@ -1,5 +1,5 @@
 import os
-from flaskapp import app, auth, document, user
+from flaskapp import app, auth, document, user, runner
 from flask import (
     make_response,
     render_template,
@@ -11,6 +11,7 @@ from flask import (
 
 CODE_LIVE_COOKIE = 'code-live'
 
+viewData=None
 
 @app.route('/')
 def route_index():
@@ -44,7 +45,7 @@ def route_document(document_id):
 
     key = ('code-live', document_id)
 
-    rendered = render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key)
+    rendered = render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key, langs=runner.available_langs)
     response = make_response(rendered)
     if new_cookie:
         response.set_cookie(CODE_LIVE_COOKIE, cookie)
