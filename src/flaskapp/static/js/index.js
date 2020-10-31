@@ -171,3 +171,27 @@ async function main() {
   }
 }
 
+function colortheme(element){
+  document.documentElement.classList.toggle("light");
+  if (document.documentElement.classList.contains("light")){
+    $('.bg-dark').addClass('bg-light').removeClass('bg-dark');
+    $('.btn-secondary').addClass('btn-dark').removeClass('btn-secondary');
+    $('.navbar-dark').addClass('navbar-light').removeClass('navbar-dark');
+  }
+  else{
+    $('.bg-light').addClass('bg-dark').removeClass('bg-light');
+    $('.btn-dark').addClass('btn-secondary').removeClass('btn-dark');
+    $('.navbar-light').addClass('navbar-dark').removeClass('navbar-light');
+  }
+}
+
+$('#darkModeSwitch input[type=checkbox]').on('click', function() {
+  const cm = $('.CodeMirror').get(0).CodeMirror;
+  if ($(this).prop('checked')) {
+    // Dark mode
+    cm.setOption('theme', 'material');
+  } else {
+    // Light mode
+    cm.setOption('theme', 'solarized');
+  }
+});
