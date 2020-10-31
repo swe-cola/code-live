@@ -11,7 +11,6 @@ from flask import (
 
 CODE_LIVE_COOKIE = 'code-live'
 
-viewData=None
 
 @app.route('/')
 def route_index():
