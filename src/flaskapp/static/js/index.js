@@ -6,6 +6,10 @@ const placeholder = document.getElementById('placeholder');
 const peersHolder = document.getElementById('peers-holder');
 const selectionMap = new Map();
 
+// dark = mode 0
+// light = mode 1
+let mode = 0;
+
 function displayPeers(peers, clientID) {
   peersHolder.innerHTML = JSON.stringify(peers).replace(clientID, `<b>${clientID}</b>`);
 }
@@ -223,3 +227,7 @@ async function main() {
   }
 }
 
+function colortheme(element){
+  mode = 1 - mode;
+  console.log(mode);
+}
