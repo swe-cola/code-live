@@ -230,3 +230,14 @@ function colortheme(element){
 if (window.matchMedia("(prefers-color-scheme: light)").matches) {
     document.documentElement.classList.add("light");
 }
+
+$('#darkModeSwitch input[type=checkbox]').on('click', function() {
+  const cm = $('.CodeMirror').get(0).CodeMirror;
+  if ($(this).prop('checked')) {
+    // Dark mode
+    cm.setOption('theme', 'material');
+  } else {
+    // Light mode
+    cm.setOption('theme', 'solarized');
+  }
+});
