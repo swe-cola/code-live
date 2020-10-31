@@ -160,7 +160,6 @@ input:checked + .slider:before {
   padding:0;
 }
 
-
 #console{
   flex-basis: 40%;
   background-color: #202222;
@@ -171,7 +170,34 @@ input:checked + .slider:before {
   border:none;
 }
 
+.bg-lightgray{
+  background-color: #D3D3D3;
+}
+
 html.light #console, html.light .CodeMirror-gutter-filler{
   background-color: #f7f7f7;
+  color: #000;
+}
+
+html.light body {
+  color: #000;
+}
+
+html.light .navbar {
+  border-bottom: 1px solid #ccc;
+}
+
+html.light .navbar {
+  border-bottom: 1px solid #ccc;
+}
+
+html.light .btn-dark{
+  width: 100%;
+  font-size: 0.875rem;
+  margin: 4px 0 4px 0;
+}
+
+html.light .dynamic-height .tab-content textarea{
+  background-color: #fff;
   color: #000;
 }

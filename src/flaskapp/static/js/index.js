@@ -225,10 +225,20 @@ async function main() {
 
 function colortheme(element){
   document.documentElement.classList.toggle("light");
+  if (document.documentElement.classList.contains("light")){
+    $('.bg-dark').addClass('bg-light').removeClass('bg-dark');
+    $('.btn-secondary').addClass('btn-dark').removeClass('btn-secondary');
+    $('.navbar-dark').addClass('navbar-light').removeClass('navbar-dark');
+  }
+  else{
+    $('.bg-light').addClass('bg-dark').removeClass('bg-light');
+    $('.btn-dark').addClass('btn-secondary').removeClass('btn-dark');
+    $('.navbar-light').addClass('navbar-dark').removeClass('navbar-light');
+  }
 }
 
 if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-    document.documentElement.classList.add("light");
+  document.documentElement.classList.add("light");
 }
 
 $('#darkModeSwitch input[type=checkbox]').on('click', function() {
