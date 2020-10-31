@@ -170,3 +170,7 @@ input:checked + .slider:before {
   resize:none;
   border:none;
 }
+
+html.dark #console{
+  background-color: #fff;
+}
