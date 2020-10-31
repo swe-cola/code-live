@@ -28,58 +28,6 @@ function replaceRangeFix(cm, text, from, to, origin) {
   });
 }
 
-function changeName(id, name){
-  document.getElementById(id).innerHTML = name;
-
-  if(document.getElementById(id).innerHTML=='Python'){
-  codemirror.setOption('mode', 'python');
-  }
-  else if(document.getElementById(id).innerHTML=='Javascript'){
-    codemirror.setOption('mode', 'javascript');
-  }
-  else if(document.getElementById(id).innerHTML=='C' || document.getElementById(id).innerHTML=='C++' || document.getElementById(id).innerHTML=='Java'){
-    codemirror.setOption('mode', 'clike');
-  }
-  else if(document.getElementById(id).innerHTML=='CSS'){
-    codemirror.setOption('mode', 'css');
-  }
-  else if(document.getElementById(id).innerHTML=='Go'){
-    codemirror.setOption('mode', 'go');
-  }
-  else if(document.getElementById(id).innerHTML=='Rust'){
-    codemirror.setOption('mode', 'rust');
-  }
-  else if(document.getElementById(id).innerHTML=='HTML embedded'){
-    codemirror.setOption('mode', 'htmlembedded');
-  }
-  else if(document.getElementById(id).innerHTML=='HTML mixed-mode'){
-    codemirror.setOption('mode', 'htmlmixed');
-  }
-}
-
-function changeTab(id, size){
-  document.getElementById(id).innerHTML = size;
-  if(document.getElementById(id).innerHTML=='Tab: 2'){
-    codemirror.setOption('tabSize', 2);
-    }
-  else if(document.getElementById(id).innerHTML=='Tab: 4'){
-    codemirror.setOption('tabSize', 4);
-    }
-}
-
-function changeCSS(cssFile, cssLinkIndex, id, size) {
-  document.getElementById(id).innerHTML = size;
-
-  var oldlink = document.getElementsByTagName("link").item(cssLinkIndex);
-
-  var newlink = document.createElement("link");
-  newlink.setAttribute("rel", "stylesheet");
-  newlink.setAttribute("type", "text/css");
-  newlink.setAttribute("href", cssFile);
-
-  document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
-}
-
 function displayRemoteSelection(cm, change) {
   let color;
   if (selectionMap.has(change.actor)) {
@@ -149,7 +97,7 @@ async function main() {
     await client.sync();
 
     // 03. create an instance of codemirror.
-    codemirror = CodeMirror.fromTextArea(placeholder, {
+    const codemirror = CodeMirror.fromTextArea(placeholder, {
       lineNumbers: true,
       lineWrapping: true,
       mode: 'python',
