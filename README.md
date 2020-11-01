@@ -33,5 +33,4 @@ The open sources we used for Code-Live is:
 |Name|Purpose|License|URL|
 |------|---|---|---|
 |yorkie|to support simultaneous code editor|Apache License|[github](https://github.com/yorkie-team/yorkie-js-sdk)|
-|테스트1|테스트2|---|테스트3|
-|테스트1|테스트2|---|테스트3|
+|codemirror|to support several language modes and syntax highlighting|MIT License|[github](https://github.com/codemirror/codemirror)|
