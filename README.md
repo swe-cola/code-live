@@ -1,5 +1,7 @@
 # code-live
 
+![codelive](https://user-images.githubusercontent.com/41565118/97793511-52514d80-1c30-11eb-86ea-4f26d87c37f7.gif)
+
 Code Live is a web based code editor that lets you share your ideas in an instant.
 
 ## Getting Started
