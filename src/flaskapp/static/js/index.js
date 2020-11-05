@@ -105,6 +105,15 @@ async function main() {
       theme: "material",
     });
 
+    codemirror.setOption('extraKeys', {
+      'Ctrl-/': function(cm) {
+        cm.toggleComment();
+      },
+      'Cmd-/': function(cm) {
+        cm.toggleComment();
+      },
+    });
+
     // 04. bind the document with the codemirror.
     // 04-1. codemirror to document(local).
     codemirror.on('beforeChange', (cm, change) => {
