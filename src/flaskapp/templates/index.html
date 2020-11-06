@@ -56,13 +56,8 @@
       <div class="tab-pane active" id="tabFile">
         <div class="btn-group btn-group-sm mr-2" role="group">
           <button id="btnLanguageGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Language: python
+            Language: Python
           </button>
-          <div class="dropdown-menu" aria-labelledby="btnLanguageGroupDrop" id="dropdownLang">
-            {% for lang in langs %}
-              <a class="dropdown-item{{' active' if loop.first}}" href="#">{{lang}}</a>
-            {% endfor %}
-          </div>
         </div>
         <textarea id="script-input" placeholder="standard input:"></textarea>
         <button type="button" class="btn btn-secondary" id="executeScript">Execute</button>
@@ -86,28 +81,11 @@
             <button id="btnTabSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Tab" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Tab: 2
             </button>
-            <div class="dropdown-menu" aria-labelledby="btnTabSizeGroupDrop">
-              <a class="dropdown-item" href="#">2</a>
-              <a class="dropdown-item" href="#">4</a>
-            </div>
           </div>
           <div class="btn-group btn-group-sm mr-2" role="group">
             <button id="btnFontSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Font: 14
             </button>
-            <div class="dropdown-menu" aria-labelledby="btnFontSizeGroupDrop">
-              <a class="dropdown-item" href="#">8</a>
-              <a class="dropdown-item" href="#">9</a>
-              <a class="dropdown-item" href="#">10</a>
-              <a class="dropdown-item" href="#">11</a>
-              <a class="dropdown-item" href="#">12</a>
-              <a class="dropdown-item" href="#">14</a>
-              <a class="dropdown-item" href="#">18</a>
-              <a class="dropdown-item" href="#">24</a>
-              <a class="dropdown-item" href="#">30</a>
-              <a class="dropdown-item" href="#">36</a>
-              <a class="dropdown-item" href="#">48</a>
-            </div>
           </div>
         </div>
       </div>
@@ -144,91 +122,14 @@
   <script src="static/js/yorkie.js"></script>
   <script src="static/js/util.js"></script>
   <script src="static/js/index.js"></script>
+  <script src="static/js/lang_name.js"></script>
+  <script src="static/js/index_generate_dynamic_html.js"></script>
+  <script src="static/js/index_register_element_callback.js"></script>
   <script>
     const API_URL = '{{ API_URL }}';
     const collection = '{{ document_key[0] }}';
     const documentName = '{{ document_key[1] }}';
     main();
-  </script>
-
-  <script>
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('.btn-group .dropdown-menu .dropdown-item').on('click',function() {
-          var id = $(this).parent().attr('aria-labelledby');
-          var dropLabel = $('#'+id);
-          $(this).addClass('active');
-          $(this).siblings().removeClass('active');
-          dropLabel.text(dropLabel.data('desc')+': '+$(this).text()+' ');
-        });
-        $('#btnFontSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-          const fontSize = parseInt($(this).text());
-          $('.CodeMirror').css('font-size', fontSize);
-        });
-        $('#btnTabSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-          const tabSize = parseInt($(this).text());
-          const cm = $('.CodeMirror').get(0).CodeMirror;
-          cm.setOption('indentUnit', tabSize);
-          cm.setOption('tabSize', tabSize);
-        });
-        $('#darkModeSwitch input[type=checkbox]').on('click', function() {
-          const cm = $('.CodeMirror').get(0).CodeMirror;
-          if ($(this).prop('checked')) {
-            // Dark mode
-            cm.setOption('theme', 'material');
-          } else {
-            // Light mode
-            cm.setOption('theme', 'solarized');
-          }
-        });
-        const lang2mime = {
-          // FIXME. Keys are taken from runner.py
-          python: 'python',
-          c: 'csrc',
-          cpp: 'c++src',
-          'objective-c': 'objectivec',
-          csharp: 'csharp',
-          java: 'java',
-          kotlin: 'kotlin',
-          scala: 'scala',
-          swift: 'swift',          
-          go: 'go',
-          haskell: 'haskell',
-          erlang: 'erlang',
-          perl: 'perl',
-          python3: 'python',
-          ruby: 'ruby',
-          php: 'php',
-          r: 'rsrc',
-          javascript: 'javascript',
-          coffeescript: 'coffeescript',
-          vb: 'vbscript',
-          fsharp: 'fsharp',
-          d: 'd',
-          clojure: 'clojure',
-          rust: 'rustsrc',
-          scheme: 'scheme',
-          commonlisp: 'common-lisp',
-        };
-        const imported = ['python'];
-        $('#btnLanguageGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-          const lang = $(this).text();
-          const mime = lang2mime[lang];
-          if (!imported.includes(lang)) {
-            imported.push(lang);
-            const cm = $('.CodeMirror').get(0).CodeMirror;                         
-            cm.setOption('mode', 'text/x-' + mime); 
-            jQuery.getScript(`https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/${mime}/${mime}.js`, function(data, status) {
-              const cm = $('.CodeMirror').get(0).CodeMirror;                         
-              cm.setOption('mode', 'text/x-' + mime);              
-            });
-          } else {
-            const cm = $('.CodeMirror').get(0).CodeMirror;
-            cm.setOption('mode', 'text/x-' + mime);
-          }
-        });
-      });
-
   </script>
   </body>
 </html>
