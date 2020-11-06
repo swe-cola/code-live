@@ -106,6 +106,15 @@ async function main() {
       extraKeys: {"Alt-F": "findPersistent"}
     });
 
+    codemirror.setOption('extraKeys', {
+      'Ctrl-/': function(cm) {
+        cm.toggleComment();
+      },
+      'Cmd-/': function(cm) {
+        cm.toggleComment();
+      },
+    });
+
     // 04. bind the document with the codemirror.
     // 04-1. codemirror to document(local).
     codemirror.on('beforeChange', (cm, change) => {
@@ -185,3 +194,17 @@ function colortheme(element){
     $('.navbar-light').addClass('navbar-dark').removeClass('navbar-light');
   }
 }
+<<<<<<< HEAD
+=======
+
+$('#darkModeSwitch input[type=checkbox]').on('click', function() {
+  const cm = $('.CodeMirror').get(0).CodeMirror;
+  if ($(this).prop('checked')) {
+    // Dark mode
+    cm.setOption('theme', 'material');
+  } else {
+    // Light mode
+    cm.setOption('theme', 'solarized');
+  }
+});
+>>>>>>> dbc763c0d4be459416d394d9819c52a4d3fa657e

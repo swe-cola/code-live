@@ -160,7 +160,6 @@ input:checked + .slider:before {
   padding:0;
 }
 
-
 #console{
   flex-basis: 40%;
   background-color: #202222;
