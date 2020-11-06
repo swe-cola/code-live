@@ -42,7 +42,7 @@ init_lang_name = function(){
         ["Ruby","ruby","text/x-ruby","ruby"],
         ["PHP","php","application/x-httpd-php",["htmlmixed","xml","javascript","css","clike","php"]],
 
-        ["VB Script","vbscript","",""],
+        ["VB Script","vbscript","text/vbscript","vbscript"],
         ["F#","fsharp","text/x-fsharp","mllike"],
         ["Swift","swift","text/x-swift","swift"],
         ["Scheme","scheme","text/x-scheme","scheme"],
