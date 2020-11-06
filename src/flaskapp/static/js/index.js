@@ -194,8 +194,6 @@ function colortheme(element){
     $('.navbar-light').addClass('navbar-dark').removeClass('navbar-light');
   }
 }
-<<<<<<< HEAD
-=======
 
 $('#darkModeSwitch input[type=checkbox]').on('click', function() {
   const cm = $('.CodeMirror').get(0).CodeMirror;
@@ -207,4 +205,3 @@ $('#darkModeSwitch input[type=checkbox]').on('click', function() {
     cm.setOption('theme', 'solarized');
   }
 });
->>>>>>> dbc763c0d4be459416d394d9819c52a4d3fa657e
