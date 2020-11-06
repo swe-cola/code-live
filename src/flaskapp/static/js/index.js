@@ -211,6 +211,7 @@ $('.nav-link').on('click', function() {
     if (currentNav === clickedNav){
         currentNav = "";
         $(".tab-content").addClass("dis_none");
+        $(this).removeClass("active");
         return
     }
     currentNav = clickedNav;
