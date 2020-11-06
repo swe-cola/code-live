@@ -103,6 +103,7 @@ async function main() {
       mode: 'python',
       tabSize: 2,
       theme: "material",
+      extraKeys: {"Alt-F": "findPersistent"}
     });
 
     // 04. bind the document with the codemirror.
@@ -171,3 +172,16 @@ async function main() {
   }
 }
 
+function colortheme(element){
+  document.documentElement.classList.toggle("light");
+  if (document.documentElement.classList.contains("light")){
+    $('.bg-dark').addClass('bg-light').removeClass('bg-dark');
+    $('.btn-secondary').addClass('btn-dark').removeClass('btn-secondary');
+    $('.navbar-dark').addClass('navbar-light').removeClass('navbar-dark');
+  }
+  else{
+    $('.bg-light').addClass('bg-dark').removeClass('bg-light');
+    $('.btn-dark').addClass('btn-secondary').removeClass('btn-dark');
+    $('.navbar-light').addClass('navbar-dark').removeClass('navbar-light');
+  }
+}
