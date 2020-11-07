@@ -1,11 +1,20 @@
 const colors = ['#FECEEA', '#FEF1D2', '#A9FDD8', '#D7F8FF', '#CEC5FA'];
 let nextColorIdx = 0;
 let currentNav = "";
+let client, doc;
 
 const statusHolder = document.getElementById('network-status');
 const placeholder = document.getElementById('placeholder');
 const peersHolder = document.getElementById('peers-holder');
 const selectionMap = new Map();
+
+function update_root(fieldName, value) {
+  doc.update((root) => {
+    const field = root[fieldName];
+    const text = field.getValue()
+    field.edit(0, text.length, value);
+  }, `Overwrite ${fieldName}`);
+}
 
 function displayPeers(peers, clientID) {
     peersHolder.innerHTML = JSON.stringify(peers).replace(clientID, `<b>${clientID}</b>`);
@@ -91,10 +100,21 @@ async function main() {
         });
 
         doc.update((root) => {
-            if (!root.content) {
-                root.createText('content');
+            for (const field of ['content', 'lang', 'title', 'desc']) {
+                if (!root[field]) {
+                    root.createText(field);
+                }
             }
-        }, 'create content if not exists');
+        }, 'initialize if it has not been already');
+        doc.update((root) => {
+            if (!root.lang.getValue()) {
+                root.lang.edit(0, 0, initialLang);
+                language = initialLang;
+            } else {
+                language = root.lang.getValue();
+            }
+            $('#btnLanguageGroupDrop').text(language);
+        }, 'Initialize language');
         await client.sync();
 
         // 03. create an instance of codemirror.
@@ -170,6 +190,29 @@ async function main() {
                     const actor = change.actor;
                     if (actor !== client.getID()) {
                         displayRemoteSelection(codemirror, change);
+                    }
+                }
+            }
+        });
+
+        const langField = doc.getRootObject().lang;
+        langField.onChanges(async (changes) => {
+            console.log("langField changed");
+            for (const change of changes) {
+                if (change.type === 'content') {
+                    const actor = change.actor;
+                    const from = change.from;
+                    const to = change.to;
+                    const lang = change.content || '';
+
+                    if (actor !== client.getID() && lang.length > 0) {
+                        console.log(`%c lang remote: ${from}-${to}: ${lang}`, 'color: purple');
+
+                        const mode = lang_name(lang,'mode');
+                        const button = $('#btnLanguageGroupDrop');
+                        button.text(lang);
+                        await get_mime_js(lang);
+                        codemirror.setOption('mode', mode);
                     }
                 }
             }

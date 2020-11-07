@@ -30,6 +30,6 @@ $(_=>{
         2);
     generate_dropdown_items("btnLanguageGroupDrop",
         Object.keys(lang_names),
-        "Python");
+        initialLang);
     
 });
