@@ -116,7 +116,11 @@ async function main() {
                     case 'lang':
                         elem = $('#btnLanguageGroupDrop');
                         elem.text(value);
-                        elem.parent().find(`.dropdown-menu .dropdown-item:contains("${value}")`).addClass('active');
+                        for (e of elem.parent().find(`.dropdown-menu .dropdown-item`)) {
+                            if (e.textContent === value) {
+                                e.classList.add('active');
+                            }
+                        }
                         break;
                 }
             }
