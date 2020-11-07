@@ -2,7 +2,7 @@
 generate_dropdown_items = function(id,item_list,def){
     var dropdown = $("#"+id);
     var group = document.createElement("div");
-    group.className = "dropdown-menu";
+    group.className = "dropdown-menu scrollable-menu";
     group.setAttribute("aria-labelledby",id);
 
     dropdown.parent().append(group);
