@@ -220,7 +220,6 @@ $('.nav-link').on('click', function() {
 
 let limitFunc = function () {
     if (window.innerWidth < 1000) {
-        console.log("small screen");
         $("#editor_type").removeClass("mr-2");
         $("#editor_type").addClass("mb-2");
         $("#editor_type").removeClass("btn-group");
