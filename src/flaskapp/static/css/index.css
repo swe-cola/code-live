@@ -208,16 +208,3 @@ html.light .dynamic-height .tab-content textarea{
     background-color: #fff;
     color: #000;
 }
-
-#editor_type_sm{
-    display: none;
-}
-
-@media (max-width: 800px) {
-    #editor_type {
-        display: none;
-    }
-    #editor_type_sm{
-        display: block;
-    }
-}

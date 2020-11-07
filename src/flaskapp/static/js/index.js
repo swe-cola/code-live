@@ -217,3 +217,18 @@ $('.nav-link').on('click', function() {
     currentNav = clickedNav;
     $(".tab-content").removeClass("dis_none");
 });
+
+let limitFunc = function () {
+    if (window.innerWidth < 1000) {
+        console.log("small screen");
+        $("#editor_type").removeClass("mr-2");
+        $("#editor_type").removeClass("btn-group");
+    }
+    else{
+        $("#editor_type").addClass("mr-2");
+        $("#editor_type").addClass("btn-group");
+    }
+};
+
+$(document).ready(function() { limitFunc(); });
+window.addEventListener("resize", limitFunc);

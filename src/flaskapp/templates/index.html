@@ -48,7 +48,7 @@
       <div class="tab-pane active" id="tabFile">
         <div class="btn-group btn-group-sm mr-2" role="group">
           <button id="btnLanguageGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Language: python
+            python
           </button>
           <div class="dropdown-menu" aria-labelledby="btnLanguageGroupDrop" id="dropdownLang">
             {% for lang in langs %}
@@ -72,11 +72,6 @@
             <button id="sublime" type="button" class="btn btn-secondary">sublime</button>
             <button id="vim" type="button" class="btn btn-secondary">vim</button>
             <button id="emacs" type="button" class="btn btn-secondary">emacs</button>
-          </div>
-          <div id="editor_type_sm" class="btn-group-sm" role="group" aria-label="First group">
-            <button id="sublime" type="button" class="btn btn-secondary mt-2 mb-2">sublime</button>
-            <button id="vim" type="button" class="btn btn-secondary mb-2">vim</button>
-            <button id="emacs" type="button" class="btn btn-secondary mb-4">emacs</button>
           </div>
           
           <div class="btn-group btn-group-sm mr-2" role="group">
@@ -155,7 +150,11 @@
           var dropLabel = $('#'+id);
           $(this).addClass('active');
           $(this).siblings().removeClass('active');
-          dropLabel.text(dropLabel.data('desc')+': '+$(this).text()+' ');
+
+          let section_text = dropLabel.data('desc') + ": ";
+          console.log(section_text);
+          if (section_text === 'Language: ') section_text = "";
+          dropLabel.text(section_text+$(this).text()+' ');
         });
         $('#btnFontSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
           const fontSize = parseInt($(this).text());
