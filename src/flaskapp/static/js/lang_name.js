@@ -66,9 +66,7 @@ init_lang_name = function(){
 init_lang_name();
 
 const cdn_mode_root = `https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode`;
-const initialLang = 'Python';
-let language = undefined;
-const imported = new Set( lang_name(initialLang, "mime") );
+const imported = new Set();
 
 async function get_mime_js(lang_type){
     const mime = lang_name(lang_type,'mime');

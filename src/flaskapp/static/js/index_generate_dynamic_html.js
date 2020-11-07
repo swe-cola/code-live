@@ -27,9 +27,9 @@ $(_=>{
         14);
     generate_dropdown_items("btnTabSizeGroupDrop",
         [2,4],
-        2);
+        4);
     generate_dropdown_items("btnLanguageGroupDrop",
         Object.keys(lang_names),
-        initialLang);
+    );
     
 });

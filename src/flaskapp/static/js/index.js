@@ -92,13 +92,6 @@ async function main() {
         // 02. create a document then attach it into the client.
         const doc = yorkie.createDocument(collection, documentName);
         await client.attach(doc);
-
-        client.subscribe((event) => {
-            if (event.name === 'documents-watching-peer-changed') {
-                displayPeers(event.value[doc.getKey().toIDString()], client.getID());
-            }
-        });
-
         doc.update((root) => {
             for (const field of ['content', 'lang', 'title', 'desc']) {
                 if (!root[field]) {
@@ -106,25 +99,48 @@ async function main() {
                 }
             }
         }, 'initialize if it has not been already');
+
         doc.update((root) => {
-            if (!root.lang.getValue()) {
-                root.lang.edit(0, 0, initialLang);
-                language = initialLang;
-            } else {
-                language = root.lang.getValue();
+            for (const field of ['lang']) {
+                let value;
+                if (!root[field].getValue()) {
+                    root[field].edit(0, 0, `${defaultConfig[field]}`);
+                    value = defaultConfig[field];
+                } else {
+                    value = root[field].getValue();
+                }
+                config[field] = value;
+
+                let elem;
+                switch (field) {
+                    case 'lang':
+                        elem = $('#btnLanguageGroupDrop');
+                        elem.text(value);
+                        elem.parent().find(`.dropdown-menu .dropdown-item:contains("${value}")`).addClass('active');
+                        break;
+                }
             }
-            $('#btnLanguageGroupDrop').text(language);
-        }, 'Initialize language');
+        }, 'Initialize meta fields');
+        await get_mime_js(config['lang']);
         await client.sync();
 
         // 03. create an instance of codemirror.
         const codemirror = CodeMirror.fromTextArea(placeholder, {
             lineNumbers: true,
             lineWrapping: true,
-            mode: 'python',
-            tabSize: 2,
+            mode: lang_name(config['lang'], 'mode'),
+            indentUnit: parseInt(config['tabSize']),
+            tabSize: parseInt(config['tabSize']),
             theme: "material",
-            extraKeys: {"Alt-F": "findPersistent"}
+            extraKeys: {"Alt-F": "findPersistent"},
+            indentWithTabs: true,
+        });
+        $('.CodeMirror').css('font-size', parseInt(config['fontSize']));
+
+        client.subscribe((event) => {
+            if (event.name === 'documents-watching-peer-changed') {
+                displayPeers(event.value[doc.getKey().toIDString()], client.getID());
+            }
         });
 
         codemirror.setOption('extraKeys', {

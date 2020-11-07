@@ -7,7 +7,10 @@ $(function () {
         var dropLabel = $('#'+id);
         $(this).addClass('active');
         $(this).siblings().removeClass('active');
-        dropLabel.text($(this).text());
+
+        const desc = dropLabel.data('desc');
+        const value = desc ? `${desc}: ${$(this).text()}` : $(this).text();
+        dropLabel.text(value);
     });
 
     $('#btnFontSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
