@@ -58,15 +58,3 @@ async function runScript(scriptLang, scriptContents, scriptInput){
     else
         return await runnerGetDetails(runner_session.id);
 }
-
-$(_=>{
-    $('#executeScript').on('click',async function(){
-        var lang = $('#dropdownLang .dropdown-item.active').text();
-        var scriptText = $('.CodeMirror').get(0).CodeMirror.getValue();
-        var scriptInput = $('#script-input').val();
-        $('#console').val('Executing..');
-        var run_result = await runScript(lang,scriptText,scriptInput);
-        $('#console').val(run_result.stdout + '\n' + run_result.stderr);
-    });
-
-});

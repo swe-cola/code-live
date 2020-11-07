@@ -103,6 +103,7 @@ async function main() {
       mode: 'python',
       tabSize: 2,
       theme: "material",
+      extraKeys: {"Alt-F": "findPersistent"}
     });
 
     codemirror.setOption('extraKeys', {

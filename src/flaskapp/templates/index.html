@@ -9,6 +9,8 @@
     <link rel="icon" href="/static/favicon.svg">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/material.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/solarized.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -19,6 +21,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
     <script src="https://codemirror.net/addon/comment/comment.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/clike/clike.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/dialog/dialog.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/searchcursor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/search.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/scroll/annotatescrollbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/jump-to-line.js"></script>
   </head>
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-height">
@@ -47,13 +56,8 @@
       <div class="tab-pane active" id="tabFile">
         <div class="btn-group btn-group-sm mr-2" role="group">
           <button id="btnLanguageGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Language" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Language: python
+            Language: Python
           </button>
-          <div class="dropdown-menu" aria-labelledby="btnLanguageGroupDrop" id="dropdownLang">
-            {% for lang in langs %}
-              <a class="dropdown-item{{' active' if loop.first}}" href="#">{{lang}}</a>
-            {% endfor %}
-          </div>
         </div>
         <textarea id="script-input" placeholder="standard input:"></textarea>
         <button type="button" class="btn btn-secondary" id="executeScript">Execute</button>
@@ -77,28 +81,11 @@
             <button id="btnTabSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Tab" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Tab: 2
             </button>
-            <div class="dropdown-menu" aria-labelledby="btnTabSizeGroupDrop">
-              <a class="dropdown-item" href="#">2</a>
-              <a class="dropdown-item" href="#">4</a>
-            </div>
           </div>
           <div class="btn-group btn-group-sm mr-2" role="group">
             <button id="btnFontSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Font" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Font: 14
             </button>
-            <div class="dropdown-menu" aria-labelledby="btnFontSizeGroupDrop">
-              <a class="dropdown-item" href="#">8</a>
-              <a class="dropdown-item" href="#">9</a>
-              <a class="dropdown-item" href="#">10</a>
-              <a class="dropdown-item" href="#">11</a>
-              <a class="dropdown-item" href="#">12</a>
-              <a class="dropdown-item" href="#">14</a>
-              <a class="dropdown-item" href="#">18</a>
-              <a class="dropdown-item" href="#">24</a>
-              <a class="dropdown-item" href="#">30</a>
-              <a class="dropdown-item" href="#">36</a>
-              <a class="dropdown-item" href="#">48</a>
-            </div>
           </div>
         </div>
       </div>
@@ -135,92 +122,14 @@
   <script src="static/js/yorkie.js"></script>
   <script src="static/js/util.js"></script>
   <script src="static/js/index.js"></script>
+  <script src="static/js/lang_name.js"></script>
+  <script src="static/js/index_generate_dynamic_html.js"></script>
+  <script src="static/js/index_register_element_callback.js"></script>
   <script>
     const API_URL = '{{ API_URL }}';
     const collection = '{{ document_key[0] }}';
     const documentName = '{{ document_key[1] }}';
     main();
-  </script>
-  <script>
-      $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('.btn-group .dropdown-menu .dropdown-item').on('click',function() {
-          var id = $(this).parent().attr('aria-labelledby');
-          var dropLabel = $('#'+id);
-          $(this).addClass('active');
-          $(this).siblings().removeClass('active');
-          dropLabel.text(dropLabel.data('desc')+': '+$(this).text()+' ');
-        });
-        $('#btnFontSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-          const fontSize = parseInt($(this).text());
-          $('.CodeMirror').css('font-size', fontSize);
-        });
-        $('#btnTabSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-          const tabSize = parseInt($(this).text());
-          const cm = $('.CodeMirror').get(0).CodeMirror;
-          cm.setOption('indentUnit', tabSize);
-          cm.setOption('tabSize', tabSize);
-        });
-        $('#darkModeSwitch input[type=checkbox]').on('click', function() {
-          const cm = $('.CodeMirror').get(0).CodeMirror;
-          if ($(this).prop('checked')) {
-            // Dark mode
-            cm.setOption('theme', 'material');
-          } else {
-            // Light mode
-            cm.setOption('theme', 'solarized');
-          }
-        });
-        const lang2mime = {
-          // FIXME. Keys are taken from runner.py
-          python: 'python',
-          c: 'clike',
-          cpp: 'clike',
-          'objective-c': 'clike',
-          java: 'text/x-java',
-          kotlin: 'text/x-kotlin', // TODO. test if this works
-          scala: 'text/x-scala',
-          swift: 'text/x-swift',
-          csharp: 'text/x-csharp',
-          go: 'text/x-go',
-          haskell: 'text/x-haskell',
-          erlang: 'text/x-erlang',
-          perl: 'text/x-perl',
-          python3: 'python',
-          ruby: 'text/x-ruby',
-          php: 'text/x-php',
-          bash: 'text/x-sh',
-          r: 'text/x-rsrc',
-          javascript: 'javascript',
-          coffeescript: 'text/x-coffeescript',
-          vb: 'text/vbscript',
-          // cibik: 'cibik',
-          // fsharp: 'fsharp',
-          d: 'text/x-d',
-          clojure: 'text/x-clojure',
-          // elixir: 'elixir',
-          mysql: 'text/x-mysql',
-          rust: 'test/x-rustsrc',
-          scheme: 'text/x-scheme',
-          commonlisp: 'text/x-common-lisp',
-        };
-        const imported = ['python'];
-        $('#btnLanguageGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-          const lang = $(this).text();
-          const mime = lang2mime[lang];
-          if (!imported.includes(lang)) {
-            imported.push(lang);
-            jQuery.getScript(`https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/${mime}/${mime}.js`, function(data, status) {
-              const cm = $('.CodeMirror').get(0).CodeMirror;
-              cm.setOption('mode', mime);
-            });
-          } else {
-            const cm = $('.CodeMirror').get(0).CodeMirror;
-            cm.setOption('mode', mime);
-          }
-        });
-      });
-
   </script>
   </body>
 </html>
