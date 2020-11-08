@@ -4,6 +4,7 @@ body {
     color: #fff;
     display: flex;
     flex-flow: column;
+    background-color: #343a40;
 }
 #status{
     min-width: 100px;
@@ -188,6 +189,7 @@ html.light #console, html.light .CodeMirror-gutter-filler{
 
 html.light body {
     color: #000;
+    background-color: #f8f9fa;
 }
 
 html.light .navbar {
