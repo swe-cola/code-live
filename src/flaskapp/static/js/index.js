@@ -92,6 +92,13 @@ async function main() {
         // 02. create a document then attach it into the client.
         doc = yorkie.createDocument(collection, documentName);
         await client.attach(doc);
+
+        client.subscribe((event) => {
+            if (event.name === 'documents-watching-peer-changed') {
+                displayPeers(event.value[doc.getKey().toIDString()], client.getID());
+            }
+        });
+
         doc.update((root) => {
             for (const field of ['content', 'lang', 'title', 'desc']) {
                 if (!root[field]) {
@@ -140,12 +147,6 @@ async function main() {
             indentWithTabs: true,
         });
         $('.CodeMirror').css('font-size', parseInt(config['fontSize']));
-
-        client.subscribe((event) => {
-            if (event.name === 'documents-watching-peer-changed') {
-                displayPeers(event.value[doc.getKey().toIDString()], client.getID());
-            }
-        });
 
         codemirror.setOption('extraKeys', {
             'Ctrl-/': function(cm) {
@@ -217,7 +218,6 @@ async function main() {
 
         const langField = doc.getRootObject().lang;
         langField.onChanges(async (changes) => {
-            console.log("langField changed");
             for (const change of changes) {
                 if (change.type === 'content') {
                     const actor = change.actor;
