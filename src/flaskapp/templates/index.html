@@ -81,7 +81,34 @@
         </div>
       </div>
       <div class="tab-pane" id="tabChat">
-        <div id="chat" class='bg-dark'></div>
+        <div id="chat" class="chat_wrap bg-dark">
+          <div class="header">
+            CHAT
+          </div>
+          <div id="mainChat" class="chat">
+            <ul>
+              <!-- 동적 생성 -->
+            </ul>
+          </div>
+          <div class="input-div">
+            <textarea placeholder="Press Enter to send the message."></textarea>
+          </div>
+
+          <!-- format -->
+
+          <div class="chat format">
+            <ul>
+              <li>
+                <div class="sender">
+                  <span></span>
+                </div>
+                <div class="message">
+                  <span></span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="tab-pane" id="tabAccount">
         account
@@ -290,6 +317,7 @@
 
   <!-- Custom JavaScript -->
   <script src="static/js/config.js"></script>
+  <script src="static/js/chat.js"></script>
   <script src="static/js/runner.js"></script>
   <script src="static/js/yorkie.js"></script>
   <script src="static/js/util.js"></script>
