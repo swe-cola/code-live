@@ -9,11 +9,11 @@ const peersHolder = document.getElementById('peers-holder');
 const selectionMap = new Map();
 
 function update_root(fieldName, value) {
-  doc.update((root) => {
-    const field = root[fieldName];
-    const text = field.getValue()
-    field.edit(0, text.length, value);
-  }, `Overwrite ${fieldName}`);
+    doc.update((root) => {
+        const field = root[fieldName];
+        const text = field.getValue()
+        field.edit(0, text.length, value);
+    }, `Overwrite ${fieldName}`);
 }
 
 function displayPeers(peers, clientID) {
@@ -85,12 +85,12 @@ function displayRemoteSelection(cm, change) {
 async function main() {
     try {
         // 01. create client with RPCAddr(envoy) then activate it.
-        const client = yorkie.createClient(API_URL);
+        client = yorkie.createClient(API_URL);
         client.subscribe(network.statusListener(statusHolder));
         await client.activate();
 
         // 02. create a document then attach it into the client.
-        const doc = yorkie.createDocument(collection, documentName);
+        doc = yorkie.createDocument(collection, documentName);
         await client.attach(doc);
         doc.update((root) => {
             for (const field of ['content', 'lang', 'title', 'desc']) {
@@ -230,7 +230,15 @@ async function main() {
 
                         const mode = lang_name(lang,'mode');
                         const button = $('#btnLanguageGroupDrop');
+                        const dropdown_items = button.siblings().find('.dropdown-item');
+
                         button.text(lang);
+                        dropdown_items.removeClass("active");
+                        for (e of dropdown_items) {
+                            if (e.textContent === lang) {
+                                e.classList.add('active');
+                            }
+                        }
                         await get_mime_js(lang);
                         codemirror.setOption('mode', mode);
                     }
