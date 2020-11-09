@@ -36,6 +36,13 @@ $(function () {
         }
     });
 
+    $("#sublime, #vim, #emacs").on('click', function() {
+
+        var keymap = $(this).text();
+        const cm = $('.CodeMirror').get(0).CodeMirror;
+        cm.setOption('keyMap', keymap)
+    });
+
     $('#btnLanguageGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', async function() {
 
         const lang = $(this).text();
