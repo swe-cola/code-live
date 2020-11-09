@@ -29,6 +29,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/jump-to-line.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/sublime.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/emacs.js"></script>
   </head>
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-height">
@@ -73,9 +75,9 @@
         </div>
         <div class="btn-toolbar inline-block" role="toolbar" aria-label="Toolbar with button groups">
           <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
-            <button type="button" class="btn btn-secondary">sublime</button>
-            <button type="button" class="btn btn-secondary">vim</button>
-            <button type="button" class="btn btn-secondary">emacs</button>
+            <button type="button" class="btn btn-secondary" id="keymap">sublime</button>
+            <button type="button" class="btn btn-secondary" id="keymap">vim</button>
+            <button type="button" class="btn btn-secondary" id="keymap">emacs</button>
           </div>
           
           <div class="btn-group btn-group-sm mr-2" role="group">
