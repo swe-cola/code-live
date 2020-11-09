@@ -103,16 +103,7 @@ async function main() {
       mode: 'python',
       tabSize: 2,
       theme: "material",
-      extraKeys: {"Alt-F": "findPersistent"}
-    });
-
-    codemirror.setOption('extraKeys', {
-      'Ctrl-/': function(cm) {
-        cm.toggleComment();
-      },
-      'Cmd-/': function(cm) {
-        cm.toggleComment();
-      },
+      keyMap: 'sublime'
     });
 
     // 04. bind the document with the codemirror.
