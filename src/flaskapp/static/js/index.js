@@ -29,75 +29,6 @@ function replaceRangeFix(cm, text, from, to, origin) {
     });
 }
 
-<<<<<<< HEAD
-async function main() {
-  try {
-    // 01. create client with RPCAddr(envoy) then activate it.
-    const client = yorkie.createClient(API_URL);
-    client.subscribe(network.statusListener(statusHolder));
-    await client.activate();
-
-    // 02. create a document then attach it into the client.
-    const doc = yorkie.createDocument(collection, documentName);
-    await client.attach(doc);
-
-    client.subscribe((event) => {
-      if (event.name === 'documents-watching-peer-changed') {
-        displayPeers(event.value[doc.getKey().toIDString()], client.getID());
-      }
-    });
-
-    doc.update((root) => {
-      if (!root.content) {
-        root.createText('content');
-      }
-    }, 'create content if not exists');
-    await client.sync();
-
-    // 03. create an instance of codemirror.
-    const codemirror = CodeMirror.fromTextArea(placeholder, {
-      lineNumbers: true,
-      lineWrapping: true,
-      mode: 'python',
-      tabSize: 2,
-      theme: "material",
-      keyMap: 'sublime'
-    });
-
-    // 04. bind the document with the codemirror.
-    // 04-1. codemirror to document(local).
-    codemirror.on('beforeChange', (cm, change) => {
-      if (change.origin === 'yorkie' || change.origin === 'setValue') {
-        return;
-      }
-
-      const from = cm.indexFromPos(change.from);
-      const to = cm.indexFromPos(change.to);
-      const content = change.text.join('\n');
-
-      doc.update((root) => {
-        root.content.edit(from, to, content);
-      }, `update content by ${client.getID()}`);
-
-      console.log(`%c local: ${from}-${to}: ${content}`, 'color: green');
-    });
-    codemirror.on('beforeSelectionChange', (cm, change) => {
-      // Fix concurrent issue.
-      // NOTE: The following conditional statement ignores cursor changes
-      //       that occur while applying remote changes to CodeMirror
-      //       and handles only movement by keyboard and mouse.
-      if (!change.origin) {
-        return;
-      }
-
-      const from = cm.indexFromPos(change.ranges[0].anchor);
-      const to = cm.indexFromPos(change.ranges[0].head);
-
-      doc.update((root) => {
-        root.content.updateSelection(from, to);
-      }, `update selection by ${client.getID()}`);
-    });
-=======
 function displayRemoteSelection(cm, change) {
     let color;
     if (selectionMap.has(change.actor)) {
@@ -108,7 +39,6 @@ function displayRemoteSelection(cm, change) {
         color = colors[nextColorIdx];
         nextColorIdx = (nextColorIdx + 1) % colors.length;
     }
->>>>>>> 300d7abc40eb39b16b72450eecfdcd19833f9bb9
 
     if (change.from === change.to) {
         const pos = cm.posFromIndex(change.from);

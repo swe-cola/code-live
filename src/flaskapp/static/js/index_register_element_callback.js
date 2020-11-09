@@ -36,7 +36,7 @@ $(function () {
         }
     });
 
-    $("#editor_type").on('click', function() {
+    $("#sublime, #vim, #emacs").on('click', function() {
 
         var keymap = $(this).text();
         const cm = $('.CodeMirror').get(0).CodeMirror;
