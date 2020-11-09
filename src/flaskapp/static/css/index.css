@@ -178,8 +178,19 @@ input:checked + .slider:before {
     border:none;
 }
 
+#user_profile{
+  max-width: 40px;
+  min-width: 40px;
+  margin-right: 10px;
+  border-radius: 50px;
+}
+
 .bg-lightgray{
     background-color: #D3D3D3;
+}
+
+.dis_none{
+  display: none;
 }
 
 html.light #console, html.light .CodeMirror-gutter-filler{
