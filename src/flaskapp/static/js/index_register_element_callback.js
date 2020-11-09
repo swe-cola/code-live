@@ -7,7 +7,10 @@ $(function () {
         var dropLabel = $('#'+id);
         $(this).addClass('active');
         $(this).siblings().removeClass('active');
-        dropLabel.text(dropLabel.data('desc')+': '+$(this).text()+' ');
+
+        const desc = dropLabel.data('desc');
+        const value = desc ? `${desc}: ${$(this).text()}` : $(this).text();
+        dropLabel.text(value);
     });
 
     $('#btnFontSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
@@ -51,6 +54,7 @@ $(function () {
 
         await get_mime_js(lang);
         cm.setOption('mode', mode);              
+        update_root('lang', lang);
     });
 
     $('#executeScript').on('click',async function(){
