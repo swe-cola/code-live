@@ -248,9 +248,32 @@ async function main() {
 
         // 05. set initial value.
         codemirror.setValue(text.getValue());
+
+        // 06. setup auto-completion.
+        function merged_hint(cm, options) {
+        var words = cm.getHelper(cm.getCursor(),"hintWords");
+        var result_hint = CodeMirror.hint.anyword(cm, options); // hint based on current snippet contents
+        var lang_hint = CodeMirror.hint.fromList(cm, {words: words}); // mode dependent hint. Return undefined on no candidates.
+        if(lang_hint!=undefined){
+            var unique_items = new Set([ ...result_hint.list , ...lang_hint.list ]);
+            result_hint.list = [...unique_items]; // merge two hints
+        }
+           return result_hint;
+        };
+        codemirror.setOption("hintOptions",{hint: merged_hint});
+
+        var autocompletion_keycodes = new Set([32,190]); //period(.), spacebar
+        codemirror.on("keyup", function(cm, ev) {
+        if ( autocompletion_keycodes.has(ev.which | ev.keyCode))
+            cm.showHint();
+        });
+
     } catch (e) {
         console.error(e);
     }
+    
+
+  
 }
 
 function colortheme(element){
