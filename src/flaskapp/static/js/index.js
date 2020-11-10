@@ -1,11 +1,20 @@
 const colors = ['#FECEEA', '#FEF1D2', '#A9FDD8', '#D7F8FF', '#CEC5FA'];
 let nextColorIdx = 0;
 let currentNav = "";
+let client, doc;
 
 const statusHolder = document.getElementById('network-status');
 const placeholder = document.getElementById('placeholder');
 const peersHolder = document.getElementById('peers-holder');
 const selectionMap = new Map();
+
+function update_root(fieldName, value) {
+    doc.update((root) => {
+        const field = root[fieldName];
+        const text = field.getValue()
+        field.edit(0, text.length, value);
+    }, `Overwrite ${fieldName}`);
+}
 
 function displayPeers(peers, clientID) {
     peersHolder.innerHTML = JSON.stringify(peers).replace(clientID, `<b>${clientID}</b>`);
@@ -76,12 +85,12 @@ function displayRemoteSelection(cm, change) {
 async function main() {
     try {
         // 01. create client with RPCAddr(envoy) then activate it.
-        const client = yorkie.createClient(API_URL);
+        client = yorkie.createClient(API_URL);
         client.subscribe(network.statusListener(statusHolder));
         await client.activate();
 
         // 02. create a document then attach it into the client.
-        const doc = yorkie.createDocument(collection, documentName);
+        doc = yorkie.createDocument(collection, documentName);
         await client.attach(doc);
 
         client.subscribe((event) => {
@@ -91,21 +100,53 @@ async function main() {
         });
 
         doc.update((root) => {
-            if (!root.content) {
-                root.createText('content');
+            for (const field of ['content', 'lang', 'title', 'desc']) {
+                if (!root[field]) {
+                    root.createText(field);
+                }
             }
-        }, 'create content if not exists');
+        }, 'initialize if it has not been already');
+
+        doc.update((root) => {
+            for (const field of ['lang']) {
+                let value;
+                if (!root[field].getValue()) {
+                    root[field].edit(0, 0, `${defaultConfig[field]}`);
+                    value = defaultConfig[field];
+                } else {
+                    value = root[field].getValue();
+                }
+                config[field] = value;
+
+                let elem;
+                switch (field) {
+                    case 'lang':
+                        elem = $('#btnLanguageGroupDrop');
+                        elem.text(value);
+                        for (e of elem.parent().find(`.dropdown-menu .dropdown-item`)) {
+                            if (e.textContent === value) {
+                                e.classList.add('active');
+                            }
+                        }
+                        break;
+                }
+            }
+        }, 'Initialize meta fields');
+        await get_mime_js(config['lang']);
         await client.sync();
 
         // 03. create an instance of codemirror.
         const codemirror = CodeMirror.fromTextArea(placeholder, {
             lineNumbers: true,
             lineWrapping: true,
-            mode: 'python',
-            tabSize: 2,
+            mode: lang_name(config['lang'], 'mode'),
+            indentUnit: parseInt(config['tabSize']),
+            tabSize: parseInt(config['tabSize']),
             theme: "material",
-            extraKeys: {"Alt-F": "findPersistent"}
+            extraKeys: {"Alt-F": "findPersistent"},
+            indentWithTabs: true,
         });
+        $('.CodeMirror').css('font-size', parseInt(config['fontSize']));
 
         codemirror.setOption('extraKeys', {
             'Ctrl-/': function(cm) {
@@ -170,6 +211,36 @@ async function main() {
                     const actor = change.actor;
                     if (actor !== client.getID()) {
                         displayRemoteSelection(codemirror, change);
+                    }
+                }
+            }
+        });
+
+        const langField = doc.getRootObject().lang;
+        langField.onChanges(async (changes) => {
+            for (const change of changes) {
+                if (change.type === 'content') {
+                    const actor = change.actor;
+                    const from = change.from;
+                    const to = change.to;
+                    const lang = change.content || '';
+
+                    if (actor !== client.getID() && lang.length > 0) {
+                        console.log(`%c lang remote: ${from}-${to}: ${lang}`, 'color: purple');
+
+                        const mode = lang_name(lang,'mode');
+                        const button = $('#btnLanguageGroupDrop');
+                        const dropdown_items = button.siblings().find('.dropdown-item');
+
+                        button.text(lang);
+                        dropdown_items.removeClass("active");
+                        for (e of dropdown_items) {
+                            if (e.textContent === lang) {
+                                e.classList.add('active');
+                            }
+                        }
+                        await get_mime_js(lang);
+                        codemirror.setOption('mode', mode);
                     }
                 }
             }

@@ -18,7 +18,7 @@ generate_dropdown_items = function(id,item_list,def){
 
         group.appendChild(child);
     }
-}
+};
 
 $(_=>{
     generate_dropdown_items("btnFontSizeGroupDrop",
@@ -30,5 +30,4 @@ $(_=>{
     generate_dropdown_items("btnLanguageGroupDrop",
         Object.keys(lang_names),
     );
-
 });
