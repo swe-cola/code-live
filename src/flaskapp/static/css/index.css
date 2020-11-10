@@ -221,9 +221,3 @@ html.light .dynamic-height .tab-content textarea{
     background-color: #fff;
     color: #000;
 }
-
-.scrollable-menu {
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
-}

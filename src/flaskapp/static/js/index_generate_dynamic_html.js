@@ -2,7 +2,7 @@
 generate_dropdown_items = function(id,item_list,def){
     var dropdown = $("#"+id);
     var group = document.createElement("div");
-    group.className = "dropdown-menu scrollable-menu";
+    group.className = "dropdown-menu";
     group.setAttribute("aria-labelledby",id);
 
     dropdown.parent().append(group);
@@ -27,9 +27,9 @@ $(_=>{
         14);
     generate_dropdown_items("btnTabSizeGroupDrop",
         [2,4],
-        4);
+        2);
     generate_dropdown_items("btnLanguageGroupDrop",
         Object.keys(lang_names),
-    );
+        "Python");
     
 });

@@ -7,10 +7,7 @@ $(function () {
         var dropLabel = $('#'+id);
         $(this).addClass('active');
         $(this).siblings().removeClass('active');
-
-        const desc = dropLabel.data('desc');
-        const value = desc ? `${desc}: ${$(this).text()}` : $(this).text();
-        dropLabel.text(value);
+        dropLabel.text(dropLabel.data('desc')+': '+$(this).text()+' ');
     });
 
     $('#btnFontSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
@@ -39,13 +36,6 @@ $(function () {
         }
     });
 
-    $("#sublime, #vim, #emacs").on('click', function() {
-
-        var keymap = $(this).text();
-        const cm = $('.CodeMirror').get(0).CodeMirror;
-        cm.setOption('keyMap', keymap)
-    });
-
     $('#btnLanguageGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', async function() {
 
         const lang = $(this).text();
@@ -54,7 +44,6 @@ $(function () {
 
         await get_mime_js(lang);
         cm.setOption('mode', mode);              
-        update_root('lang', lang);
     });
 
     $('#executeScript').on('click',async function(){

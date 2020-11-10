@@ -35,28 +35,16 @@ $('#login_btn').on('click', function(){
 $('#logout_btn').on('click', function() {
     $("#user_profile").addClass("dis_none");
     document.getElementById( "user_profile" ).src = "";
-    console.log(sessionStorage.length);
+
     sessionStorage.removeItem("nickname");
     sessionStorage.removeItem("email");
     sessionStorage.removeItem("thumbnail");
-    console.log(sessionStorage.length);
+
     $("#login_btn").removeClass("dis_none");
     $("#logout_btn").addClass("dis_none");
 
     Kakao.Auth.logout();
 });
-
-//     $("#login_btn").removeClass("dis_none");
-//     $("#logout_btn").addClass("dis_none");
-//
-//     if (!Kakao.Auth.getAccessToken()) {
-//       console.log('Not logged in.');
-//       return;
-//     }
-//     Kakao.Auth.logout(function() {
-//       console.log(Kakao.Auth.getAccessToken());
-//     });
-// });
 
 $( document ).ready(function() {
     let email=null, nickname=null, thumbnail=null;
