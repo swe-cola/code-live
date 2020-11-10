@@ -251,7 +251,6 @@ async function main() {
 
         // 06. setup auto-completion.
         function merged_hint(cm, options) {
-            //var words = cm.getHelper(cm.getCursor(),"hintWords");
             var result_hint = CodeMirror.hint.anyword(cm, options); // hint based on current snippet contents
             var resolved_hint = CodeMirror.hint.auto.resolve(cm,cm.getCursor());
             var lang_hint;// mode dependent hint. Return undefined on no candidates.
