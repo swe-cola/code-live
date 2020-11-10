@@ -7,7 +7,10 @@ $(function () {
         var dropLabel = $('#'+id);
         $(this).addClass('active');
         $(this).siblings().removeClass('active');
-        dropLabel.text(dropLabel.data('desc')+': '+$(this).text()+' ');
+
+        const desc = dropLabel.data('desc');
+        const value = desc ? `${desc}: ${$(this).text()}` : $(this).text();
+        dropLabel.text(value);
     });
 
     $('#btnFontSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
@@ -17,15 +20,15 @@ $(function () {
     });
 
     $('#btnTabSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-    
+
         const tabSize = parseInt($(this).text());
         const cm = $('.CodeMirror')[0].CodeMirror;
         cm.setOption('indentUnit', tabSize);
         cm.setOption('tabSize', tabSize);
     });
-    
+
     $('#darkModeSwitch input[type=checkbox]').on('click', function() {
-    
+
         const cm = $('.CodeMirror')[0].CodeMirror;
         if ($(this).prop('checked')) {
         // Dark mode
@@ -36,6 +39,13 @@ $(function () {
         }
     });
 
+    $("#sublime, #vim, #emacs").on('click', function() {
+
+        var keymap = $(this).text();
+        const cm = $('.CodeMirror').get(0).CodeMirror;
+        cm.setOption('keyMap', keymap)
+    });
+
     $('#btnLanguageGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', async function() {
 
         const lang = $(this).text();
@@ -43,7 +53,8 @@ $(function () {
         const mode = lang_name(lang,'mode');
 
         await get_mime_js(lang);
-        cm.setOption('mode', mode);              
+        cm.setOption('mode', mode);
+        update_root('lang', lang);
     });
 
     $('#executeScript').on('click',async function(){
