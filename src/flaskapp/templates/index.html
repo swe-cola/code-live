@@ -31,7 +31,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/sublime.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/emacs.js"></script>
-  </head>
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-height">
     <a class="navbar-brand" href="#"><i class="fas fa-code"></i>&nbsp; CodeLive</a>
@@ -42,7 +43,11 @@
         </li>
       </ul>
     </div>
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+    <div>
+        <img class="dis_none" id="user_profile">
+    </div>
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" id="login_btn">Login</button>
+    <button class="btn btn-outline-primary my-2 my-sm-0 dis_none" type="submit" id="logout_btn">Log Out</button>
   </nav>
   <div class='container-fluid fixed-height'>
     <div class='row bg-dark vertical-center'>
@@ -129,6 +134,7 @@
   <script src="static/js/lang_name.js"></script>
   <script src="static/js/index_generate_dynamic_html.js"></script>
   <script src="static/js/index_register_element_callback.js"></script>
+  <script src="/static/js/login.js"></script>
   <script>
     const API_URL = '{{ API_URL }}';
     const collection = '{{ document_key[0] }}';

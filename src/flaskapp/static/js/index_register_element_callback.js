@@ -20,15 +20,15 @@ $(function () {
     });
 
     $('#btnTabSizeGroupDrop').parent().find('.dropdown-menu .dropdown-item').on('click', function() {
-    
+
         const tabSize = parseInt($(this).text());
         const cm = $('.CodeMirror')[0].CodeMirror;
         cm.setOption('indentUnit', tabSize);
         cm.setOption('tabSize', tabSize);
     });
-    
+
     $('#darkModeSwitch input[type=checkbox]').on('click', function() {
-    
+
         const cm = $('.CodeMirror')[0].CodeMirror;
         if ($(this).prop('checked')) {
         // Dark mode
@@ -53,7 +53,7 @@ $(function () {
         const mode = lang_name(lang,'mode');
 
         await get_mime_js(lang);
-        cm.setOption('mode', mode);              
+        cm.setOption('mode', mode);
         update_root('lang', lang);
     });
 
