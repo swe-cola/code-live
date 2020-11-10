@@ -7,6 +7,7 @@ from flask import (
     request,
     send_from_directory,
     url_for,
+    session
 )
 
 CODE_LIVE_COOKIE = 'code-live'
@@ -14,6 +15,7 @@ CODE_LIVE_COOKIE = 'code-live'
 
 @app.route('/')
 def route_index():
+    print(session)
     # Cookie is used to identify a user
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
     new_cookie = False
