@@ -307,7 +307,7 @@ a:hover {
 }
 
 .chat-wrap .chat {
-    padding-bottom: 80px;
+    padding-bottom: 0px;
     height: calc(100% - 160px);
     overflow: scroll;
 }
