@@ -11,6 +11,8 @@ app.config['MONGODB_SETTINGS'] = {
     'host': os.environ['MONGO_USER_HOST'],
     'port': int(os.environ['MONGO_USER_PORT']),
 }
+app.secret_key = os.urandom(24)
+
 db = MongoEngine(app)
 
 from flaskapp import views
