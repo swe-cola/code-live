@@ -64,7 +64,7 @@ function loginUser(nickname, email, thumbnail){
     // save infos in flask session
     $.ajax({
         type: "POST",
-        url: "/save_user_info",
+        url: "/api/save_user_info",
         data: { nickname: nickname, email: email, thumbnail:thumbnail }
     }).done(function( msg ) {
           // 로그인 완료
@@ -81,7 +81,7 @@ function logoutUser(){
     // delete infos in flask session
     $.ajax({
         type: "POST",
-        url: "/delete_user_info",
+        url: "/api/delete_user_info",
     }).done(function( msg ) {
           // 로그아웃 완료
     });

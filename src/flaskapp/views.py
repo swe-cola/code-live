@@ -79,7 +79,7 @@ def favicon():
 
 # --- ajax api ---
 
-@app.route('/save_user_info', methods=["POST"])
+@app.route('/api/save_user_info', methods=["POST"])
 def route_save_user_info():
     data = request.form.to_dict()
     info_keys = ['nickname', 'email', 'thumbnail']
@@ -94,7 +94,7 @@ def route_save_user_info():
     return "success"
 
 
-@app.route('/delete_user_info', methods=["POST"])
+@app.route('/api/delete_user_info', methods=["POST"])
 def route_delete_user_info():
     info_keys = ['nickname', 'email', 'thumbnail']
     session_keys = list(session.keys())
@@ -107,7 +107,7 @@ def route_delete_user_info():
 
 
 @app.route('/api/nickname', methods=["POST"])
-def route_delete_user_info():
+def route_generate_nickname():
     adjectives = ['adorable', 'ambitious', 'angry', 'attractive', 'beautiful', 'big', 'bored', 'brave', 'calm',
                   'chubby', 'clean', 'dazzling', 'delightful', 'elegant', 'fancy', 'friendly', 'gentle', 'glamorous',
                   'gorgeous', 'handsome', 'happy', 'lazy', 'muscular', 'mysterious', 'nervous', 'nice', 'polite',
