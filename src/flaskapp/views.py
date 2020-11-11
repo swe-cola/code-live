@@ -77,7 +77,7 @@ def favicon():
     return send_from_directory(dirname, 'favicon.ico')
 
 
-# --- ajax ---
+# --- ajax api ---
 
 @app.route('/save_user_info', methods=["POST"])
 def route_save_user_info():
@@ -104,3 +104,36 @@ def route_delete_user_info():
             session.pop(session_key)
 
     return "success"
+
+
+@app.route('/api/nickname', methods=["POST"])
+def route_delete_user_info():
+    adjectives = ['adorable', 'ambitious', 'angry', 'attractive', 'beautiful', 'big', 'bored', 'brave', 'calm',
+                  'chubby', 'clean', 'dazzling', 'delightful', 'elegant', 'fancy', 'friendly', 'gentle', 'glamorous',
+                  'gorgeous', 'handsome', 'happy', 'lazy', 'muscular', 'mysterious', 'nervous', 'nice', 'polite',
+                  'scary', 'small', 'worried']
+
+    animals = [
+        'Alligator', 'Anteater', 'Armadillo', 'Auroch', 'Axolotl', 'Badger', 'Bat', 'Bear', 'Beaver',
+        'Blobfish', 'Buffalo', 'Camel', 'Chameleon', 'Cheetah', 'Chipmunk', 'Chinchilla', 'Chupacabra',
+        'Cormorant', 'Coyote', 'Crow', 'Dingo', 'Dinosaur', 'Dog', 'Dolphin', 'Dragon',
+        'Duck', 'Dumbo octopus', 'Elephant', 'Ferret', 'Fox', 'Frog', 'Giraffe', 'Goose',
+        'Gopher', 'Grizzly', 'Hamster', 'Hedgehog', 'Hippo', 'Hyena', 'Jackal', 'Jackalope',
+        'Ibex', 'Ifrit', 'Iguana', 'Kangaroo', 'Kiwi', 'Koala', 'Kraken', 'Lemur',
+        'Leopard', 'Liger', 'Lion', 'Llama', 'Manatee', 'Mink', 'Monkey', 'Moose',
+        'Narwhal', 'Nyan cat', 'Orangutan', 'Otter', 'Panda', 'Penguin', 'Platypus', 'Python',
+        'Pumpkin', 'Quagga', 'Quokka', 'Rabbit', 'Raccoon', 'Rhino', 'Sheep', 'Shrew',
+        'Skunk', 'Slow loris', 'Squirrel', 'Tiger', 'Turtle', 'Unicorn', 'Walrus', 'Wolf',
+        'Wolverine', 'Wombat'
+    ]
+
+    data = request.form.to_dict()
+    docid = data["docID"]
+    clientid = data["clientID"]
+
+    key = (docid, clientid)
+    length = len(docid) + len(clientid)
+    adjective = hash(key) % len(adjectives)
+    animal = hash(key) % len(animals)
+
+    return adjective + animal
