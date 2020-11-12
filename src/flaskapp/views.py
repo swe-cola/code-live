@@ -108,10 +108,10 @@ def route_delete_user_info():
 
 @app.route('/api/nickname', methods=["POST"])
 def route_generate_nickname():
-    adjectives = ['adorable', 'ambitious', 'angry', 'attractive', 'beautiful', 'big', 'bored', 'brave', 'calm',
-                  'chubby', 'clean', 'dazzling', 'delightful', 'elegant', 'fancy', 'friendly', 'gentle', 'glamorous',
-                  'gorgeous', 'handsome', 'happy', 'lazy', 'muscular', 'mysterious', 'nervous', 'nice', 'polite',
-                  'scary', 'small', 'worried']
+    adjectives = ['Adorable', 'Ambitious', 'Angry', 'Attractive', 'Beautiful', 'Big', 'Bored', 'Brave', 'Calm',
+                  'Chubby', 'Clean', 'Dazzling', 'Delightful', 'Elegant', 'Fancy', 'Friendly', 'Gentle', 'Glamorous',
+                  'Gorgeous', 'Handsome', 'Happy', 'Lazy', 'Muscular', 'Mysterious', 'Nervous', 'Nice', 'Polite',
+                  'Scary', 'Small', 'Worried']
 
     animals = [
         'Alligator', 'Anteater', 'Armadillo', 'Auroch', 'Axolotl', 'Badger', 'Bat', 'Bear', 'Beaver',
@@ -132,8 +132,7 @@ def route_generate_nickname():
     clientid = data["clientID"]
 
     key = (docid, clientid)
-    length = len(docid) + len(clientid)
-    adjective = hash(key) % len(adjectives)
-    animal = hash(key) % len(animals)
+    adjective = adjectives[hash(key) % len(adjectives)]
+    animal = animals[hash(key) % len(animals)]
 
-    return adjective + animal
+    return adjective + " " + animal
