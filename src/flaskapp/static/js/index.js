@@ -249,9 +249,47 @@ async function main() {
 
         // 05. set initial value.
         codemirror.setValue(text.getValue());
+
+        // 06. setup auto-completion.
+        function merged_hint(cm, options) {
+            var result_hint = CodeMirror.hint.anyword(cm, options); // hint based on current snippet contents
+            var resolved_hint = CodeMirror.hint.auto.resolve(cm,cm.getCursor());
+            var lang_hint;// mode dependent hint. Return undefined on no candidates.
+            if(resolved_hint.async)
+                resolved_hint(cm,function(r){lang_hint=r;},options);
+            else
+                lang_hint = resolved_hint(cm,options);
+
+            if(lang_hint){
+                var unique_items = new Set([ ...result_hint.list , ...lang_hint.list ]);
+                result_hint.list = [...unique_items]; // merge two hints
+            }
+            return result_hint;
+        };
+        codemirror.setOption("hintOptions",{hint: merged_hint, completeSingle: false});
+
+        var autocompletion_keycodes = new Set([32,188,190]); //period(.), comma, spacebar
+        codemirror.on("keydown", function(cm, ev) {
+            var cur = cm.getDoc().getCursor();
+            var token = cm.getTokenAt(cur);
+            var key = ev.key.length==1 ? ev.key : "";
+
+            if ( token.type==null && ('A'<=key && key<='Z' || 'a'<=key && key<='z')) {
+                cm.showHint();
+            }
+        });
+        codemirror.on("keyup", function(cm, ev) {
+            if ( autocompletion_keycodes.has(ev.which | ev.keyCode)) {
+                cm.showHint();
+            }
+        });
+
     } catch (e) {
         console.error(e);
     }
+    
+
+  
 }
 
 function colortheme(element){
