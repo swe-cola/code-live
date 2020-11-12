@@ -145,6 +145,7 @@ async function main() {
             theme: "material",
             extraKeys: {"Alt-F": "findPersistent"},
             indentWithTabs: true,
+            autoCloseBrackets: true
         });
         $('.CodeMirror').css('font-size', parseInt(config['fontSize']));
 
