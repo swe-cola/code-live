@@ -5,3 +5,4 @@ class User(me.Document):
     documents = me.ListField()
     maxDocuments = me.IntField(default=10)
     nickname = me.StringField()
+    kakaoid = me.StringField()

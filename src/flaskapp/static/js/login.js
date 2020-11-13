@@ -22,11 +22,13 @@ $('#login_btn').on('click', function(){
                     loginUser(nickname, email, thumbnail);
                 },
                 fail: function(error) {
+                    alert("오류가 발생했습니다.");
                     console.log(error);
                 }
             });
         },
         fail: function(error) {
+            alert("오류가 발생했습니다.");
             console.log(error);
         }
     });
