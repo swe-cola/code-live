@@ -14,6 +14,7 @@ def seconds_till_next_hour():
     delta = target - now
     return delta.seconds
 
+
 def remove_inactive_documents(client):
     '''Naive garbage collection implementation.
     This cleans all documents that have been inactive
@@ -44,6 +45,7 @@ def remove_inactive_documents(client):
         print(f'  Deleted {x.deleted_count} syncedseqs from the yorkie-meta database')
     x = ym.documents.delete_many({'updated_at': {'$lt': criteria}})
     print(f'Deleted {x.deleted_count} documents from the yorkie-meta database')
+
 
 def gc_inactive_documents():
     client = MongoClient(
