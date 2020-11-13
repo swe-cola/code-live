@@ -83,5 +83,3 @@ async function get_mime_js(lang_type){
         imported.add(mime[i]);
     }
 }
-
-
