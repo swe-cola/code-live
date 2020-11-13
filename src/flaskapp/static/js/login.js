@@ -15,9 +15,9 @@ $('#login_btn').on('click', function(){
                     let nickname = profile["profile"]["nickname"];
                     let thumbnail = profile["profile"]["thumbnail_image_url"];
 
-                    sessionStorage.setItem("nickname", nickname);
-                    sessionStorage.setItem("email", email);
-                    sessionStorage.setItem("thumbnail", thumbnail);
+                    localStorage.setItem("nickname", nickname);
+                    localStorage.setItem("email", email);
+                    localStorage.setItem("thumbnail", thumbnail);
 
                     loginUser(nickname, email, thumbnail);
                 },
@@ -33,9 +33,7 @@ $('#login_btn').on('click', function(){
 });
 
 $('#logout_btn').on('click', function() {
-    sessionStorage.removeItem("nickname");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("thumbnail");
+    localStorage.clear();
 
     Kakao.Auth.logout();
     logoutUser();
@@ -43,11 +41,12 @@ $('#logout_btn').on('click', function() {
 
 $( document ).ready(function() {
     let email=null, nickname=null, thumbnail=null;
-    for(let i=0; i<sessionStorage.length; i++){
-        let key = sessionStorage.key(i);
-        if(key=="email") email = sessionStorage.getItem(key);
-        else if(key=="nickname") nickname = sessionStorage.getItem(key);
-        else if(key=="thumbnail") thumbnail = sessionStorage.getItem(key);
+
+    for(let i=0; i<localStorage.length; i++){
+        let key = localStorage.key(i);
+        if(key=="email") email = localStorage.getItem(key);
+        else if(key=="nickname") nickname = localStorage.getItem(key);
+        else if(key=="thumbnail") thumbnail = localStorage.getItem(key);
     }
     if(email !== null){
         loginUser(email, nickname, thumbnail);
