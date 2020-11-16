@@ -7,6 +7,7 @@ from flask import (
     request,
     send_from_directory,
     url_for,
+    session
 )
 
 CODE_LIVE_COOKIE = 'code-live'
@@ -55,3 +56,60 @@ def route_document(document_id):
 def favicon():
     dirname = os.path.join(app.root_path, 'static')
     return send_from_directory(dirname, 'favicon.ico')
+
+
+# --- ajax api ---
+
+@app.route('/api/save_user_info', methods=["POST"])
+def route_save_user_info():
+    data = request.form.to_dict()
+    info_keys = ['nickname', 'email', 'thumbnail']
+
+    for key in info_keys:
+        session[key] = data[key]
+
+    return "success"
+
+
+@app.route('/api/delete_user_info', methods=["POST"])
+def route_delete_user_info():
+    info_keys = ['nickname', 'email', 'thumbnail']
+    session_keys = list(session.keys())
+
+    for session_key in session_keys:
+        if session_key in info_keys:
+            session.pop(session_key)
+
+    return "success"
+
+
+@app.route('/api/nickname', methods=["POST"])
+def route_generate_nickname():
+    adjectives = ['Adorable', 'Ambitious', 'Angry', 'Attractive', 'Beautiful', 'Big', 'Bored', 'Brave', 'Calm',
+                  'Chubby', 'Clean', 'Dazzling', 'Delightful', 'Elegant', 'Fancy', 'Friendly', 'Gentle', 'Glamorous',
+                  'Gorgeous', 'Handsome', 'Happy', 'Lazy', 'Muscular', 'Mysterious', 'Nervous', 'Nice', 'Polite',
+                  'Scary', 'Small', 'Worried']
+
+    animals = [
+        'Alligator', 'Anteater', 'Armadillo', 'Auroch', 'Axolotl', 'Badger', 'Bat', 'Bear', 'Beaver',
+        'Blobfish', 'Buffalo', 'Camel', 'Chameleon', 'Cheetah', 'Chipmunk', 'Chinchilla', 'Chupacabra',
+        'Cormorant', 'Coyote', 'Crow', 'Dingo', 'Dinosaur', 'Dog', 'Dolphin', 'Dragon',
+        'Duck', 'Dumbo octopus', 'Elephant', 'Ferret', 'Fox', 'Frog', 'Giraffe', 'Goose',
+        'Gopher', 'Grizzly', 'Hamster', 'Hedgehog', 'Hippo', 'Hyena', 'Jackal', 'Jackalope',
+        'Ibex', 'Ifrit', 'Iguana', 'Kangaroo', 'Kiwi', 'Koala', 'Kraken', 'Lemur',
+        'Leopard', 'Liger', 'Lion', 'Llama', 'Manatee', 'Mink', 'Monkey', 'Moose',
+        'Narwhal', 'Nyan cat', 'Orangutan', 'Otter', 'Panda', 'Penguin', 'Platypus', 'Python',
+        'Pumpkin', 'Quagga', 'Quokka', 'Rabbit', 'Raccoon', 'Rhino', 'Sheep', 'Shrew',
+        'Skunk', 'Slow loris', 'Squirrel', 'Tiger', 'Turtle', 'Unicorn', 'Walrus', 'Wolf',
+        'Wolverine', 'Wombat'
+    ]
+
+    data = request.form.to_dict()
+    docid = data["docID"]
+    clientid = data["clientID"]
+
+    key = (docid, clientid)
+    adjective = adjectives[hash(key) % len(adjectives)]
+    animal = animals[hash(key) % len(animals)]
+
+    return adjective + " " + animal

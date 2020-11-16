@@ -33,28 +33,20 @@ $('#login_btn').on('click', function(){
 });
 
 $('#logout_btn').on('click', function() {
-    $("#user_profile").addClass("dis_none");
-    document.getElementById( "user_profile" ).src = "";
-
     sessionStorage.removeItem("nickname");
     sessionStorage.removeItem("email");
     sessionStorage.removeItem("thumbnail");
 
-    $("#login_btn").removeClass("dis_none");
-    $("#logout_btn").addClass("dis_none");
-
     Kakao.Auth.logout();
+    logoutUser();
 });
 
 $( document ).ready(function() {
-    let email=null, nickname=null, thumbnail=null;
-    for(let i=0; i<sessionStorage.length; i++){
-        let key = sessionStorage.key(i);
-        if(key=="email") email = sessionStorage.getItem(key);
-        else if(key=="nickname") nicknamenickname = sessionStorage.getItem(key);
-        else if(key=="thumbnail") thumbnail = sessionStorage.getItem(key);
-    }
-    if(email !== null){
+    const email = sessionStorage.getItem('email');
+    const nickname = sessionStorage.getItem('nickname');
+    const thumbnail = sessionStorage.getItem('thumbnail');
+
+    if (email) {
         loginUser(email, nickname, thumbnail);
     }
 });
@@ -65,4 +57,29 @@ function loginUser(nickname, email, thumbnail){
     $("#user_profile").removeClass("dis_none");
     $("#login_btn").addClass("dis_none");
     $("#logout_btn").removeClass("dis_none");
+
+    // save infos in flask session
+    $.ajax({
+        type: "POST",
+        url: "/api/save_user_info",
+        data: { nickname: nickname, email: email, thumbnail:thumbnail }
+    }).done(function( msg ) {
+          // 로그인 완료
+    });
+}
+
+function logoutUser(){
+    $("#user_profile").addClass("dis_none");
+    document.getElementById( "user_profile" ).src = "";
+
+    $("#login_btn").removeClass("dis_none");
+    $("#logout_btn").addClass("dis_none");
+
+    // delete infos in flask session
+    $.ajax({
+        type: "POST",
+        url: "/api/delete_user_info",
+    }).done(function( msg ) {
+          // 로그아웃 완료
+    });
 }
