@@ -227,3 +227,70 @@ html.light .dynamic-height .tab-content textarea{
     max-height: 200px;
     overflow-x: hidden;
 }
+
+.modal-button{
+    background-color: #343a40;
+    width: 3rem;
+    height: 3rem;
+    color: white;
+    border: 0;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
+
+.modal-content{
+    margin-left: -30%;
+    width: 800px;
+}
+
+fieldset {
+    display: none;
+}
+
+fieldset.show {
+    display: block;
+}
+
+select:focus, input:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0 !important;
+    font-weight: 400
+}
+
+.tabs {
+    margin: 2px 5px 0px 5px;
+    padding-bottom: 10px;
+    cursor: pointer
+}
+
+.tabs:hover, .tabs.active {
+    border-bottom: 1px solid black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.modal-backdrop {
+    background-color: rgba(0,0,0,0.5)
+}
+
+.line {
+    background-color: #CFD8DC;
+    height: 1px;
+    width: 100%
+}
+
+.modal-header, .modal-body{
+    color: black;
+}
+
+@media screen and (max-width: 768px) {
+    .tabs h6 {
+        font-size: 12px
+    }
+}

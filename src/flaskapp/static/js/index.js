@@ -82,6 +82,39 @@ function displayRemoteSelection(cm, change) {
     }
 }
 
+$(document).ready(function(){
+
+    $(".tabs").click(function(){
+    
+        $(".tabs").removeClass("active");
+        $(".tabs h6").removeClass("font-weight-bold");
+        $(".tabs h6").addClass("text-muted");
+        $(this).children("h6").removeClass("text-muted");
+        $(this).children("h6").addClass("font-weight-bold");
+        $(this).addClass("active");
+    
+        current_fs = $(".active");
+    
+        next_fs = $(this).attr('id');
+        next_fs = "#" + next_fs + "1";
+    
+        $("fieldset").removeClass("show");
+        $(next_fs).addClass("show");
+    
+        current_fs.animate({}, {
+            step: function() {
+                current_fs.css({
+                    'display': 'none',
+                    'position': 'relative'
+                });
+                next_fs.css({
+                'display': 'block'
+                });
+            }
+        });
+    });
+});
+
 async function main() {
     try {
         // 01. create client with RPCAddr(envoy) then activate it.
@@ -145,6 +178,7 @@ async function main() {
             theme: "material",
             extraKeys: {"Alt-F": "findPersistent"},
             indentWithTabs: true,
+            autoCloseBrackets: true
         });
         $('.CodeMirror').css('font-size', parseInt(config['fontSize']));
 
@@ -248,9 +282,47 @@ async function main() {
 
         // 05. set initial value.
         codemirror.setValue(text.getValue());
+
+        // 06. setup auto-completion.
+        function merged_hint(cm, options) {
+            var result_hint = CodeMirror.hint.anyword(cm, options); // hint based on current snippet contents
+            var resolved_hint = CodeMirror.hint.auto.resolve(cm,cm.getCursor());
+            var lang_hint;// mode dependent hint. Return undefined on no candidates.
+            if(resolved_hint.async)
+                resolved_hint(cm,function(r){lang_hint=r;},options);
+            else
+                lang_hint = resolved_hint(cm,options);
+
+            if(lang_hint){
+                var unique_items = new Set([ ...result_hint.list , ...lang_hint.list ]);
+                result_hint.list = [...unique_items]; // merge two hints
+            }
+            return result_hint;
+        };
+        codemirror.setOption("hintOptions",{hint: merged_hint, completeSingle: false});
+
+        var autocompletion_keycodes = new Set([32,188,190]); //period(.), comma, spacebar
+        codemirror.on("keydown", function(cm, ev) {
+            var cur = cm.getDoc().getCursor();
+            var token = cm.getTokenAt(cur);
+            var key = ev.key.length==1 ? ev.key : "";
+
+            if ( token.type==null && ('A'<=key && key<='Z' || 'a'<=key && key<='z')) {
+                cm.showHint();
+            }
+        });
+        codemirror.on("keyup", function(cm, ev) {
+            if ( autocompletion_keycodes.has(ev.which | ev.keyCode)) {
+                cm.showHint();
+            }
+        });
+
     } catch (e) {
         console.error(e);
     }
+    
+
+  
 }
 
 function colortheme(element){

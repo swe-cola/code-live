@@ -67,7 +67,7 @@ $(function () {
 
         var run_result = await runScript(lang,scriptText,scriptInput);
         var output = [run_result.build_stderr, run_result.stdout, run_result.stderr];
-        output.filter(o=>{return o!=null && o!="";});
+        output = output.filter(o=>{return o!=null && o!="";});
         $('#console').val( output.join('\n') );
     });
 });
