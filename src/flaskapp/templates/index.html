@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/material.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/solarized.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/show-hint.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
@@ -32,7 +33,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/emacs.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/show-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/anyword-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/javascript-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/edit/matchbrackets.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/edit/closebrackets.min.js"></script>
+  
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+  </head>
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-height">
     <a class="navbar-brand" href="#"><i class="fas fa-code"></i>&nbsp; CodeLive</a>
@@ -117,6 +125,186 @@
         <a class="nav-link" href="#tabAccount" data-toggle="tab">
           <i class="fas fa-user-circle" data-toggle="tooltip" data-placement="left" title="Account"></i>
         </a>
+
+        <div class="container">
+          <div class="row justify-content-center">
+            <button type="button" data-toggle="modal" data-target="#myModal" class="modal-button"><i class="fas fa-info"></i></button>
+            <!-- Modal-->
+              <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+                  <div role="document" class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header row d-flex justify-content-between mx-1 mx-sm-3 mb-0 pb-0 border-0">
+                            <p>Keyboard Shortcuts</p>
+                              <div class="tabs active" id="tab02">
+                                  <h6 class="font-weight-bold">Sublime</h6>
+                              </div>
+                              <div class="tabs" id="tab03">
+                                  <h6 class="text-muted">Vim</h6>
+                              </div>
+                              <div class="tabs" id="tab04">
+                                  <h6 class="text-muted">Emacs</h6>
+                              </div>
+                          </div>
+                          <div class="line"></div>
+                          <div class="modal-body p-0">
+                            <fieldset class="show" id="tab021">
+                              <div class="text-left row pt-3 px-3">
+                                <div class="col-6">
+                                  <p>Mac</p>
+                                  <p>Cmd-Left: go Line Start Smart
+                                  <br>Shift-Tab: indent Less
+                                  <br>Shift-Ctrl-K: delete Line
+                                  <br>Alt-Q: wrap Lines
+                                  <br>Ctrl-Left: go Subword Left
+                                  <br>Ctrl-Right: go Subword Right
+                                  <br>Ctrl-Alt-Up: scroll Line Up
+                                  <br>Ctrl-Alt-Down: scroll Line Down
+                                  <br>Cmd-L: select Line
+                                  <br>Shift-Cmd-L: split Selection By Line
+                                  <br>Esc: single Selection Top
+                                  <br>Cmd-Enter: insert Line After
+                                  <br>Shift-Cmd-Enter: insert Line Before
+                                  <br>Cmd-D: select Next Occurrence
+                                  <br>Shift-Cmd-Space: select Scope
+                                  <br>Shift-Cmd-M: select Between Brackets
+                                  <br>Cmd-M: go To Bracket
+                                  <br>Cmd-Ctrl-Up: swap Line Up
+                                  <br>Cmd-Ctrl-Down: swap Line Down
+                                  <br>Cmd-/: toggle Comment Indented
+                                  <br>Cmd-J: join Lines
+                                  <br>Shift-Cmd-D: duplicate Line
+                                  <br>F5: sort Lines
+                                  <br>Cmd-F5: sort Lines Insensitive
+                                  <br>F2: next Bookmark
+                                  <br>Shift-F2: prev Bookmark
+                                  <br>Cmd-F2: toggle Bookmark
+                                  <br>Shift-Cmd-F2: clear Bookmarks
+                                  <br>Alt-F2: select Bookmarks
+                                  <br>Backspace: smart Backspace
+                                  <br>Cmd-K Cmd-D: skip And Select Next Occurrence
+                                  <br>Cmd-K Cmd-K: del Line Right
+                                  <br>Cmd-K Cmd-U: upcase At Cursor
+                                  <br>Cmd-K Cmd-L: downcase At Cursor
+                                  <br>Cmd-K Cmd-Space: set Sublime Mark
+                                  <br>Cmd-K Cmd-A: select To Sublime Mark
+                                  <br>Cmd-K Cmd-W: delete To Sublime Mark
+                                  <br>Cmd-K Cmd-X: swap With Sublime Mark
+                                  <br>Cmd-K Cmd-Y: sublime Yank
+                                  <br>Cmd-K Cmd-C: show In Center
+                                  <br>Cmd-K Cmd-G: clear Bookmarks
+                                  <br>Cmd-K Cmd-Backspace: del Line Left
+                                  <br>Cmd-K Cmd-1: fold All
+                                  <br>Cmd-K Cmd-0: unfold All
+                                  <br>Cmd-K Cmd-J: unfold All
+                                  <br>Ctrl-Shift-Up: add Cursor To Prev Line
+                                  <br>Ctrl-Shift-Down: add Cursor To Next Line
+                                  <br>Cmd-F3: find Under
+                                  <br>Shift-Cmd-F3: find Under Previous
+                                  <br>Alt-F3: find All Under
+                                  <br>Shift-Cmd-[: fold
+                                  <br>Shift-Cmd-]: unfold
+                                  <br>Cmd-I: find Incremental
+                                  <br>Shift-Cmd-I: find Incremental Reverse
+                                  <br>Cmd-H: replace
+                                  <br>F3: find Next
+                                  <br>Shift-F3: find Prev</p>
+                                </div>
+                                <div class="col-6">
+                                  <p>PC</p>
+                                  <p>Shift-Tab: indent Less
+                                  <br>Shift-Ctrl-K: delete Line
+                                  <br>Alt-Q: wrap Lines
+                                  <br>Ctrl-T: transpose Chars
+                                  <br>Alt-Left: go Subword Left
+                                  <br>Alt-Right: go Subword Right
+                                  <br>Ctrl-Up: scroll LineUp
+                                  <br>Ctrl-Down: scroll Line Down
+                                  <br>Ctrl-L: select Line
+                                  <br>Shift-Ctrl-L: split Selection By Line
+                                  <br>Esc: single Selection Top
+                                  <br>Ctrl-Enter: insert Line After
+                                  <br>Shift-Ctrl-Enter: insert Line Before
+                                  <br>Ctrl-D: select Next Occurrence
+                                  <br>Shift-Ctrl-Space: select Scope
+                                  <br>Shift-Ctrl-M: select Between Brackets
+                                  <br>Ctrl-M: go To Bracket
+                                  <br>Shift-Ctrl-Up: swap Line Up
+                                  <br>Shift-Ctrl-Down: swap Line Down
+                                  <br>Ctrl-/: toggle Comment Indented
+                                  <br>Ctrl-J: join Lines
+                                  <br>Shift-Ctrl-D: duplicate Line
+                                  <br>F9: sort Lines
+                                  <br>Ctrl-F9: sort Lines Insensitive
+                                  <br>F2: next Bookmark
+                                  <br>Shift-F2: prev Bookmark
+                                  <br>Ctrl-F2: toggle Bookmark
+                                  <br>Shift-Ctrl-F2: clear Bookmarks
+                                  <br>Alt-F2: select Bookmarks
+                                  <br>Backspace: smart Backspace
+                                  <br>Ctrl-K Ctrl-D: skip And Select Next Occurrence
+                                  <br>Ctrl-K Ctrl-K: del Line Right
+                                  <br>Ctrl-K Ctrl-U: upcase At Cursor
+                                  <br>Ctrl-K Ctrl-L: downcase At Cursor
+                                  <br>Ctrl-K Ctrl-Space: set Sublime Mark
+                                  <br>Ctrl-K Ctrl-A: select To Sublime Mark
+                                  <br>Ctrl-K Ctrl-W: delete To Sublime Mark
+                                  <br>Ctrl-K Ctrl-X: swap With Sublime Mark
+                                  <br>Ctrl-K Ctrl-Y: sublime Yank
+                                  <br>Ctrl-K Ctrl-C: show In Center
+                                  <br>Ctrl-K Ctrl-G: clear Bookmarks
+                                  <br>Ctrl-K Ctrl-Backspace: del Line Left
+                                  <br>Ctrl-K Ctrl-1: fold All
+                                  <br>Ctrl-K Ctrl-0: unfold All
+                                  <br>Ctrl-K Ctrl-J: unfold All
+                                  <br>Ctrl-Alt-Up: add Cursor To Prev Line
+                                  <br>Ctrl-Alt-Down: add Cursor To Next Line
+                                  <br>Ctrl-F3: find Under
+                                  <br>Shift-Ctrl-F3: find Under Previous
+                                  <br>Alt-F3: find All Under
+                                  <br>Shift-Ctrl-[: fold
+                                  <br>Shift-Ctrl-]: unfold
+                                  <br>Ctrl-I: find Incremental
+                                  <br>Shift-Ctrl-I: find Incremental Reverse
+                                  <br>Ctrl-H: replace
+                                  <br>F3: find Next
+                                  <br>Shift-F3: find Prev</p>
+                                </div>
+                              </div>                      
+                            </fieldset>
+                            <fieldset id="tab031">    
+                              <div class="text-left row pt-3 px-4">
+                                <p>Features</p>
+                                <p><br><br>All common motions and operators, including text objects
+                                <br>Operator motion orthogonality
+                                <br>Visual mode - characterwise, linewise, blockwise
+                                <br>Full macro support (q, @)
+                                <br>Incremental highlighted search (/, ?, #, *, g#, g*)
+                                <br>Search/replace with confirm (:substitute, :%s)
+                                <br>Search history
+                                <br>Jump lists (Ctrl-o, Ctrl-i)
+                                <br>Key/command mapping with API (:map, :nmap, :vmap)
+                                <br>Sort (:sort)
+                                <br>Marks (`, ')
+                                <br>:global
+                                <br>Insert mode
+                                <br>Cross-buffer yank/paste</p>
+                              </div>
+                            </fieldset>
+                            <fieldset id="tab041">      
+                              <div class="text-left row pt-3 px-5">
+                                <div class="col-6"></div>
+                                  <p>Because the internal API is quite different from Emacs, there are only a loose approximation of actual Emacs bindings.</p>
+                                  <p>Also note that a lot of browsers disallow certain keys from being captured.
+                                  <br>For example, Chrome blocks both Ctrl-W and Ctrl-N, with the result that idiomatic use of Emacs keys will close your tab or open a new window.</p>
+                              </div>   
+                            </fieldset>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
       </nav>
   </div>
   <!-- Optional JavaScript -->
