@@ -15,17 +15,7 @@ CODE_LIVE_COOKIE = 'code-live'
 
 @app.route('/')
 def route_index():
-    print(session)
     # Cookie is used to identify a user
-    info_keys = ['nickname', 'email', 'thumbnail']
-    print("index")
-    print(session.keys())
-    try:
-        for key in info_keys:
-            print(key, session[key])
-    except:
-        pass
-
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
     new_cookie = False
     if cookie is None or not auth.cookie_is_valid(cookie):
@@ -46,15 +36,6 @@ def route_index():
 
 @app.route('/<document_id>')
 def route_document(document_id):
-    info_keys = ['nickname', 'email', 'thumbnail']
-    print("document")
-    print(session.keys())
-    try:
-        for key in info_keys:
-            print(key, session[key])
-    except:
-        pass
-
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
     new_cookie = False
     if cookie is None or not auth.cookie_is_valid(cookie):
@@ -84,12 +65,8 @@ def route_save_user_info():
     data = request.form.to_dict()
     info_keys = ['nickname', 'email', 'thumbnail']
 
-    print("save user info")
-    print(session.keys())
     for key in info_keys:
         session[key] = data[key]
-        print(session[key])
-    print(session.keys())
 
     return "success"
 
