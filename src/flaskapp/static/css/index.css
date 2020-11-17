@@ -242,6 +242,26 @@ html.light .dynamic-height .tab-content textarea{
     width: 800px;
 }
 
+#modal_box_wrapper{
+    display: table;
+}
+
+#key_bindings, #key_manual{
+    display: inline-block;
+    margin: 0;
+ }
+
+#key_bindings{
+    text-align: center;
+}
+
+#key_manual{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#container pre { display: inline }
+
 fieldset {
     display: none;
 }
