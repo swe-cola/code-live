@@ -10,6 +10,8 @@ from flask import (
     session
 )
 
+from .document import *
+
 CODE_LIVE_COOKIE = 'code-live'
 
 
@@ -25,6 +27,8 @@ def route_index():
     document_id = user.get_doc_id(cookie)
     if document_id is None:
         document_id = document.create_doc_id()
+        login = True if 'email' in session.keys() else False
+        save_document_info(document_id, cookie, login)
 
     url = url_for('route_document', document_id=document_id)
     redirected = redirect(url)
@@ -70,6 +74,8 @@ def route_save_user_info():
 
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
     user.set_kakao_id(cookie, data['email'])
+
+    update_document_login(cookie)
 
     return "success"
 
