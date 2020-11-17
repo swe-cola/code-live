@@ -42,9 +42,9 @@ $('#logout_btn').on('click', function() {
 });
 
 $( document ).ready(function() {
-    const email = sessionStorage.getItem('email');
-    const nickname = sessionStorage.getItem('nickname');
-    const thumbnail = sessionStorage.getItem('thumbnail');
+    const email = localStorage.getItem('email');
+    const nickname = localStorage.getItem('nickname');
+    const thumbnail = localStorage.getItem('thumbnail');
 
     if (email) {
         loginUser(email, nickname, thumbnail);
