@@ -42,15 +42,11 @@ $('#logout_btn').on('click', function() {
 });
 
 $( document ).ready(function() {
-    let email=null, nickname=null, thumbnail=null;
+    const email = sessionStorage.getItem('email');
+    const nickname = sessionStorage.getItem('nickname');
+    const thumbnail = sessionStorage.getItem('thumbnail');
 
-    for(let i=0; i<localStorage.length; i++){
-        let key = localStorage.key(i);
-        if(key=="email") email = localStorage.getItem(key);
-        else if(key=="nickname") nickname = localStorage.getItem(key);
-        else if(key=="thumbnail") thumbnail = localStorage.getItem(key);
-    }
-    if(email !== null){
+    if (email) {
         loginUser(email, nickname, thumbnail);
     }
 });
