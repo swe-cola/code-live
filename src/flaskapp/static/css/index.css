@@ -393,3 +393,25 @@ a:hover {
 .code {
     font-family: Consolas, monaco, monospace;
 }
+
+#voice_peers div{
+    display:flex;
+    flex-direction: row;
+    border-style: solid;
+    border-radius: 2px;
+    border-width: thin;
+}
+#voice_peers div p{
+    margin:0;
+    padding:.5em;
+}
+#voice_peers div button{
+    margin-left: .5em;
+}
+#voice_peers .connectedPeer{
+    color:#00AA66;
+}
+
+#voice_peers .connectedPeer.connectionPending{
+    color:#FF6666;
+}

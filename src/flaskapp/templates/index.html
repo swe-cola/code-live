@@ -114,6 +114,10 @@
             </ul>
           </div>
         </div>
+        <div id="chat" class='bg-dark'></div>
+        <button type="button" class="btn btn-secondary" id="voice_toggle">Join Voice Chat</button>
+        <div id="voice_peers"></div>
+        <div id="remote_voice_tracks"></div>
       </div>
       <div class="tab-pane" id="tabAccount">
         account
@@ -331,6 +335,7 @@
   <script src="static/js/lang_name.js"></script>
   <script src="static/js/index_generate_dynamic_html.js"></script>
   <script src="static/js/index_register_element_callback.js"></script>
+  <script src="static/js/rtc.js"></script>
   <script>
     const API_URL = '{{ config["API_URL"] }}';
     const collection = '{{ document_key[0] }}';
