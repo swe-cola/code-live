@@ -1,35 +1,16 @@
-const animals = [
-'Alligator', 'Anteater', 'Armadillo', 'Auroch', 'Axolotl', 'Badger', 'Bat', 'Bear', 'Beaver',
-'Blobfish', 'Buffalo', 'Camel', 'Chameleon', 'Cheetah', 'Chipmunk', 'Chinchilla', 'Chupacabra',
-'Cormorant', 'Coyote', 'Crow', 'Dingo', 'Dinosaur', 'Dog', 'Dolphin', 'Dragon',
-'Duck', 'Dumbo octopus', 'Elephant', 'Ferret', 'Fox', 'Frog', 'Giraffe', 'Goose',
-'Gopher', 'Grizzly', 'Hamster', 'Hedgehog', 'Hippo', 'Hyena', 'Jackal', 'Jackalope',
-'Ibex', 'Ifrit', 'Iguana', 'Kangaroo', 'Kiwi', 'Koala', 'Kraken', 'Lemur',
-'Leopard', 'Liger', 'Lion', 'Llama', 'Manatee', 'Mink', 'Monkey', 'Moose',
-'Narwhal', 'Nyan cat', 'Orangutan', 'Otter', 'Panda', 'Penguin', 'Platypus', 'Python',
-'Pumpkin', 'Quagga', 'Quokka', 'Rabbit', 'Raccoon', 'Rhino', 'Sheep', 'Shrew',
-'Skunk', 'Slow loris', 'Squirrel', 'Tiger', 'Turtle', 'Unicorn', 'Walrus', 'Wolf',
-'Wolverine', 'Wombat'
-]
 /**
  * Inspired by https://dororongju.tistory.com/151
  */
 class Chat {
     constructor() {
-        this.myId = getCookie(CODE_LIVE_COOKIE);
+        this.clientId = getCookie(CODE_LIVE_COOKIE);
         this.docId = `${collection}-${documentName}`;
-        this.myName = `Anonymous ${this.getName.call(this)}`;
+        this.initName.call(this);
 
         this.lastSender = undefined;
         this.init = false;
 
         this.socket = io(`${CHAT_SERVER_HOST}:${CHAT_SERVER_PORT}`);
-        this.socket.emit('chat-register', {
-            docId: this.docId,
-            senderName: this.myName,
-            senderId: this.myId,
-            message: '',
-        });
         this.socket.on('chat-message', (msg) => {
             this.receive(msg);
         })
@@ -41,20 +22,25 @@ class Chat {
         this.receive = this.receive.bind(this);
     }
 
-    getName() {
-        const idx = this.__hash() % animals.length;
-        return animals[idx];
-    }
-
-    __hash() {
-        const toHash = this.docId + this.myId;
-        let hash = 0;
-        for (let i = 0; i < toHash.length; i++) {
-            const chr = toHash.charCodeAt(i);
-            hash = ((hash << 5) - hash) + chr;
-            hash |= 0; // Convert to 32bit integer
-        }
-        return Math.abs(hash);
+    initName() {
+        this.nickname = this.clientId; // Use clientId in case ajax fails
+        $.ajax({
+          crossDomain: true,
+          url: API_SERVER_HOST + '/api/nickname',
+          type: "POST",
+          data: {
+            clientID: this.clientId,
+            docID: this.docId
+          },
+        }).done((data) => {
+          this.nickname = data;
+          this.socket.emit('chat-register', {
+              docId: this.docId,
+              senderName: this.nickname,
+              senderId: this.clientId,
+              message: '',
+          });
+        });
     }
 
     createMessageTag(LR_className, senderName, message) {
@@ -71,7 +57,7 @@ class Chat {
         chatLi.removeClass();
         chatLi.addClass(LR_className);
         if (this.lastSender != senderName) {
-          nameElem.text((senderName === this.myName) ? 'Me' : senderName);
+          nameElem.text((senderName === this.nickname) ? 'Me' : senderName);
           this.lastSender = senderName
         } else {
           nameElem.text('');
@@ -90,8 +76,8 @@ class Chat {
     sendMessage(message) {
         const data = {
             docId: this.docId,
-            senderName: this.myName,
-            senderId: this.myId,
+            senderName: this.nickname,
+            senderId: this.clientId,
             message: message,
         };
         this.socket.emit('chat-message', data);
@@ -102,7 +88,7 @@ class Chat {
     }
 
     receive(data) {
-        const LR = (data.senderName !== this.myName) ? 'left' : 'right';
+        const LR = (data.senderName !== this.nickname) ? 'left' : 'right';
         this.appendMessageTag(LR, data.senderName, data.message);
     }
 };

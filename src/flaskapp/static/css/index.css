@@ -1,3 +1,7 @@
+*{
+    margin: 0; padding: 0;
+}
+
 body {
     height: 100vh;
     margin: 0;
@@ -287,13 +291,10 @@ a:hover {
     .tabs h6 {
         font-size: 12px
     }
+}
 
 #tabChat, #chat {
     height: 100%;
-}
-
-*{
-    margin: 0; padding: 0;
 }
 
 .chat-wrap .header {

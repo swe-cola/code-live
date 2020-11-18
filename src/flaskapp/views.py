@@ -1,5 +1,6 @@
 import os
 from flaskapp import app, auth, document, user
+from flask_cors import cross_origin
 from flask import (
     make_response,
     render_template,
@@ -50,6 +51,7 @@ def route_document(document_id):
         'CODE_LIVE_COOKIE': CODE_LIVE_COOKIE,
         'CHAT_SERVER_HOST': os.environ['CHAT_SERVER_HOST'],
         'CHAT_SERVER_PORT': os.environ['CHAT_SERVER_PORT'],
+        'API_SERVER_HOST': os.environ['API_SERVER_HOST'],
     })
     response = make_response(rendered)
     if new_cookie:
@@ -89,6 +91,7 @@ def route_delete_user_info():
 
 
 @app.route('/api/nickname', methods=["POST"])
+@cross_origin()
 def route_generate_nickname():
     adjectives = ['Adorable', 'Ambitious', 'Angry', 'Attractive', 'Beautiful', 'Big', 'Bored', 'Brave', 'Calm',
                   'Chubby', 'Clean', 'Dazzling', 'Delightful', 'Elegant', 'Fancy', 'Friendly', 'Gentle', 'Glamorous',
