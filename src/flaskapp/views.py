@@ -28,6 +28,7 @@ def route_index():
     if document_id is None:
         document_id = document.create_doc_id()
         login = True if 'email' in session.keys() else False
+        # cookie = user collection id
         save_document_info(document_id, cookie, login)
 
     url = url_for('route_document', document_id=document_id)
@@ -49,7 +50,7 @@ def route_document(document_id):
 
     key = ('code-live', document_id)
 
-    rendered = render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key)
+    rendered = render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key, user_cookie=cookie)
     response = make_response(rendered)
     if new_cookie:
         response.set_cookie(CODE_LIVE_COOKIE, cookie)
@@ -92,33 +93,9 @@ def route_delete_user_info():
     return "success"
 
 
-@app.route('/api/nickname', methods=["POST"])
-def route_generate_nickname():
-    adjectives = ['Adorable', 'Ambitious', 'Angry', 'Attractive', 'Beautiful', 'Big', 'Bored', 'Brave', 'Calm',
-                  'Chubby', 'Clean', 'Dazzling', 'Delightful', 'Elegant', 'Fancy', 'Friendly', 'Gentle', 'Glamorous',
-                  'Gorgeous', 'Handsome', 'Happy', 'Lazy', 'Muscular', 'Mysterious', 'Nervous', 'Nice', 'Polite',
-                  'Scary', 'Small', 'Worried']
-
-    animals = [
-        'Alligator', 'Anteater', 'Armadillo', 'Auroch', 'Axolotl', 'Badger', 'Bat', 'Bear', 'Beaver',
-        'Blobfish', 'Buffalo', 'Camel', 'Chameleon', 'Cheetah', 'Chipmunk', 'Chinchilla', 'Chupacabra',
-        'Cormorant', 'Coyote', 'Crow', 'Dingo', 'Dinosaur', 'Dog', 'Dolphin', 'Dragon',
-        'Duck', 'Dumbo octopus', 'Elephant', 'Ferret', 'Fox', 'Frog', 'Giraffe', 'Goose',
-        'Gopher', 'Grizzly', 'Hamster', 'Hedgehog', 'Hippo', 'Hyena', 'Jackal', 'Jackalope',
-        'Ibex', 'Ifrit', 'Iguana', 'Kangaroo', 'Kiwi', 'Koala', 'Kraken', 'Lemur',
-        'Leopard', 'Liger', 'Lion', 'Llama', 'Manatee', 'Mink', 'Monkey', 'Moose',
-        'Narwhal', 'Nyan cat', 'Orangutan', 'Otter', 'Panda', 'Penguin', 'Platypus', 'Python',
-        'Pumpkin', 'Quagga', 'Quokka', 'Rabbit', 'Raccoon', 'Rhino', 'Sheep', 'Shrew',
-        'Skunk', 'Slow loris', 'Squirrel', 'Tiger', 'Turtle', 'Unicorn', 'Walrus', 'Wolf',
-        'Wolverine', 'Wombat'
-    ]
-
+@app.route('/api/update_client_list', methods=["POST"])
+def route_update_client_list():
     data = request.form.to_dict()
-    docid = data["docID"]
-    clientid = data["clientID"]
+    update_document_clients(data['docid'], data['clientID'], data['user_cookie'])
 
-    key = (docid, clientid)
-    adjective = adjectives[hash(key) % len(adjectives)]
-    animal = animals[hash(key) % len(animals)]
-
-    return adjective + " " + animal
+    return "success"

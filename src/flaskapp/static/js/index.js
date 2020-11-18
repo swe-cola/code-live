@@ -83,7 +83,6 @@ function displayRemoteSelection(cm, change) {
 }
 
 $(document).ready(function(){
-
     $(".tabs").click(function(){
     
         $(".tabs").removeClass("active");
@@ -125,6 +124,18 @@ async function main() {
         // 02. create a document then attach it into the client.
         doc = yorkie.createDocument(collection, documentName);
         await client.attach(doc);
+
+        // update client list
+        var pathname = window.location.pathname;
+        var length = pathname.length;
+
+        $.ajax({
+            type: "POST",
+            url: "/api/update_client_list",
+            data: { docid: pathname.slice(1, length) , clientID: client.getID(), user_cookie: user_cookie}
+        }).done(function( msg ) {
+              // 저장 완료
+        });
 
         client.subscribe((event) => {
             if (event.name === 'documents-watching-peer-changed') {
