@@ -1,4 +1,5 @@
 import os
+import ast
 from flaskapp import app, auth, document, user
 from flask import (
     make_response,
@@ -7,7 +8,8 @@ from flask import (
     request,
     send_from_directory,
     url_for,
-    session
+    session,
+    jsonify
 )
 
 from .document import *
@@ -96,6 +98,15 @@ def route_delete_user_info():
 @app.route('/api/update_client_list', methods=["POST"])
 def route_update_client_list():
     data = request.form.to_dict()
-    update_document_clients(data['docid'], data['clientID'], data['user_cookie'])
+    client_dict = update_document_clients(data['docid'], data['clientID'], data['user_cookie'])
 
-    return "success"
+    return jsonify(client_dict)
+
+
+@app.route('/api/get_peers_name', methods=["POST"])
+def route_get_peers_name():
+    data = request.form.to_dict()
+    peers = ast.literal_eval(data['peers'])
+    mapping_dict = get_document_peers(data['docid'], peers)
+
+    return jsonify(mapping_dict)

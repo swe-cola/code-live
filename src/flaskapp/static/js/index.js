@@ -11,13 +11,18 @@ const selectionMap = new Map();
 function update_root(fieldName, value) {
     doc.update((root) => {
         const field = root[fieldName];
-        const text = field.getValue()
+        const text = field.getValue();
         field.edit(0, text.length, value);
     }, `Overwrite ${fieldName}`);
 }
 
 function displayPeers(peers, clientID) {
-    peersHolder.innerHTML = JSON.stringify(peers).replace(clientID, `<b>${clientID}</b>`);
+    let user_str = "";
+    $.each(peers, function(key, value){
+        if(key === clientID) user_str += `<b>${value}</b>, `;
+        else user_str += `${value}, `;
+    });
+    peersHolder.innerHTML = user_str.substring(0, user_str.length - 2);
 }
 
 // https://github.com/codemirror/CodeMirror/pull/5619
@@ -128,18 +133,26 @@ async function main() {
         // update client list
         var pathname = window.location.pathname;
         var length = pathname.length;
+        var docid = pathname.slice(1, length);
 
         $.ajax({
             type: "POST",
             url: "/api/update_client_list",
-            data: { docid: pathname.slice(1, length) , clientID: client.getID(), user_cookie: user_cookie}
-        }).done(function( msg ) {
-              // 저장 완료
+            data: { docid: docid, clientID: client.getID(), user_cookie: user_cookie}
+        }).done(function( peers ) {
+            displayPeers(peers, client.getID());
         });
 
         client.subscribe((event) => {
             if (event.name === 'documents-watching-peer-changed') {
-                displayPeers(event.value[doc.getKey().toIDString()], client.getID());
+                let peers = event.value[doc.getKey().toIDString()];
+                $.ajax({
+                    type: "POST",
+                    url: "/api/get_peers_name",
+                    data: { docid: docid, peers:JSON.stringify(peers) }
+                }).done(function( peers ) {
+                    displayPeers(peers, client.getID());
+                });
             }
         });
 

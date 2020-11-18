@@ -44,6 +44,12 @@ def update_document_clients(doc_id, clientID, cookie):
     newvalues = {"$set": {"clients": client_dict}}
     col.update_one(doc_query, newvalues)
 
+    result_dict = {}
+    for key, value in client_dict.items():
+        result_dict[key] = value[1]
+
+    return result_dict
+
 
 def update_document_login(owner):
     client = connect_db()
@@ -54,6 +60,30 @@ def update_document_login(owner):
     newvalues = {"$set": {"login": True}}
 
     col.update_one(owner_query, newvalues)
+
+
+def get_document_peers(doc_id, peers):
+    client = connect_db()
+    db = client["code-live"]
+    col = db["documents"]
+
+    doc_query = {"document_id": doc_id}
+    result = list(col.find(doc_query))
+    mapping_dict = {}
+    update_document_dict = {}
+    for peer in peers:
+        try:
+            data = result[0]['clients'][peer]
+            mapping_dict[peer] = data[1]
+            update_document_dict[peer] = data
+        except:
+            # to prevent errors
+            pass
+
+    newvalues = {"$set": {"clients": update_document_dict}}
+    col.update_one(doc_query, newvalues)
+
+    return mapping_dict
 
 
 def create_doc_id(length=6):
