@@ -9,37 +9,12 @@
     <link rel="icon" href="/static/favicon.svg">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/dialog/dialog.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/material.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/solarized.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/show-hint.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
 
     <link rel="stylesheet" href="/static/css/index.css"/>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
-    <script src="https://codemirror.net/addon/comment/comment.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/python/python.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/clike/clike.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/dialog/dialog.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/searchcursor.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/search.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/scroll/annotatescrollbar.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/jump-to-line.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/sublime.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/emacs.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/show-hint.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/anyword-hint.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/javascript-hint.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/edit/matchbrackets.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/edit/closebrackets.min.js"></script>
-  
-    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
   </head>
 <body>
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-height">
@@ -66,7 +41,7 @@
   </div>
   <div class='dynamic-height'>
     <div class='container-fluid vertical-container'>
-      <textarea id="placeholder" cols="30" rows="10"><pre><code></code></pre></textarea>
+      <textarea id="placeholder" cols="30" rows="10"></textarea>
       <textarea id="console" readonly > </textarea>
     </div>
     <div class='tab-content bg-dark dis_none'>
@@ -92,7 +67,7 @@
             <button id="vim" type="button" class="btn btn-secondary">vim</button>
             <button id="emacs" type="button" class="btn btn-secondary">emacs</button>
           </div>
-          
+
           <div class="btn-group btn-group-sm mr-2" role="group">
             <button id="btnTabSizeGroupDrop" type="button" class="btn btn-secondary dropdown-toggle" data-desc="Tab" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Tab: 4
@@ -106,7 +81,34 @@
         </div>
       </div>
       <div class="tab-pane" id="tabChat">
-        <div id="chat" class='bg-dark'></div>
+        <div id="chat" class="chat-wrap bg-dark">
+          <div class="header">
+            CHAT
+          </div>
+          <div id="mainChat" class="chat">
+            <ul>
+              <!-- Dynamically generated -->
+            </ul>
+          </div>
+          <div class="input-div">
+            <textarea placeholder="Press Enter to send the message."></textarea>
+          </div>
+
+          <!-- format -->
+
+          <div class="chat format">
+            <ul>
+              <li>
+                <div class="sender">
+                  <span></span>
+                </div>
+                <div class="message">
+                  <span></span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="tab-pane" id="tabAccount">
         account
@@ -312,22 +314,51 @@
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.min.js"></script>
 
   <!-- Custom JavaScript -->
   <script src="static/js/config.js"></script>
   <script src="static/js/runner.js"></script>
   <script src="static/js/yorkie.js"></script>
   <script src="static/js/util.js"></script>
+  <script src="static/js/chat.js"></script>
   <script src="static/js/index.js"></script>
   <script src="static/js/lang_name.js"></script>
   <script src="static/js/index_generate_dynamic_html.js"></script>
   <script src="static/js/index_register_element_callback.js"></script>
-  <script src="/static/js/login.js"></script>
   <script>
-    const API_URL = '{{ API_URL }}';
+    const API_URL = '{{ config["API_URL"] }}';
     const collection = '{{ document_key[0] }}';
     const documentName = '{{ document_key[1] }}';
+    const CODE_LIVE_COOKIE = '{{ config["CODE_LIVE_COOKIE"] }}';
+    const CHAT_SERVER_HOST = '{{ config["CHAT_SERVER_HOST"] }}';
+    const CHAT_SERVER_PORT = '{{ config["CHAT_SERVER_PORT"] }}';
+    const API_SERVER_HOST = '{{ config["API_SERVER_HOST"] }}';
     main();
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/comment/comment.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/dialog/dialog.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/searchcursor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/scroll/annotatescrollbar.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/jump-to-line.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/sublime.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/emacs.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/show-hint.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/anyword-hint.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/javascript-hint.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/edit/matchbrackets.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/edit/closebrackets.min.js"></script>
+
+  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+  <script src="/static/js/login.js"></script>
   </body>
 </html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/dialog/dialog.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/search/matchesonscrollbar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/material.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/solarized.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/hint/show-hint.css">
