@@ -242,20 +242,25 @@ html.light .dynamic-height .tab-content textarea{
     width: 800px;
 }
 
-#modal_box_wrapper{
+.modal_box_wrapper{
     display: table;
 }
 
-#key_bindings, #key_manual{
+.key_bindings, .key_manual{
     display: inline-block;
     margin: 0;
  }
 
-#key_bindings{
+.key_bindings{
     text-align: center;
+    background: ghostwhite;
+    font-size: 14px;
+    padding: 1px;
+    border: 0.5px solid lightgray;
+    width: 130px;
 }
 
-#key_manual{
+.key_manual{
     display: table-cell;
     vertical-align: middle;
 }
