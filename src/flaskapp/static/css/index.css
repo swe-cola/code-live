@@ -1,3 +1,7 @@
+*{
+    margin: 0; padding: 0;
+}
+
 body {
     height: 100vh;
     margin: 0;
@@ -26,12 +30,6 @@ body {
 
 .navbar {
     border-bottom: 1px solid #444;
-}
-
-#chat {
-    height: 100%;
-    width: 20%;
-    float: right;
 }
 
 .inline {
@@ -293,4 +291,76 @@ a:hover {
     .tabs h6 {
         font-size: 12px
     }
+}
+
+#tabChat, #chat {
+    height: 100%;
+}
+
+.chat-wrap .header {
+    font-size: 14px;
+    padding: 15px 0;
+    height: 50px;
+    background: #F18C7E;
+    color: white;
+    text-align: center;
+    margin: 0 0 10px 0;
+}
+
+.chat-wrap .chat {
+    padding-bottom: 0px;
+    height: calc(100% - 160px);
+    overflow: scroll;
+}
+.chat-wrap .chat ul {
+    width: 100%;
+    list-style: none;
+}
+.chat-wrap .chat ul li {
+    width: 100%;
+}
+.chat-wrap .chat ul li.left {
+    text-align: left;
+}
+.chat-wrap .chat ul li.right {
+    text-align: right;
+}
+
+.chat-wrap .chat ul li > div {
+    font-size: 13px;
+}
+.chat-wrap .chat ul li > div.sender {
+    margin: 0;
+    font-weight: bold;
+}
+.chat-wrap .chat ul li > div.message {
+    display: inline-block;
+    word-break:break-all;
+    margin: 2px 0;
+    max-width: 75%;
+    border: 1px solid #888;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #FCFCFC;
+    color: #555;
+    text-align: left;
+}
+
+.chat-wrap .input-div {
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    border-top: 1px solid #F18C7E;
+}
+.chat-wrap .input-div > textarea {
+    width: 100%;
+    height: 100px;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+.format {
+    display: none;
 }
