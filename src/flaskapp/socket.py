@@ -3,7 +3,7 @@ from flaskapp import app, socketio
 from flask_socketio import send,emit, join_room, leave_room
 
 _docs = dict() # docid -> sids
-_sids = dict() # sid -> { sid, docid, sd}
+_sids = dict() # sid -> { sid, docid}
 
 
 def create_peer_info(rq, data):
@@ -20,6 +20,8 @@ def _soc_room(pi):
 #forward msg
 @socketio.on("rtc offer")
 def on_rtc_offer(data):
+    if('sid' not in data):
+        return
     if( (request.sid not in _sids) or (data['sid'] not in _sids)):
         return
     pi = create_peer_info(request,data)
@@ -29,6 +31,8 @@ def on_rtc_offer(data):
 #forward msg
 @socketio.on("rtc answer")
 def on_rtc_answer(data):
+    if('sid' not in data):
+        return
     if( (request.sid not in _sids) or (data['sid'] not in _sids)):
         return
     pi = create_peer_info(request,data)
@@ -38,15 +42,18 @@ def on_rtc_answer(data):
 #forward msg
 @socketio.on("rtc iceCandidate")
 def on_rtc_iceCandidate(data):
+    if('sid' not in data):
+        return
     if( (request.sid not in _sids) or (data['sid'] not in _sids)):
         return
     pi = create_peer_info(request,data)
     emit("rtc iceCandidate", pi, room=_soc_room(data))
     return
 
-
 @socketio.on("peer join")
 def on_peer_join(data):
+    if('docid' not in data):
+        return
     if(request.sid in _sids):
         return
 
@@ -59,13 +66,23 @@ def on_peer_join(data):
     peers = _docs[ pi['docid']]
     peers.add(pi['sid'])
 
-    print(f"{pi['sid']} joined")
-
     emit("peer new", pi, room=_doc_room(pi))
     join_room(_doc_room(pi))
     join_room(_soc_room(pi))
     emit("result peer join", [_sids[peer] for peer in peers] )
 
+@socketio.on("peer list")
+def on_peer_list(data):
+
+    if('docid' not in data):
+        return
+    if(data['docid'] not in _docs.keys()):
+        emit("result peer list", [])
+        return
+
+    pi = create_peer_info(request,data)
+    peers = _docs[ pi['docid']]
+    emit("result peer list", [_sids[peer] for peer in peers] )
 
 @socketio.on("peer quit")
 def on_peer_quit():
@@ -80,14 +97,13 @@ def on_peer_quit():
 
     _docs[pi['docid']].remove(pi['sid'])
     del _sids[pi['sid']]
-    print(f'{pi["sid"]} left')
 
 @socketio.on('connect')
 def on_connect():
-    print(f"{request.sid} connected")
+    pass
 
 @socketio.on('disconnect')
 def on_disconnect():
     if(request.sid in _sids):
         on_peer_quit()
-    print(f'{request.sid} disconnected')
+        return

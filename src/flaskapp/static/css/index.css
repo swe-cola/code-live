@@ -397,21 +397,52 @@ a:hover {
 #voice_peers div{
     display:flex;
     flex-direction: row;
-    border-style: solid;
-    border-radius: 2px;
-    border-width: thin;
+    border-width: medium;
+    border-style:none;
+    border-left-style:solid;
+    margin: 1em 0 1em 0;
 }
-#voice_peers div p{
-    margin:0;
-    padding:.5em;
-}
-#voice_peers div button{
-    margin-left: .5em;
-}
+
 #voice_peers .connectedPeer{
     color:#00AA66;
 }
 
 #voice_peers .connectedPeer.connectionPending{
     color:#FF6666;
+}
+#voice_peers .connectedPeer:not(.connectionPending).muted{
+    color:#dbf547;
+}
+
+#rtc_ui_template{
+    display:none;
+}
+#voice_peers .connectedPeer .mute_button{
+    width:2em;
+    height:2em;
+    margin: 0 .75em 0 .25em;
+    align-self:center;
+    padding: .2em;
+    display: flex;
+}
+
+#voice_peers .connectedPeer p{
+    align-self:center;
+    margin:0;
+}
+
+#voice_peers .connectedPeer.muted .mute_button .icon_unmute{
+    display:none;
+}
+#voice_peers .connectedPeer:not(.muted) .mute_button .icon_mute{
+    display:none;
+}
+#voice_peers .connectedPeer:not(.nomic) .mute_button .icon_no_mic{
+    display:none;
+}
+#voice_peers .connectedPeer.nomic .mute_button .icon_unmute{
+    display:none;
+}
+#voice_peers .connectedPeer.nomic .mute_button .icon_mute{
+    display:none;
 }
