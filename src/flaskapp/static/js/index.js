@@ -135,21 +135,22 @@ async function main() {
         var length = pathname.length;
         var docid = pathname.slice(1, length);
 
+        var clientID = getCookie("code-live");
+
         $.ajax({
             type: "POST",
             url: "/api/update_client_list",
-            data: { docid: docid, clientID: client.getID(), user_cookie: user_cookie}
+            data: { docid: docid, clientID: clientID, user_cookie: user_cookie}
         }).done(function( peers ) {
-            displayPeers(peers, client.getID());
+            displayPeers(peers, clientID);
         });
 
         client.subscribe((event) => {
             if (event.name === 'documents-watching-peer-changed') {
-                let peers = event.value[doc.getKey().toIDString()];
                 $.ajax({
                     type: "POST",
                     url: "/api/get_peers_name",
-                    data: { docid: docid, peers:JSON.stringify(peers) }
+                    data: { docid: docid }
                 }).done(function( peers ) {
                     displayPeers(peers, client.getID());
                 });
@@ -344,9 +345,6 @@ async function main() {
     } catch (e) {
         console.error(e);
     }
-    
-
-  
 }
 
 function colortheme(element){
@@ -401,3 +399,16 @@ let limitFunc = function () {
 
 $(document).ready(function() { limitFunc(); });
 window.addEventListener("resize", limitFunc);
+
+var getCookie = function(name) {
+    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return value? value[2] : null;
+};
+
+window.addEventListener('beforeunload', function (e) {
+    // delete from database before leaving
+    // Cancel the event
+    e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+});

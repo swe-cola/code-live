@@ -61,13 +61,12 @@ def log_access(cookie, document_id):
     user.save()
 
 
-def set_kakao_id(cookie, kakaoid: str):
+def set_kakao_id(cookie, nickname: str):
     user = get_user(cookie)
 
     if user is None:
         logger.info(f'User is None')
         return
 
-    if "@" in kakaoid:
-        user.kakaoid = kakaoid
-        user.save()
+    user.kakaoid = nickname
+    user.save()

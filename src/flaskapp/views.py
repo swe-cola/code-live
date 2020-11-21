@@ -1,5 +1,4 @@
 import os
-import ast
 from flaskapp import app, auth, document, user
 from flask import (
     make_response,
@@ -76,7 +75,7 @@ def route_save_user_info():
         session[key] = data[key]
 
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
-    user.set_kakao_id(cookie, data['email'])
+    user.set_kakao_id(cookie, data['nickname'])
 
     update_document_login(cookie)
 
@@ -106,7 +105,6 @@ def route_update_client_list():
 @app.route('/api/get_peers_name', methods=["POST"])
 def route_get_peers_name():
     data = request.form.to_dict()
-    peers = ast.literal_eval(data['peers'])
-    mapping_dict = get_document_peers(data['docid'], peers)
+    mapping_dict = get_document_peers(data['docid'])
 
     return jsonify(mapping_dict)

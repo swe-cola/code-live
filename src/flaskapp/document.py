@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 import os
 import random
 import string
@@ -28,25 +29,25 @@ def update_document_clients(doc_id, clientID, cookie):
 
     doc_query = {"document_id": doc_id}
     result = list(col.find(doc_query))
+    result_doc = result[0]
 
     nickname = route_generate_nickname(doc_id, clientID)
-    if 'clients' in result:
-        while nickname in result['clients'].values():
+    if 'clients' in result_doc and len(result_doc['clients']) != 0:
+        while nickname in result_doc['clients'].values():
             nickname = route_generate_nickname(doc_id, clientID)
 
-    # {yorkie_id: codelive_id}
-    if "clients" in result[0]:
-        client_dict = result[0]["clients"]
-        client_dict[clientID] = [cookie, nickname]
+    # {codelive_id: nickname}
+    if "clients" in result_doc:
+        client_dict = result_doc["clients"]
+        client_dict[cookie] = nickname
     else:
-        client_dict = {clientID: [cookie, nickname]}
-
+        client_dict = {clientID: nickname}
     newvalues = {"$set": {"clients": client_dict}}
     col.update_one(doc_query, newvalues)
 
     result_dict = {}
     for key, value in client_dict.items():
-        result_dict[key] = value[1]
+        result_dict[key] = value
 
     return result_dict
 
@@ -62,26 +63,22 @@ def update_document_login(owner):
     col.update_one(owner_query, newvalues)
 
 
-def get_document_peers(doc_id, peers):
+def get_document_peers(doc_id):
     client = connect_db()
     db = client["code-live"]
+
     col = db["documents"]
 
     doc_query = {"document_id": doc_id}
     result = list(col.find(doc_query))
-    mapping_dict = {}
-    update_document_dict = {}
-    for peer in peers:
-        try:
-            data = result[0]['clients'][peer]
-            mapping_dict[peer] = data[1]
-            update_document_dict[peer] = data
-        except:
-            # to prevent errors
-            pass
+    
+    result_doc = result[0]
+    clients = result_doc['clients']
 
-    newvalues = {"$set": {"clients": update_document_dict}}
-    col.update_one(doc_query, newvalues)
+    mapping_dict = {}
+
+    for client_key, client_name in clients.items():
+        mapping_dict[client_key] = client_name
 
     return mapping_dict
 
