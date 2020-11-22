@@ -135,12 +135,12 @@ async function main() {
         var length = pathname.length;
         var docid = pathname.slice(1, length);
 
-        var clientID = getCookie("code-live");
+        var user_cookie = getCookie("code-live");
 
         $.ajax({
             type: "POST",
             url: "/api/update_client_list",
-            data: { docid: docid, clientID: clientID, user_cookie: user_cookie}
+            data: { docid: docid, user_cookie: user_cookie}
         }).done(function( peers ) {
             displayPeers(peers, clientID);
         });
@@ -411,4 +411,17 @@ window.addEventListener('beforeunload', function (e) {
     e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
     // Chrome requires returnValue to be set
     e.returnValue = '';
+
+    let user_cookie = getCookie("code-live");
+
+    let pathname = window.location.pathname;
+    let length = pathname.length;
+    let docid = pathname.slice(1, length);
+
+    $.ajax({
+        type: "POST",
+        url: "/api/delete_client",
+        data: { docid: docid, user_cookie: user_cookie}
+    }).done(function( peers ) {
+    });
 });

@@ -97,7 +97,7 @@ def route_delete_user_info():
 @app.route('/api/update_client_list', methods=["POST"])
 def route_update_client_list():
     data = request.form.to_dict()
-    client_dict = update_document_clients(data['docid'], data['clientID'], data['user_cookie'])
+    client_dict = update_document_clients(data['docid'], data['user_cookie'])
 
     return jsonify(client_dict)
 
@@ -108,3 +108,11 @@ def route_get_peers_name():
     mapping_dict = get_document_peers(data['docid'])
 
     return jsonify(mapping_dict)
+
+
+@app.route('/api/delete_client', methods=["POST"])
+def route_delete_client():
+    data = request.form.to_dict()
+    delete_document_peers(data['docid'], data['user_cookie'])
+
+    return "success"

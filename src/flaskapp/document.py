@@ -22,7 +22,7 @@ def save_document_info(doc_id, owner, login):
     col.insert_one(doc_info)
 
 
-def update_document_clients(doc_id, clientID, cookie):
+def update_document_clients(doc_id, clientID):
     client = connect_db()
     db = client["code-live"]
     col = db["documents"]
@@ -39,7 +39,7 @@ def update_document_clients(doc_id, clientID, cookie):
     # {codelive_id: nickname}
     if "clients" in result_doc:
         client_dict = result_doc["clients"]
-        client_dict[cookie] = nickname
+        client_dict[clientID] = nickname
     else:
         client_dict = {clientID: nickname}
     newvalues = {"$set": {"clients": client_dict}}
@@ -66,12 +66,11 @@ def update_document_login(owner):
 def get_document_peers(doc_id):
     client = connect_db()
     db = client["code-live"]
-
     col = db["documents"]
 
     doc_query = {"document_id": doc_id}
     result = list(col.find(doc_query))
-    
+
     result_doc = result[0]
     clients = result_doc['clients']
 
@@ -81,6 +80,27 @@ def get_document_peers(doc_id):
         mapping_dict[client_key] = client_name
 
     return mapping_dict
+
+
+def delete_document_peers(docid, user_cookie):
+    client = connect_db()
+    db = client["code-live"]
+    col = db["documents"]
+
+    doc_query = {"document_id": docid}
+    result = list(col.find(doc_query))
+
+    result_doc = result[0]
+    clients = result_doc['clients']
+
+    copied_clients = clients.copy()
+
+    for key, value in clients.items():
+        if key == user_cookie:
+            del copied_clients[key]
+
+    newvalues = {"$set": {"clients": copied_clients}}
+    col.update_one(doc_query, newvalues)
 
 
 def create_doc_id(length=6):
