@@ -121,6 +121,20 @@ $(document).ready(function(){
 
 async function main() {
     try {
+        // 00. Create codemirror, but set it as read only until setup is complete.
+        const codemirror = CodeMirror.fromTextArea(placeholder, {
+            lineNumbers: true,
+            lineWrapping: true,
+            indentUnit: parseInt(config['tabSize']),
+            tabSize: parseInt(config['tabSize']),
+            theme: "material",
+            extraKeys: {"Alt-F": "findPersistent"},
+            indentWithTabs: true,
+            autoCloseBrackets: true,
+            readOnly: true,
+        });
+        $('.CodeMirror').css('font-size', parseInt(config['fontSize']));
+
         // 01. create client with RPCAddr(envoy) then activate it.
         client = yorkie.createClient(API_URL);
         client.subscribe(network.statusListener(statusHolder));
@@ -193,20 +207,9 @@ async function main() {
         await get_mime_js(config['lang']);
         await client.sync();
 
-        // 03. create an instance of codemirror.
-        const codemirror = CodeMirror.fromTextArea(placeholder, {
-            lineNumbers: true,
-            lineWrapping: true,
-            mode: lang_name(config['lang'], 'mode'),
-            indentUnit: parseInt(config['tabSize']),
-            tabSize: parseInt(config['tabSize']),
-            theme: "material",
-            extraKeys: {"Alt-F": "findPersistent"},
-            indentWithTabs: true,
-            autoCloseBrackets: true
-        });
-        $('.CodeMirror').css('font-size', parseInt(config['fontSize']));
-
+        // 03. Make codemirror usable
+        codemirror.setOption('readOnly', false);
+        codemirror.setOption('mode', lang_name(config['lang'], 'mode'));
         codemirror.setOption('extraKeys', {
             'Ctrl-/': function(cm) {
                 cm.toggleComment();

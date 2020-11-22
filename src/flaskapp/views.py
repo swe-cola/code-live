@@ -1,5 +1,6 @@
 import os
 from flaskapp import app, auth, document, user
+from flask_cors import cross_origin
 from flask import (
     make_response,
     render_template,
@@ -51,7 +52,13 @@ def route_document(document_id):
 
     key = ('code-live', document_id)
 
-    rendered = render_template("index.html", API_URL=os.environ['YORKIE_AGENT_URL'], document_key=key, user_cookie=cookie)
+    rendered = render_template("index.html", document_key=key, config={
+        'API_URL': os.environ['YORKIE_AGENT_URL'],
+        'CODE_LIVE_COOKIE': CODE_LIVE_COOKIE,
+        'CHAT_SERVER_HOST': os.environ['CHAT_SERVER_HOST'],
+        'CHAT_SERVER_PORT': os.environ['CHAT_SERVER_PORT'],
+        'API_SERVER_HOST': os.environ['API_SERVER_HOST'],
+    })
     response = make_response(rendered)
     if new_cookie:
         response.set_cookie(CODE_LIVE_COOKIE, cookie)
