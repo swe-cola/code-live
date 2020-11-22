@@ -142,7 +142,7 @@ async function main() {
             url: "/api/update_client_list",
             data: { docid: docid, user_cookie: user_cookie}
         }).done(function( peers ) {
-            displayPeers(peers, clientID);
+            displayPeers(peers, user_cookie);
         });
 
         client.subscribe((event) => {

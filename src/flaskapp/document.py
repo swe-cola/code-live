@@ -67,6 +67,7 @@ def get_document_peers(doc_id):
     client = connect_db()
     db = client["code-live"]
     col = db["documents"]
+    user = db["user"]
 
     doc_query = {"document_id": doc_id}
     result = list(col.find(doc_query))
@@ -77,6 +78,11 @@ def get_document_peers(doc_id):
     mapping_dict = {}
 
     for client_key, client_name in clients.items():
+        user_query = {"_id": ObjectId(client_key)}
+        result = list(user.find(user_query))
+        if len(result) != 0 and 'kakaoid' in result[0]:
+            mapping_dict[client_key] = result[0]['kakaoid']
+            continue
         mapping_dict[client_key] = client_name
 
     return mapping_dict
