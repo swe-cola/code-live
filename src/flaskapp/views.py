@@ -29,9 +29,6 @@ def route_index():
     document_id = user.get_doc_id(cookie)
     if document_id is None:
         document_id = document.create_doc_id()
-        login = True if 'email' in session.keys() else False
-        # cookie = user collection id
-        save_document_info(document_id, cookie, login)
 
     url = url_for('route_document', document_id=document_id)
     redirected = redirect(url)
@@ -62,6 +59,10 @@ def route_document(document_id):
     response = make_response(rendered)
     if new_cookie:
         response.set_cookie(CODE_LIVE_COOKIE, cookie)
+
+    if not document.exists(document_id):
+        login = True if 'email' in session.keys() else False
+        save_document_info(document_id, cookie, login)
     return response
 
 
@@ -123,3 +124,8 @@ def route_delete_client():
     delete_document_peers(data['docid'], data['user_cookie'])
 
     return "success"
+
+@app.route('/api/nickname', methods=["POST"])
+def route_get_nickname():
+    data = request.form.to_dict()
+    return get_nickname(data['docID'], data['clientID'])
