@@ -19,8 +19,11 @@ function update_root(fieldName, value) {
 function displayPeers(peers, clientID) {
     let user_str = "";
     $.each(peers, function(key, value){
-        if(key === clientID) user_str += `<b>${value}</b>, `;
-        else user_str += `${value}, `;
+        if(key === clientID) {
+          user_str += `<b>${value}</b>, `;
+        } else {
+          user_str += `${value}, `;
+        }
     });
     peersHolder.innerHTML = user_str.substring(0, user_str.length - 2);
 }
@@ -166,7 +169,7 @@ async function main() {
                     url: "/api/get_peers_name",
                     data: { docid: docid }
                 }).done(function( peers ) {
-                    displayPeers(peers, client.getID());
+                    displayPeers(peers, user_cookie);
                 });
             }
         });
