@@ -12,7 +12,7 @@ def seconds_till_next_hour():
     now = datetime.utcnow()
     target = datetime(now.year, now.month, now.day, now.hour) + timedelta(hours=1)
     delta = target - now
-    return delta.seconds
+    return delta.seconds + 1
 
 
 def remove_inactive_documents(client):
