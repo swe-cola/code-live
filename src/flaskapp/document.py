@@ -5,16 +5,22 @@ import random
 import string
 
 
-def connect_db():
+def create_db_client():
+    '''create_db_client creates MongoClient once and then caches it.
+    '''
     client = MongoClient(
         host=os.environ['MONGO_USER_HOST'],
         port=int(os.environ['MONGO_USER_PORT']),
     )
-    return client
+    def get_db():
+        return client
+    return get_db
+
+get_db = create_db_client()
 
 
 def save_document_info(doc_id, owner, login):
-    client = connect_db()
+    client = get_db()
     db = client["code-live"]
     col = db["documents"]
     doc_info = {"document_id": doc_id, "owner": owner, "login": login}
@@ -23,13 +29,13 @@ def save_document_info(doc_id, owner, login):
 
 
 def update_document_clients(doc_id, clientID):
-    client = connect_db()
+    client = get_db()
     db = client["code-live"]
     col = db["documents"]
 
     doc_query = {"document_id": doc_id}
-    result = list(col.find(doc_query))
-    result_doc = result[0]
+    cursor = col.find(doc_query)
+    result_doc = cursor.next()
 
     nickname = route_generate_nickname(doc_id, clientID)
     if 'clients' in result_doc and len(result_doc['clients']) != 0:
@@ -53,7 +59,7 @@ def update_document_clients(doc_id, clientID):
 
 
 def update_document_login(owner):
-    client = connect_db()
+    client = get_db()
     db = client["code-live"]
     col = db["documents"]
 
@@ -64,7 +70,7 @@ def update_document_login(owner):
 
 
 def get_document_peers(doc_id):
-    client = connect_db()
+    client = get_db()
     db = client["code-live"]
     col = db["documents"]
     user = db["user"]
@@ -89,7 +95,7 @@ def get_document_peers(doc_id):
 
 
 def delete_document_peers(docid, user_cookie):
-    client = connect_db()
+    client = get_db()
     db = client["code-live"]
     col = db["documents"]
 
