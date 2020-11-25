@@ -15,36 +15,36 @@ $('#login_btn').on('click', function(){
                     let nickname = profile["profile"]["nickname"];
                     let thumbnail = profile["profile"]["thumbnail_image_url"];
 
-                    sessionStorage.setItem("nickname", nickname);
-                    sessionStorage.setItem("email", email);
-                    sessionStorage.setItem("thumbnail", thumbnail);
+                    localStorage.setItem("nickname", nickname);
+                    localStorage.setItem("email", email);
+                    localStorage.setItem("thumbnail", thumbnail);
 
                     loginUser(nickname, email, thumbnail);
                 },
                 fail: function(error) {
+                    alert("오류가 발생했습니다.");
                     console.log(error);
                 }
             });
         },
         fail: function(error) {
+            alert("오류가 발생했습니다.");
             console.log(error);
         }
     });
 });
 
 $('#logout_btn').on('click', function() {
-    sessionStorage.removeItem("nickname");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("thumbnail");
+    localStorage.clear();
 
     Kakao.Auth.logout();
     logoutUser();
 });
 
 $( document ).ready(function() {
-    const email = sessionStorage.getItem('email');
-    const nickname = sessionStorage.getItem('nickname');
-    const thumbnail = sessionStorage.getItem('thumbnail');
+    const email = localStorage.getItem('email');
+    const nickname = localStorage.getItem('nickname');
+    const thumbnail = localStorage.getItem('thumbnail');
 
     if (email) {
         loginUser(email, nickname, thumbnail);

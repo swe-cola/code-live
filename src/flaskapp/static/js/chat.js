@@ -4,7 +4,7 @@
 class Chat {
     constructor() {
         this.clientId = getCookie(CODE_LIVE_COOKIE);
-        this.docId = `${collection}-${documentName}`;
+        this.docId = documentName;
         this.initName.call(this);
 
         this.lastSender = undefined;
