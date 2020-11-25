@@ -2,7 +2,6 @@ import os
 from flask import Flask
 from flask_mongoengine import MongoEngine
 from dotenv import load_dotenv
-from flask_socketio import SocketIO
 
 load_dotenv()
 
@@ -15,8 +14,6 @@ app.config['MONGODB_SETTINGS'] = {
 app.secret_key = os.urandom(24)
 
 db = MongoEngine(app)
-socketio = SocketIO(app)
 
 
 from flaskapp import views
-from flaskapp import socket
