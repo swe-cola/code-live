@@ -85,12 +85,14 @@ def get_document_peers(doc_id):
         raise ValueError('Document does not exist')
 
     doc = get_document(doc_id)
+    if doc is None:
+        return {}
     clients = doc.clients
 
     peers = {}
     for client_id, client_name in clients.items():
         user = get_user(client_id)
-        if 'kakaoid' in user:
+        if user and 'kakaoid' in user:
             client_name = user.kakaoid
         peers[client_id] = client_name
     return peers
@@ -101,6 +103,8 @@ def delete_document_peers(doc_id, user_id):
         return
 
     doc = get_document(doc_id)
+    if doc is None:
+        return
     clients = doc.clients
     if user_id in clients:
         clients.pop(user_id)
