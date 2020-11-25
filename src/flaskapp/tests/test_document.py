@@ -1,4 +1,6 @@
 import unittest
+import sys
+sys.path.insert(2, 'src/flaskapp')
 from document import create_doc_id
 import re
 
