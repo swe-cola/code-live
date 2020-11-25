@@ -27,7 +27,18 @@ def save_document_info(doc_id, owner, login):
         doc.owner = owner
         doc.login = login
     else:
-        doc = Document(lastAccess=datetime.utcnow(), document_id=doc_id, owner=owner, login=login)
+        now = datetime.utcnow()
+        title = now.strftime('%Y-%m-%dT%H:%M:%S.code')
+        doc = Document(
+            lastAccess=datetime.utcnow(),
+            document_id=doc_id,
+            owner=owner,
+            login=login,
+            title=title,
+            desc=f'CodeLive snippet created at {title}',
+            # FIXME. Get its real mime type
+            mime_type='text/html',
+        )
     doc.save()
 
 
@@ -49,6 +60,24 @@ def update_document_clients(doc_id, client_id):
 
 def update_document_login(owner):
     Document.objects(owner=owner).update(set__login=True)
+
+
+def update_document_title(doc_id, client_id, title):
+    if not exists(doc_id):
+        raise ValueError('Document does not exist')
+
+    doc = get_document(doc_id)
+    doc.title = title
+    doc.save()
+
+
+def update_document_desc(doc_id, client_id, desc):
+    if not exists(doc_id):
+        raise ValueError('Document does not exist')
+
+    doc = get_document(doc_id)
+    doc.desc = desc
+    doc.save()
 
 
 def get_document_peers(doc_id):
