@@ -34,9 +34,10 @@
   </nav>
   <div class='container-fluid fixed-height'>
     <div class='row bg-dark vertical-center'>
-      <div class="col-1" id="status">status: <span id="network-status"></span></div>
-      <div class="col-6">peers: <span id="peers-holder"></span></div>
-      <div class="col-5"></div>
+      <div class="col-3">
+        <span id="network-status"></span>&nbsp;&nbsp;<span class='code' id='title'>{{ docInfo['title'] }}</span>
+      </div>
+      <div class="col"><i class="fas fa-user-friends"></i>&nbsp;&nbsp;<span id="peers-holder"></span></div>
     </div>
   </div>
   <div class='dynamic-height'>

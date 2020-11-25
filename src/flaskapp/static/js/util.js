@@ -6,7 +6,7 @@ const network = {
   },
   showOnline: (elem) => {
     network.isOnline = true;
-    elem.innerHTML = '<span class="green"> </span>';
+    elem.innerHTML = '<i class="fas fa-wifi"></i>';
   },
   statusListener: elem => {
     return (event) => {
