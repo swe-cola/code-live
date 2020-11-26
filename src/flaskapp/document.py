@@ -36,8 +36,7 @@ def save_document_info(doc_id, owner, login):
             login=login,
             title=title,
             desc=f'CodeLive snippet created at {title}',
-            # FIXME. Get its real mime type
-            mime_type='text/html',
+            mime_type='website',
         )
     doc.save()
 
