@@ -4,7 +4,7 @@
 class Chat {
     constructor() {
         this.clientId = getCookie(CODE_LIVE_COOKIE);
-        this.docId = `${collection}-${documentName}`;
+        this.docId = documentName;
         this.initName.call(this);
 
         this.lastSender = undefined;
@@ -26,7 +26,7 @@ class Chat {
         this.nickname = this.clientId; // Use clientId in case ajax fails
         $.ajax({
           crossDomain: true,
-          url: API_SERVER_HOST + '/api/nickname',
+          url: '/api/nickname',
           type: "POST",
           data: {
             clientID: this.clientId,

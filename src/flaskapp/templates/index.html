@@ -5,6 +5,10 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="{{docInfo['title']}}" />
+    <meta property="og:description" content="{{docInfo['desc']}}" />
+    <meta property="og:type" content="{{docInfo['mime']}}" />
+    <meta property="og:image" content="/static/img/code-live.png" />
 
     <link rel="icon" href="/static/favicon.svg">
 
@@ -34,9 +38,10 @@
   </nav>
   <div class='container-fluid fixed-height'>
     <div class='row bg-dark vertical-center'>
-      <div class="col-1" id="status">status: <span id="network-status"></span></div>
-      <div class="col-6">peers: <span id="peers-holder"></span></div>
-      <div class="col-5"></div>
+      <div class="col-3">
+        <span id="network-status"></span>&nbsp;&nbsp;<span class='code' id='title'>{{ docInfo['title'] }}</span>
+      </div>
+      <div class="col"><i class="fas fa-user-friends"></i>&nbsp;&nbsp;<span id="peers-holder"></span></div>
     </div>
   </div>
   <div class='dynamic-height'>
@@ -108,6 +113,25 @@
               </li>
             </ul>
           </div>
+        </div>
+        <div>
+          <div id="rtc_ui_template">
+            <button type="button" class="btn btn-secondary mute_button">
+              <svg class="icon_mute" width="100%" height="100%" viewBox="0 0 16 16" class="bi bi-volume-mute" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zM6 5.04L4.312 6.39A.5.5 0 0 1 4 6.5H2v3h2a.5.5 0 0 1 .312.11L6 10.96V5.04zm7.854.606a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708l4-4a.5.5 0 0 1 .708 0z"/>
+                <path fill-rule="evenodd" d="M9.146 5.646a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0z"/>
+              </svg>
+              <svg class="icon_unmute" width="100%" height="100%" viewBox="0 0 16 16" class="bi bi-volume-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8.717 3.55A.5.5 0 0 1 9 4v8a.5.5 0 0 1-.812.39L5.825 10.5H3.5A.5.5 0 0 1 3 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zM8 5.04L6.312 6.39A.5.5 0 0 1 6 6.5H4v3h2a.5.5 0 0 1 .312.11L8 10.96V5.04z"/>
+                <path d="M10.707 11.182A4.486 4.486 0 0 0 12.025 8a4.486 4.486 0 0 0-1.318-3.182L10 5.525A3.489 3.489 0 0 1 11.025 8c0 .966-.392 1.841-1.025 2.475l.707.707z"/>
+              </svg>
+              <svg class="icon_no_mic" width="100%" height="100%" viewBox="0 0 16 16" class="bi bi-telephone-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zm9.262 1.135a.5.5 0 0 1 .708 0L13 2.793l1.146-1.147a.5.5 0 0 1 .708.708L13.707 3.5l1.147 1.146a.5.5 0 0 1-.708.708L13 4.207l-1.146 1.147a.5.5 0 0 1-.708-.708L12.293 3.5l-1.147-1.146a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </button>
+          </div>
+          <button type="button" class="btn btn-secondary" id="voice_toggle">Join Voice Chat</button>
+          <div id="voice_peers"></div>
         </div>
       </div>
       <div class="tab-pane" id="tabAccount">
@@ -326,6 +350,7 @@
   <script src="static/js/lang_name.js"></script>
   <script src="static/js/index_generate_dynamic_html.js"></script>
   <script src="static/js/index_register_element_callback.js"></script>
+  <script src="static/js/rtc.js"></script>
   <script>
     const API_URL = '{{ config["API_URL"] }}';
     const collection = '{{ document_key[0] }}';
