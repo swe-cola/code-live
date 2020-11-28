@@ -27,7 +27,17 @@ def save_document_info(doc_id, owner, login):
         doc.owner = owner
         doc.login = login
     else:
-        doc = Document(lastAccess=datetime.utcnow(), document_id=doc_id, owner=owner, login=login)
+        now = datetime.utcnow()
+        title = now.strftime('%Y-%m-%dT%H:%M:%S.code')
+        doc = Document(
+            lastAccess=datetime.utcnow(),
+            document_id=doc_id,
+            owner=owner,
+            login=login,
+            title=title,
+            desc=f'CodeLive snippet created at {title}',
+            mime_type='website',
+        )
     doc.save()
 
 
@@ -51,17 +61,37 @@ def update_document_login(owner):
     Document.objects(owner=owner).update(set__login=True)
 
 
+def update_document_title(doc_id, client_id, title):
+    if not exists(doc_id):
+        raise ValueError('Document does not exist')
+
+    doc = get_document(doc_id)
+    doc.title = title
+    doc.save()
+
+
+def update_document_desc(doc_id, client_id, desc):
+    if not exists(doc_id):
+        raise ValueError('Document does not exist')
+
+    doc = get_document(doc_id)
+    doc.desc = desc
+    doc.save()
+
+
 def get_document_peers(doc_id):
     if not exists(doc_id):
         raise ValueError('Document does not exist')
 
     doc = get_document(doc_id)
+    if doc is None:
+        return {}
     clients = doc.clients
 
     peers = {}
     for client_id, client_name in clients.items():
         user = get_user(client_id)
-        if 'kakaoid' in user:
+        if user and 'kakaoid' in user:
             client_name = user.kakaoid
         peers[client_id] = client_name
     return peers
@@ -72,6 +102,8 @@ def delete_document_peers(doc_id, user_id):
         return
 
     doc = get_document(doc_id)
+    if doc is None:
+        return
     clients = doc.clients
     if user_id in clients:
         clients.pop(user_id)

@@ -5,6 +5,10 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="{{docInfo['title']}}" />
+    <meta property="og:description" content="{{docInfo['desc']}}" />
+    <meta property="og:type" content="{{docInfo['mime']}}" />
+    <meta property="og:image" content="/static/img/code-live.png" />
 
     <link rel="icon" href="/static/favicon.svg">
 
@@ -34,9 +38,10 @@
   </nav>
   <div class='container-fluid fixed-height'>
     <div class='row bg-dark vertical-center'>
-      <div class="col-1" id="status">status: <span id="network-status"></span></div>
-      <div class="col-6">peers: <span id="peers-holder"></span></div>
-      <div class="col-5"></div>
+      <div class="col-3">
+        <span id="network-status"></span>&nbsp;&nbsp;<span class='code' id='title'>{{ docInfo['title'] }}</span>
+      </div>
+      <div class="col"><i class="fas fa-user-friends"></i>&nbsp;&nbsp;<span id="peers-holder"></span></div>
     </div>
   </div>
   <div class='dynamic-height'>

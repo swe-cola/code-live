@@ -47,22 +47,29 @@ def route_document(document_id):
         new_cookie = True
     user.log_access(cookie, document_id)
 
+    if not document.exists(document_id):
+        login = True if 'email' in session.keys() else False
+        save_document_info(document_id, cookie, login)
+
     key = ('code-live', document_id)
 
-    rendered = render_template("index.html", document_key=key, config={
+    config = {
         'API_URL': os.environ['YORKIE_AGENT_URL'],
         'CODE_LIVE_COOKIE': CODE_LIVE_COOKIE,
         'CHAT_SERVER_HOST': os.environ['CHAT_SERVER_HOST'],
         'CHAT_SERVER_PORT': os.environ['CHAT_SERVER_PORT'],
         'API_SERVER_HOST': os.environ['API_SERVER_HOST'],
-    })
+    }
+    doc = get_document(document_id)
+    doc_info = {
+        'title': doc.title,
+        'desc': doc.desc,
+        'mime': doc.mime_type,
+    }
+    rendered = render_template("index.html", document_key=key, config=config, docInfo=doc_info)
     response = make_response(rendered)
     if new_cookie:
         response.set_cookie(CODE_LIVE_COOKIE, cookie)
-
-    if not document.exists(document_id):
-        login = True if 'email' in session.keys() else False
-        save_document_info(document_id, cookie, login)
     return response
 
 
@@ -108,6 +115,20 @@ def route_update_client_list():
     client_dict = update_document_clients(data['docid'], data['user_cookie'])
 
     return jsonify(client_dict)
+
+
+@app.route('/api/update_document_title', methods=["POST"])
+def route_update_document_title():
+    data = request.form.to_dict()
+    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['title'])
+    return "success"
+
+
+@app.route('/api/update_document_desc', methods=["POST"])
+def route_update_document_desc():
+    data = request.form.to_dict()
+    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['desc'])
+    return "success"
 
 
 @app.route('/api/get_peers_name', methods=["POST"])

@@ -364,3 +364,7 @@ a:hover {
 .format {
     display: none;
 }
+
+.code {
+    font-family: Consolas, monaco, monospace;
+}
