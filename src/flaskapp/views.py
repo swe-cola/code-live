@@ -8,8 +8,11 @@ from flask import (
     request,
     send_from_directory,
     url_for,
-    session
+    session,
+    jsonify
 )
+
+from .document import *
 
 CODE_LIVE_COOKIE = 'code-live'
 
@@ -44,15 +47,26 @@ def route_document(document_id):
         new_cookie = True
     user.log_access(cookie, document_id)
 
+    if not document.exists(document_id):
+        login = True if 'email' in session.keys() else False
+        save_document_info(document_id, cookie, login)
+
     key = ('code-live', document_id)
 
-    rendered = render_template("index.html", document_key=key, config={
+    config = {
         'API_URL': os.environ['YORKIE_AGENT_URL'],
         'CODE_LIVE_COOKIE': CODE_LIVE_COOKIE,
         'CHAT_SERVER_HOST': os.environ['CHAT_SERVER_HOST'],
         'CHAT_SERVER_PORT': os.environ['CHAT_SERVER_PORT'],
         'API_SERVER_HOST': os.environ['API_SERVER_HOST'],
-    })
+    }
+    doc = get_document(document_id)
+    doc_info = {
+        'title': doc.title,
+        'desc': doc.desc,
+        'mime': doc.mime_type,
+    }
+    rendered = render_template("index.html", document_key=key, config=config, docInfo=doc_info)
     response = make_response(rendered)
     if new_cookie:
         response.set_cookie(CODE_LIVE_COOKIE, cookie)
@@ -75,6 +89,11 @@ def route_save_user_info():
     for key in info_keys:
         session[key] = data[key]
 
+    cookie = request.cookies.get(CODE_LIVE_COOKIE)
+    user.set_kakao_id(cookie, data['nickname'])
+
+    update_document_login(cookie)
+
     return "success"
 
 
@@ -90,34 +109,44 @@ def route_delete_user_info():
     return "success"
 
 
-@app.route('/api/nickname', methods=["POST"])
-@cross_origin()
-def route_generate_nickname():
-    adjectives = ['Adorable', 'Ambitious', 'Angry', 'Attractive', 'Beautiful', 'Big', 'Bored', 'Brave', 'Calm',
-                  'Chubby', 'Clean', 'Dazzling', 'Delightful', 'Elegant', 'Fancy', 'Friendly', 'Gentle', 'Glamorous',
-                  'Gorgeous', 'Handsome', 'Happy', 'Lazy', 'Muscular', 'Mysterious', 'Nervous', 'Nice', 'Polite',
-                  'Scary', 'Small', 'Worried']
-
-    animals = [
-        'Alligator', 'Anteater', 'Armadillo', 'Auroch', 'Axolotl', 'Badger', 'Bat', 'Bear', 'Beaver',
-        'Blobfish', 'Buffalo', 'Camel', 'Chameleon', 'Cheetah', 'Chipmunk', 'Chinchilla', 'Chupacabra',
-        'Cormorant', 'Coyote', 'Crow', 'Dingo', 'Dinosaur', 'Dog', 'Dolphin', 'Dragon',
-        'Duck', 'Dumbo octopus', 'Elephant', 'Ferret', 'Fox', 'Frog', 'Giraffe', 'Goose',
-        'Gopher', 'Grizzly', 'Hamster', 'Hedgehog', 'Hippo', 'Hyena', 'Jackal', 'Jackalope',
-        'Ibex', 'Ifrit', 'Iguana', 'Kangaroo', 'Kiwi', 'Koala', 'Kraken', 'Lemur',
-        'Leopard', 'Liger', 'Lion', 'Llama', 'Manatee', 'Mink', 'Monkey', 'Moose',
-        'Narwhal', 'Nyan cat', 'Orangutan', 'Otter', 'Panda', 'Penguin', 'Platypus', 'Python',
-        'Pumpkin', 'Quagga', 'Quokka', 'Rabbit', 'Raccoon', 'Rhino', 'Sheep', 'Shrew',
-        'Skunk', 'Slow loris', 'Squirrel', 'Tiger', 'Turtle', 'Unicorn', 'Walrus', 'Wolf',
-        'Wolverine', 'Wombat'
-    ]
-
+@app.route('/api/update_client_list', methods=["POST"])
+def route_update_client_list():
     data = request.form.to_dict()
-    docid = data["docID"]
-    clientid = data["clientID"]
+    client_dict = update_document_clients(data['docid'], data['user_cookie'])
 
-    key = (docid, clientid)
-    adjective = adjectives[hash(key) % len(adjectives)]
-    animal = animals[hash(key) % len(animals)]
+    return jsonify(client_dict)
 
-    return adjective + " " + animal
+
+@app.route('/api/update_document_title', methods=["POST"])
+def route_update_document_title():
+    data = request.form.to_dict()
+    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['title'])
+    return "success"
+
+
+@app.route('/api/update_document_desc', methods=["POST"])
+def route_update_document_desc():
+    data = request.form.to_dict()
+    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['desc'])
+    return "success"
+
+
+@app.route('/api/get_peers_name', methods=["POST"])
+def route_get_peers_name():
+    data = request.form.to_dict()
+    mapping_dict = get_document_peers(data['docid'])
+
+    return jsonify(mapping_dict)
+
+
+@app.route('/api/delete_client', methods=["POST"])
+def route_delete_client():
+    data = request.form.to_dict()
+    delete_document_peers(data['docid'], data['user_cookie'])
+
+    return "success"
+
+@app.route('/api/nickname', methods=["POST"])
+def route_get_nickname():
+    data = request.form.to_dict()
+    return get_nickname(data['docID'], data['clientID'])

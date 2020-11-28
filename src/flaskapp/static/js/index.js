@@ -11,13 +11,21 @@ const selectionMap = new Map();
 function update_root(fieldName, value) {
     doc.update((root) => {
         const field = root[fieldName];
-        const text = field.getValue()
+        const text = field.getValue();
         field.edit(0, text.length, value);
     }, `Overwrite ${fieldName}`);
 }
 
 function displayPeers(peers, clientID) {
-    peersHolder.innerHTML = JSON.stringify(peers).replace(clientID, `<b>${clientID}</b>`);
+    let user_str = "";
+    $.each(peers, function(key, value){
+        if(key === clientID) {
+          user_str += `<b>${value}</b>, `;
+        } else {
+          user_str += `${value}, `;
+        }
+    });
+    peersHolder.innerHTML = user_str.substring(0, user_str.length - 2);
 }
 
 // https://github.com/codemirror/CodeMirror/pull/5619
@@ -83,7 +91,6 @@ function displayRemoteSelection(cm, change) {
 }
 
 $(document).ready(function(){
-
     $(".tabs").click(function(){
     
         $(".tabs").removeClass("active");
@@ -140,9 +147,30 @@ async function main() {
         doc = yorkie.createDocument(collection, documentName);
         await client.attach(doc);
 
+        // update client list
+        var pathname = window.location.pathname;
+        var length = pathname.length;
+        var docid = pathname.slice(1, length);
+
+        var user_cookie = getCookie("code-live");
+
+        $.ajax({
+            type: "POST",
+            url: "/api/update_client_list",
+            data: { docid: docid, user_cookie: user_cookie}
+        }).done(function( peers ) {
+            displayPeers(peers, user_cookie);
+        });
+
         client.subscribe((event) => {
             if (event.name === 'documents-watching-peer-changed') {
-                displayPeers(event.value[doc.getKey().toIDString()], client.getID());
+                $.ajax({
+                    type: "POST",
+                    url: "/api/get_peers_name",
+                    data: { docid: docid }
+                }).done(function( peers ) {
+                    displayPeers(peers, user_cookie);
+                });
             }
         });
 
@@ -323,9 +351,6 @@ async function main() {
     } catch (e) {
         console.error(e);
     }
-    
-
-  
 }
 
 function colortheme(element){
@@ -380,3 +405,29 @@ let limitFunc = function () {
 
 $(document).ready(function() { limitFunc(); });
 window.addEventListener("resize", limitFunc);
+
+var getCookie = function(name) {
+    var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return value? value[2] : null;
+};
+
+window.addEventListener('beforeunload', function (e) {
+    // delete from database before leaving
+    // Cancel the event
+    e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    // Chrome requires returnValue to be set
+    e.returnValue = '';
+
+    let user_cookie = getCookie("code-live");
+
+    let pathname = window.location.pathname;
+    let length = pathname.length;
+    let docid = pathname.slice(1, length);
+
+    $.ajax({
+        type: "POST",
+        url: "/api/delete_client",
+        data: { docid: docid, user_cookie: user_cookie}
+    }).done(function( peers ) {
+    });
+});

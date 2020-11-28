@@ -15,4 +15,5 @@ app.secret_key = os.urandom(24)
 
 db = MongoEngine(app)
 
+
 from flaskapp import views
