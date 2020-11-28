@@ -265,8 +265,6 @@ html.light .dynamic-height .tab-content textarea{
     vertical-align: middle;
 }
 
-#container pre { display: inline }
-
 fieldset {
     display: none;
 }
