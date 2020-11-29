@@ -5,6 +5,10 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:title" content="{{docInfo['title']}}" />
+    <meta property="og:description" content="{{docInfo['desc']}}" />
+    <meta property="og:type" content="{{docInfo['mime']}}" />
+    <meta property="og:image" content="/static/img/code-live.png" />
 
     <link rel="icon" href="/static/favicon.svg">
 
@@ -34,9 +38,10 @@
   </nav>
   <div class='container-fluid fixed-height'>
     <div class='row bg-dark vertical-center'>
-      <div class="col-1" id="status">status: <span id="network-status"></span></div>
-      <div class="col-6">peers: <span id="peers-holder"></span></div>
-      <div class="col-5"></div>
+      <div class="col-3">
+        <span id="network-status"></span>&nbsp;&nbsp;<span class='code' id='title'>{{ docInfo['title'] }}</span>
+      </div>
+      <div class="col"><i class="fas fa-user-friends"></i>&nbsp;&nbsp;<span id="peers-holder"></span></div>
     </div>
   </div>
   <div class='dynamic-height'>
@@ -109,6 +114,25 @@
             </ul>
           </div>
         </div>
+        <div>
+          <div id="rtc_ui_template">
+            <button type="button" class="btn btn-secondary mute_button">
+              <svg class="icon_mute" width="100%" height="100%" viewBox="0 0 16 16" class="bi bi-volume-mute" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zM6 5.04L4.312 6.39A.5.5 0 0 1 4 6.5H2v3h2a.5.5 0 0 1 .312.11L6 10.96V5.04zm7.854.606a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708l4-4a.5.5 0 0 1 .708 0z"/>
+                <path fill-rule="evenodd" d="M9.146 5.646a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0z"/>
+              </svg>
+              <svg class="icon_unmute" width="100%" height="100%" viewBox="0 0 16 16" class="bi bi-volume-down" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M8.717 3.55A.5.5 0 0 1 9 4v8a.5.5 0 0 1-.812.39L5.825 10.5H3.5A.5.5 0 0 1 3 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zM8 5.04L6.312 6.39A.5.5 0 0 1 6 6.5H4v3h2a.5.5 0 0 1 .312.11L8 10.96V5.04z"/>
+                <path d="M10.707 11.182A4.486 4.486 0 0 0 12.025 8a4.486 4.486 0 0 0-1.318-3.182L10 5.525A3.489 3.489 0 0 1 11.025 8c0 .966-.392 1.841-1.025 2.475l.707.707z"/>
+              </svg>
+              <svg class="icon_no_mic" width="100%" height="100%" viewBox="0 0 16 16" class="bi bi-telephone-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zm9.262 1.135a.5.5 0 0 1 .708 0L13 2.793l1.146-1.147a.5.5 0 0 1 .708.708L13.707 3.5l1.147 1.146a.5.5 0 0 1-.708.708L13 4.207l-1.146 1.147a.5.5 0 0 1-.708-.708L12.293 3.5l-1.147-1.146a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </button>
+          </div>
+          <button type="button" class="btn btn-secondary" id="voice_toggle">Join Voice Chat</button>
+          <div id="voice_peers"></div>
+        </div>
       </div>
       <div class="tab-pane" id="tabAccount">
         account
@@ -153,123 +177,123 @@
                               <div class="text-left row pt-3 px-3">
                                 <div class="col-6">
                                   <p>Mac</p>
-                                  <p>Cmd-Left: go Line Start Smart
-                                  <br>Shift-Tab: indent Less
-                                  <br>Shift-Ctrl-K: delete Line
-                                  <br>Alt-Q: wrap Lines
-                                  <br>Ctrl-Left: go Subword Left
-                                  <br>Ctrl-Right: go Subword Right
-                                  <br>Ctrl-Alt-Up: scroll Line Up
-                                  <br>Ctrl-Alt-Down: scroll Line Down
-                                  <br>Cmd-L: select Line
-                                  <br>Shift-Cmd-L: split Selection By Line
-                                  <br>Esc: single Selection Top
-                                  <br>Cmd-Enter: insert Line After
-                                  <br>Shift-Cmd-Enter: insert Line Before
-                                  <br>Cmd-D: select Next Occurrence
-                                  <br>Shift-Cmd-Space: select Scope
-                                  <br>Shift-Cmd-M: select Between Brackets
-                                  <br>Cmd-M: go To Bracket
-                                  <br>Cmd-Ctrl-Up: swap Line Up
-                                  <br>Cmd-Ctrl-Down: swap Line Down
-                                  <br>Cmd-/: toggle Comment Indented
-                                  <br>Cmd-J: join Lines
-                                  <br>Shift-Cmd-D: duplicate Line
-                                  <br>F5: sort Lines
-                                  <br>Cmd-F5: sort Lines Insensitive
-                                  <br>F2: next Bookmark
-                                  <br>Shift-F2: prev Bookmark
-                                  <br>Cmd-F2: toggle Bookmark
-                                  <br>Shift-Cmd-F2: clear Bookmarks
-                                  <br>Alt-F2: select Bookmarks
-                                  <br>Backspace: smart Backspace
-                                  <br>Cmd-K Cmd-D: skip And Select Next Occurrence
-                                  <br>Cmd-K Cmd-K: del Line Right
-                                  <br>Cmd-K Cmd-U: upcase At Cursor
-                                  <br>Cmd-K Cmd-L: downcase At Cursor
-                                  <br>Cmd-K Cmd-Space: set Sublime Mark
-                                  <br>Cmd-K Cmd-A: select To Sublime Mark
-                                  <br>Cmd-K Cmd-W: delete To Sublime Mark
-                                  <br>Cmd-K Cmd-X: swap With Sublime Mark
-                                  <br>Cmd-K Cmd-Y: sublime Yank
-                                  <br>Cmd-K Cmd-C: show In Center
-                                  <br>Cmd-K Cmd-G: clear Bookmarks
-                                  <br>Cmd-K Cmd-Backspace: del Line Left
-                                  <br>Cmd-K Cmd-1: fold All
-                                  <br>Cmd-K Cmd-0: unfold All
-                                  <br>Cmd-K Cmd-J: unfold All
-                                  <br>Ctrl-Shift-Up: add Cursor To Prev Line
-                                  <br>Ctrl-Shift-Down: add Cursor To Next Line
-                                  <br>Cmd-F3: find Under
-                                  <br>Shift-Cmd-F3: find Under Previous
-                                  <br>Alt-F3: find All Under
-                                  <br>Shift-Cmd-[: fold
-                                  <br>Shift-Cmd-]: unfold
-                                  <br>Cmd-I: find Incremental
-                                  <br>Shift-Cmd-I: find Incremental Reverse
-                                  <br>Cmd-H: replace
-                                  <br>F3: find Next
-                                  <br>Shift-F3: find Prev</p>
+                                  <div class="modal_box_wrapper"><div class="key_bindings" >Cmd-Left</div><pre class="key_manual"> go Line Start Smart</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Tab</div><pre class="key_manual"> indent Less</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-K</div><pre class="key_manual"> delete Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-Q</div><pre class="key_manual"> wrap Lines</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Left</div><pre class="key_manual"> go Subword Left</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Right</div><pre class="key_manual"> go Subword Right</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Alt-Up</div><pre class="key_manual"> scroll Line Up</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Alt-Down</div><pre class="key_manual"> scroll Line Down</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-L</div><pre class="key_manual"> select Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-L</div><pre class="key_manual"> split Selection By Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Esc</div><pre class="key_manual"> single Selection Top</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-Enter</div><pre class="key_manual"> insert Line After</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-Enter</div><pre class="key_manual"> insert Line Before</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-D</div><pre class="key_manual"> select Next Occurrence</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-Space</div><pre class="key_manual"> select Scope</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-M</div><pre class="key_manual"> select Between Brackets</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-M</div><pre class="key_manual"> go To Bracket</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-Ctrl-Up</div><pre class="key_manual"> swap Line Up</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-Ctrl-Down</div><pre class="key_manual"> swap Line Down</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-/</div><pre class="key_manual"> toggle Comment Indented</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-J</div><pre class="key_manual"> join Lines</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-D</div><pre class="key_manual"> duplicate Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">F5</div><pre class="key_manual"> sort Lines</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-F5</div><pre class="key_manual"> sort Lines Insensitive</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">F2</div><pre class="key_manual"> next Bookmark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-F2</div><pre class="key_manual"> prev Bookmark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-F2</div><pre class="key_manual"> toggle Bookmark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-F2</div><pre class="key_manual"> clear Bookmarks</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-F2</div><pre class="key_manual"> select Bookmarks</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Backspace</div><pre class="key_manual"> smart Backspace</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-D</div><pre class="key_manual"> skip And Select Next Occurrence</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-K</div><pre class="key_manual"> del Line Right</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-U</div><pre class="key_manual"> upcase At Cursor</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-L</div><pre class="key_manual"> downcase At Cursor</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-Space</div><pre class="key_manual"> set Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-A</div><pre class="key_manual"> select To Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-W</div><pre class="key_manual"> delete To Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-X</div><pre class="key_manual"> swap With Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-Y</div><pre class="key_manual"> sublime Yank</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-C</div><pre class="key_manual"> show In Center</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-G</div><pre class="key_manual"> clear Bookmarks</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-Backspace</div><pre class="key_manual"> del Line Left</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-1</div><pre class="key_manual"> fold All</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-0</div><pre class="key_manual"> unfold All</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-K Cmd-J</div><pre class="key_manual"> unfold All</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Shift-Up</div><pre class="key_manual"> add Cursor To Prev Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Shift-Down</div><pre class="key_manual"> add Cursor To Next Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-F3</div><pre class="key_manual"> find Under</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-F3</div><pre class="key_manual"> find Under Previous</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-F3</div><pre class="key_manual"> find All Under</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-[</div><pre class="key_manual"> fold</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-]</div><pre class="key_manual"> unfold</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-I</div><pre class="key_manual"> find Incremental</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Cmd-I</div><pre class="key_manual"> find Incremental Reverse</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Cmd-H</div><pre class="key_manual"> replace</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">F3</div><pre class="key_manual"> find Next</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-F3</div><pre class="key_manual"> find Prev</pre></div>
                                 </div>
                                 <div class="col-6">
                                   <p>PC</p>
-                                  <p>Shift-Tab: indent Less
-                                  <br>Shift-Ctrl-K: delete Line
-                                  <br>Alt-Q: wrap Lines
-                                  <br>Ctrl-T: transpose Chars
-                                  <br>Alt-Left: go Subword Left
-                                  <br>Alt-Right: go Subword Right
-                                  <br>Ctrl-Up: scroll LineUp
-                                  <br>Ctrl-Down: scroll Line Down
-                                  <br>Ctrl-L: select Line
-                                  <br>Shift-Ctrl-L: split Selection By Line
-                                  <br>Esc: single Selection Top
-                                  <br>Ctrl-Enter: insert Line After
-                                  <br>Shift-Ctrl-Enter: insert Line Before
-                                  <br>Ctrl-D: select Next Occurrence
-                                  <br>Shift-Ctrl-Space: select Scope
-                                  <br>Shift-Ctrl-M: select Between Brackets
-                                  <br>Ctrl-M: go To Bracket
-                                  <br>Shift-Ctrl-Up: swap Line Up
-                                  <br>Shift-Ctrl-Down: swap Line Down
-                                  <br>Ctrl-/: toggle Comment Indented
-                                  <br>Ctrl-J: join Lines
-                                  <br>Shift-Ctrl-D: duplicate Line
-                                  <br>F9: sort Lines
-                                  <br>Ctrl-F9: sort Lines Insensitive
-                                  <br>F2: next Bookmark
-                                  <br>Shift-F2: prev Bookmark
-                                  <br>Ctrl-F2: toggle Bookmark
-                                  <br>Shift-Ctrl-F2: clear Bookmarks
-                                  <br>Alt-F2: select Bookmarks
-                                  <br>Backspace: smart Backspace
-                                  <br>Ctrl-K Ctrl-D: skip And Select Next Occurrence
-                                  <br>Ctrl-K Ctrl-K: del Line Right
-                                  <br>Ctrl-K Ctrl-U: upcase At Cursor
-                                  <br>Ctrl-K Ctrl-L: downcase At Cursor
-                                  <br>Ctrl-K Ctrl-Space: set Sublime Mark
-                                  <br>Ctrl-K Ctrl-A: select To Sublime Mark
-                                  <br>Ctrl-K Ctrl-W: delete To Sublime Mark
-                                  <br>Ctrl-K Ctrl-X: swap With Sublime Mark
-                                  <br>Ctrl-K Ctrl-Y: sublime Yank
-                                  <br>Ctrl-K Ctrl-C: show In Center
-                                  <br>Ctrl-K Ctrl-G: clear Bookmarks
-                                  <br>Ctrl-K Ctrl-Backspace: del Line Left
-                                  <br>Ctrl-K Ctrl-1: fold All
-                                  <br>Ctrl-K Ctrl-0: unfold All
-                                  <br>Ctrl-K Ctrl-J: unfold All
-                                  <br>Ctrl-Alt-Up: add Cursor To Prev Line
-                                  <br>Ctrl-Alt-Down: add Cursor To Next Line
-                                  <br>Ctrl-F3: find Under
-                                  <br>Shift-Ctrl-F3: find Under Previous
-                                  <br>Alt-F3: find All Under
-                                  <br>Shift-Ctrl-[: fold
-                                  <br>Shift-Ctrl-]: unfold
-                                  <br>Ctrl-I: find Incremental
-                                  <br>Shift-Ctrl-I: find Incremental Reverse
-                                  <br>Ctrl-H: replace
-                                  <br>F3: find Next
-                                  <br>Shift-F3: find Prev</p>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Tab</div><pre class="key_manual"> indent Less</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-K</div><pre class="key_manual"> delete Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-Q</div><pre class="key_manual"> wrap Lines</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-T</div><pre class="key_manual"> transpose Chars</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-Left</div><pre class="key_manual"> go Subword Left</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-Right</div><pre class="key_manual"> go Subword Right</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Up</div><pre class="key_manual"> scroll LineUp</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Down</div><pre class="key_manual"> scroll Line Down</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-L</div><pre class="key_manual"> select Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-L</div><pre class="key_manual"> split Selection By Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Esc</div><pre class="key_manual"> single Selection Top</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Enter</div><pre class="key_manual"> insert Line After</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-Enter</div><pre class="key_manual"> insert Line Before</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-D</div><pre class="key_manual"> select Next Occurrence</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-Space</div><pre class="key_manual"> select Scope</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-M</div><pre class="key_manual"> select Between Brackets</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-M</div><pre class="key_manual"> go To Bracket</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-Up</div><pre class="key_manual"> swap Line Up</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-Down</div><pre class="key_manual"> swap Line Down</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-/</div><pre class="key_manual"> toggle Comment Indented</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-J</div><pre class="key_manual"> join Lines</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-D</div><pre class="key_manual"> duplicate Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">F9</div><pre class="key_manual"> sort Lines</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-F9</div><pre class="key_manual"> sort Lines Insensitive</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">F2</div><pre class="key_manual"> next Bookmark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-F2</div><pre class="key_manual"> prev Bookmark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-F2</div><pre class="key_manual"> toggle Bookmark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-F2</div><pre class="key_manual"> clear Bookmarks</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-F2</div><pre class="key_manual"> select Bookmarks</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Backspace</div><pre class="key_manual"> smart Backspace</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-D</div><pre class="key_manual"> skip And Select Next Occurrence</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-K</div><pre class="key_manual"> del Line Right</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-U</div><pre class="key_manual"> upcase At Cursor</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-L</div><pre class="key_manual"> downcase At Cursor</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-Space</div><pre class="key_manual"> set Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-A</div><pre class="key_manual"> select To Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-W</div><pre class="key_manual"> delete To Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-X</div><pre class="key_manual"> swap With Sublime Mark</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-Y</div><pre class="key_manual"> sublime Yank</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-C</div><pre class="key_manual"> show In Center</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-G</div><pre class="key_manual"> clear Bookmarks</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-Backspace</div><pre class="key_manual"> del Line Left</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-1</div><pre class="key_manual"> fold All</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-0</div><pre class="key_manual"> unfold All</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-K Ctrl-J</div><pre class="key_manual"> unfold All</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Alt-Up</div><pre class="key_manual"> add Cursor To Prev Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-Alt-Down</div><pre class="key_manual"> add Cursor To Next Line</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-F3</div><pre class="key_manual"> find Under</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-F3</div><pre class="key_manual"> find Under Previous</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Alt-F3</div><pre class="key_manual"> find All Under</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-[</div><pre class="key_manual"> fold</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-]</div><pre class="key_manual"> unfold</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-I</div><pre class="key_manual"> find Incremental</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-Ctrl-I</div><pre class="key_manual"> find Incremental Reverse</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Ctrl-H</div><pre class="key_manual"> replace</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">F3</div><pre class="key_manual"> find Next</pre></div>
+                                  <div class="modal_box_wrapper"><div class="key_bindings">Shift-F3</div><pre class="key_manual"> find Prev</pre></div>
                                 </div>
                               </div>                      
                             </fieldset>
@@ -326,6 +350,7 @@
   <script src="static/js/lang_name.js"></script>
   <script src="static/js/index_generate_dynamic_html.js"></script>
   <script src="static/js/index_register_element_callback.js"></script>
+  <script src="static/js/rtc.js"></script>
   <script>
     const API_URL = '{{ config["API_URL"] }}';
     const collection = '{{ document_key[0] }}';
