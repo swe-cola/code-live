@@ -65,7 +65,7 @@ def get_document_peers(doc_id):
     peers = {}
     for client_id, client_name in clients.items():
         user = get_user(client_id)
-        if 'kakaoid' in user:
+        if user is not None and 'kakaoid' in user:
             client_name = user.kakaoid
         peers[client_id] = client_name
     return peers
