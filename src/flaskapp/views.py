@@ -58,7 +58,6 @@ def route_document(document_id):
         'CODE_LIVE_COOKIE': CODE_LIVE_COOKIE,
         'CHAT_SERVER_HOST': os.environ['CHAT_SERVER_HOST'],
         'CHAT_SERVER_PORT': os.environ['CHAT_SERVER_PORT'],
-        'API_SERVER_HOST': os.environ['API_SERVER_HOST'],
     }
     doc = get_document(document_id)
     doc_info = {
