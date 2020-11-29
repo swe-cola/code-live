@@ -12,9 +12,9 @@ describe('Execute', function(){
 
     it('Load Page', function(){
         cy.visit('http://simon-park.codes/')
+        cy.wait(3000)
         cy.title().should('eq', 'CodeLive')
         cy.url().should('match', /[\w\d]{6}$/)
-        cy.wait(1000)
         cy.get('span[id="peers-holder"]').should(($peer) => {
             const text = $peer.text()
             expect(text).to.match(/[\w\s]+/)
@@ -62,6 +62,7 @@ describe('Execute', function(){
     })
 
     it('Change Language', function(){
+        cy.contains('Execute').should('be.visible')
         cy.get('button[id="btnLanguageGroupDrop"]').click()
         cy.wait(500)
         cy.get('.dropdown-item').contains('C++').click()
@@ -100,6 +101,7 @@ describe('Execute', function(){
         cy.contains('Dark Mode').should('be.visible')
         cy.get('button[id="vim"]').click()
         cy.get('pre[class=" CodeMirror-line "]').eq(8).click().type('{shift}Y{shift}P')
+        cy.wait(500)
         cy.get('pre[class=" CodeMirror-line "]').eq(9).should(($line) => {
             const line = $line.text()
             expect(line).to.contain('cout << "The sum of two numbers is " << NUM3;')
@@ -107,8 +109,10 @@ describe('Execute', function(){
     })
 
     it('Emacs', function(){
+        cy.contains('Dark Mode').should('be.visible')
         cy.get('button[id="emacs"]').click()
         cy.get('pre[class=" CodeMirror-line "]').eq(10).click().type('{ctrl+o}')
+        cy.wait(500)
         cy.get('pre[class=" CodeMirror-line "]').eq(11).should(($line) => {
             const line = $line.text()
             expect(line).to.contain('')
@@ -116,6 +120,7 @@ describe('Execute', function(){
     })
 
     it('Change Tab', function(){
+        cy.contains('Dark Mode').should('be.visible')
         cy.get('button[id="btnTabSizeGroupDrop"]').click()
         cy.wait(500)
         cy.get('.dropdown-item').contains('2').click()
@@ -126,6 +131,7 @@ describe('Execute', function(){
     })
 
     it('Change Font', function(){
+        cy.contains('Dark Mode').should('be.visible')
         cy.get('button[id="btnFontSizeGroupDrop"]').click()
         cy.wait(500)
         cy.get('.dropdown-item').contains('10').click()
@@ -138,7 +144,7 @@ describe('Execute', function(){
     it('Chat', function(){
         cy.get('a[href*="#tabChat"]').click()
         cy.wait(500)
-        cy.contains('Chat').should('be.visible')
+        cy.contains('CHAT').should('be.visible')
         cy.get('textarea[placeholder="Press Enter to send the message."]').type('test chat 1{enter}')
         cy.wait(500)
         cy.get('textarea[placeholder="Press Enter to send the message."]').type('test chat 2{enter}')
@@ -146,6 +152,22 @@ describe('Execute', function(){
         cy.get('div[class="message"]').should(($chat) => {
             expect($chat.eq(0)).to.contain('test chat 1')
             expect($chat.eq(1)).to.contain('test chat 2')
+        })
+    })
+
+    it('Voice Chat', function(){
+        cy.contains('CHAT').should('be.visible')
+        cy.get('button[id="voice_toggle"]').click()
+        cy.wait(1000)
+        cy.get('span[id="peers-holder"]').then(($peer) => {
+            const text = $peer.text()
+            cy.get('div[id="voice_peers"]').should('contain', text)
+        })
+        cy.get('button[id="voice_toggle"]').click()
+        cy.wait(1000)
+        cy.get('span[id="peers-holder"]').then(($peer) => {
+            const text = $peer.text()
+            cy.get('div[id="voice_peers"]').should('not.be.visible', text)
         })
     })
 
