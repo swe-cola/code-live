@@ -51,7 +51,6 @@ $( document ).ready(function() {
     }
 });
 
-
 function loginUser(nickname, email, thumbnail){
     $("#user_profile").attr("src", thumbnail);
     $("#user_profile").removeClass("dis_none");
@@ -75,11 +74,20 @@ function logoutUser(){
     $("#login_btn").removeClass("dis_none");
     $("#logout_btn").addClass("dis_none");
 
+    let user_cookie = getCookie("code-live");
+
     // delete infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/delete_user_info",
     }).done(function( msg ) {
-          // 로그아웃 완료
+        // 로그아웃 완료
+        $.ajax({
+            type: "POST",
+            url: "/api/get_peers_name",
+            data: { docid: docid, login: false }
+        }).done(function( peers ) {
+            displayPeers(peers, user_cookie);
+        });
     });
 }

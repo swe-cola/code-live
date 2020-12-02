@@ -81,7 +81,7 @@ def update_document_desc(doc_id, client_id, desc):
     doc.save()
 
 
-def get_document_peers(doc_id):
+def get_document_peers(doc_id, islogin):
     if not exists(doc_id):
         raise ValueError('Document does not exist')
 
@@ -93,7 +93,7 @@ def get_document_peers(doc_id):
     peers = {}
     for client_id, (client_name, _) in clients.items():
         user = get_user(client_id)
-        if user is not None and 'kakaoid' in user:
+        if islogin and user is not None and 'kakaoid' in user:
             client_name = user.kakaoid
         peers[client_id] = client_name
     return peers

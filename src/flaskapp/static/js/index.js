@@ -164,10 +164,14 @@ async function main() {
 
         client.subscribe((event) => {
             if (event.name === 'documents-watching-peer-changed') {
+                let email = localStorage.getItem('email');
+                let login = true;
+                if(email === null) login = false;
+
                 $.ajax({
                     type: "POST",
                     url: "/api/get_peers_name",
-                    data: { docid: docid }
+                    data: { docid: docid, login: email}
                 }).done(function( peers ) {
                     displayPeers(peers, user_cookie);
                 });

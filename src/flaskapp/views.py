@@ -133,7 +133,7 @@ def route_update_document_desc():
 @app.route('/api/get_peers_name', methods=["POST"])
 def route_get_peers_name():
     data = request.form.to_dict()
-    mapping_dict = get_document_peers(data['docid'])
+    mapping_dict = get_document_peers(data['docid'], data['login'])
 
     return jsonify(mapping_dict)
 
