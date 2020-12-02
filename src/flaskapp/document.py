@@ -1,11 +1,15 @@
+import os
+import sys
+import random
+import string
 from datetime import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+
+sys.path.insert(1, os.path.join(os.getcwd(), '../', 'src'))
+
 from flaskapp.model import Document
 from flaskapp.user import get_user
-import os
-import random
-import string
 
 
 def exists(doc_id):
@@ -89,7 +93,7 @@ def get_document_peers(doc_id):
     peers = {}
     for client_id, (client_name, _) in clients.items():
         user = get_user(client_id)
-        if user and 'kakaoid' in user:
+        if user is not None and 'kakaoid' in user:
             client_name = user.kakaoid
         peers[client_id] = client_name
     return peers

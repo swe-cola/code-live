@@ -1,6 +1,11 @@
+import os
+import sys
 import logging
 from datetime import datetime
 from mongoengine.errors import ValidationError
+
+sys.path.insert(1, os.path.join(os.getcwd(), '../', 'src'))
+
 from flaskapp.model import User
 
 logger = logging.getLogger()
