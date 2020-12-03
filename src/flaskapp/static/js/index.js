@@ -91,6 +91,9 @@ function displayRemoteSelection(cm, change) {
 }
 
 $(document).ready(function(){
+    limitFunc();
+    update_users();
+
     $(".tabs").click(function(){
     
         $(".tabs").removeClass("active");
@@ -164,17 +167,7 @@ async function main() {
 
         client.subscribe((event) => {
             if (event.name === 'documents-watching-peer-changed') {
-                let email = localStorage.getItem('email');
-                let login = true;
-                if(email === null) login = false;
-
-                $.ajax({
-                    type: "POST",
-                    url: "/api/get_peers_name",
-                    data: { docid: docid, login: email}
-                }).done(function( peers ) {
-                    displayPeers(peers, user_cookie);
-                });
+                update_users();
             }
         });
 
@@ -407,7 +400,6 @@ let limitFunc = function () {
     }
 };
 
-$(document).ready(function() { limitFunc(); });
 window.addEventListener("resize", limitFunc);
 
 var getCookie = function(name) {
@@ -435,3 +427,26 @@ window.addEventListener('beforeunload', function (e) {
     }).done(function( peers ) {
     });
 });
+
+
+function update_users(){
+    // update client list
+    let pathname = window.location.pathname;
+    let length = pathname.length;
+    let docid = pathname.slice(1, length);
+
+    let user_cookie = getCookie("code-live");
+
+    let email = localStorage.getItem('email');
+    let login = true;
+    if(email === null) login = false;
+
+    $.ajax({
+        type: "POST",
+        url: "/api/get_peers_name",
+        dataType:'json',
+        data: JSON.stringify({ docid: docid, login: login })
+    }).done(function( peers ) {
+        displayPeers(peers, user_cookie);
+    });
+}

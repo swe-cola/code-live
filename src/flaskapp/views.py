@@ -132,7 +132,7 @@ def route_update_document_desc():
 
 @app.route('/api/get_peers_name', methods=["POST"])
 def route_get_peers_name():
-    data = request.form.to_dict()
+    data = request.get_json(force=True)
     mapping_dict = get_document_peers(data['docid'], data['login'])
 
     return jsonify(mapping_dict)
@@ -144,6 +144,7 @@ def route_delete_client():
     delete_document_peers(data['docid'], data['user_cookie'])
 
     return "success"
+
 
 @app.route('/api/nickname', methods=["POST"])
 def route_get_nickname():

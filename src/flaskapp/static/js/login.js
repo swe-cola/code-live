@@ -63,7 +63,8 @@ function loginUser(nickname, email, thumbnail){
         url: "/api/save_user_info",
         data: { nickname: nickname, email: email, thumbnail:thumbnail }
     }).done(function( msg ) {
-          // 로그인 완료
+        // 로그인 완료
+        update_peers_list(true);
     });
 }
 
@@ -74,20 +75,28 @@ function logoutUser(){
     $("#login_btn").removeClass("dis_none");
     $("#logout_btn").addClass("dis_none");
 
-    let user_cookie = getCookie("code-live");
-
     // delete infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/delete_user_info",
     }).done(function( msg ) {
         // 로그아웃 완료
-        $.ajax({
-            type: "POST",
-            url: "/api/get_peers_name",
-            data: { docid: docid, login: false }
-        }).done(function( peers ) {
-            displayPeers(peers, user_cookie);
-        });
+        update_peers_list(false);
+    });
+}
+
+function update_peers_list(login){
+    let pathname = window.location.pathname;
+    let length = pathname.length;
+    let docid = pathname.slice(1, length);
+    let user_cookie = getCookie("code-live");
+
+    $.ajax({
+        type: "POST",
+        url: "/api/get_peers_name",
+        dataType:'json',
+        data: JSON.stringify({ docid: docid, login: login })
+    }).done(function( peers ) {
+        displayPeers(peers, user_cookie);
     });
 }
