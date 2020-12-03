@@ -61,7 +61,7 @@ function loginUser(nickname, email, thumbnail){
     $.ajax({
         type: "POST",
         url: "/api/save_user_info",
-        data: { nickname: nickname, email: email, thumbnail:thumbnail }
+        data: { nickname: nickname, email: email, thumbnail: thumbnail }
     }).done(function( msg ) {
         // 로그인 완료
         update_peers_list(true);
