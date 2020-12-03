@@ -111,23 +111,10 @@ def route_delete_user_info():
 @app.route('/api/update_client_list', methods=["POST"])
 def route_update_client_list():
     data = request.form.to_dict()
-    client_dict = update_document_clients(data['docid'], data['user_cookie'])
+    update_document_clients(data['docid'], data['user_cookie'])
+    client_dict = get_document_peers(data['docid'])
 
     return jsonify(client_dict)
-
-
-@app.route('/api/update_document_title', methods=["POST"])
-def route_update_document_title():
-    data = request.form.to_dict()
-    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['title'])
-    return "success"
-
-
-@app.route('/api/update_document_desc', methods=["POST"])
-def route_update_document_desc():
-    data = request.form.to_dict()
-    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['desc'])
-    return "success"
 
 
 @app.route('/api/get_peers_name', methods=["POST"])

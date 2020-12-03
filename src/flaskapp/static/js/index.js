@@ -8,6 +8,10 @@ const placeholder = document.getElementById('placeholder');
 const peersHolder = document.getElementById('peers-holder');
 const selectionMap = new Map();
 
+function getDocID() {
+    return window.location.pathname.slice(1);
+}
+
 function update_root(fieldName, value) {
     doc.update((root) => {
         const field = root[fieldName];
@@ -26,6 +30,30 @@ function displayPeers(peers, clientID) {
         }
     });
     peersHolder.innerHTML = user_str.substring(0, user_str.length - 2);
+}
+
+function updatePeers() {
+    const docid = getDocID();
+    var user_cookie = getCookie("code-live");
+    $.ajax({
+        type: "POST",
+        url: "/api/update_client_list",
+        data: { docid: docid, user_cookie: user_cookie}
+    }).done(function( peers ) {
+        displayPeers(peers, user_cookie);
+    });
+}
+
+function refreshPeers() {
+    const docid = getDocID();
+    var user_cookie = getCookie("code-live");
+    $.ajax({
+        type: "POST",
+        url: "/api/get_peers_name",
+        data: { docid: docid }
+    }).done(function( peers ) {
+        displayPeers(peers, user_cookie);
+    });
 }
 
 // https://github.com/codemirror/CodeMirror/pull/5619
@@ -148,29 +176,11 @@ async function main() {
         await client.attach(doc);
 
         // update client list
-        var pathname = window.location.pathname;
-        var length = pathname.length;
-        var docid = pathname.slice(1, length);
-
-        var user_cookie = getCookie("code-live");
-
-        $.ajax({
-            type: "POST",
-            url: "/api/update_client_list",
-            data: { docid: docid, user_cookie: user_cookie}
-        }).done(function( peers ) {
-            displayPeers(peers, user_cookie);
-        });
+        updatePeers();
 
         client.subscribe((event) => {
             if (event.name === 'documents-watching-peer-changed') {
-                $.ajax({
-                    type: "POST",
-                    url: "/api/get_peers_name",
-                    data: { docid: docid }
-                }).done(function( peers ) {
-                    displayPeers(peers, user_cookie);
-                });
+                refreshPeers();
             }
         });
 
@@ -418,11 +428,8 @@ window.addEventListener('beforeunload', function (e) {
     // Chrome requires returnValue to be set
     e.returnValue = '';
 
+    let docid = getDocID();
     let user_cookie = getCookie("code-live");
-
-    let pathname = window.location.pathname;
-    let length = pathname.length;
-    let docid = pathname.slice(1, length);
 
     $.ajax({
         type: "POST",

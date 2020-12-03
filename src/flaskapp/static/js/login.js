@@ -47,24 +47,35 @@ $( document ).ready(function() {
     const thumbnail = localStorage.getItem('thumbnail');
 
     if (email) {
-        loginUser(email, nickname, thumbnail);
+        showLoggedIn(thumbnail);
     }
 });
 
-
-function loginUser(nickname, email, thumbnail){
+function showLoggedIn(thumbnail) {
     $("#user_profile").attr("src", thumbnail);
     $("#user_profile").removeClass("dis_none");
     $("#login_btn").addClass("dis_none");
     $("#logout_btn").removeClass("dis_none");
+}
+
+
+function loginUser(nickname, email, thumbnail){
+    showLoggedIn(thumbnail);
 
     // save infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/save_user_info",
         data: { nickname: nickname, email: email, thumbnail:thumbnail }
-    }).done(function( msg ) {
-          // 로그인 완료
+    }).done(async function( msg ) {
+        // 로그인 완료
+
+        // Reattach document so that other peers can be notified of the user's login
+        await client.detach(doc);
+        await client.attach(doc);
+
+        refreshPeers();
+        chat.initName();
     });
 }
 
