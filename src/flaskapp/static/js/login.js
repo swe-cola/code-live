@@ -34,13 +34,6 @@ $('#login_btn').on('click', function(){
     });
 });
 
-$('#logout_btn').on('click', function() {
-    localStorage.clear();
-
-    Kakao.Auth.logout();
-    logoutUser();
-});
-
 $( document ).ready(function() {
     const email = localStorage.getItem('email');
     const nickname = localStorage.getItem('nickname');
@@ -58,15 +51,26 @@ function showLoggedIn(thumbnail) {
     $("#logout_btn").removeClass("dis_none");
 }
 
+$('#logout_btn').on('click', function() {
+    localStorage.clear();
+
+    Kakao.Auth.logout();
+    logoutUser();
+});
 
 function loginUser(nickname, email, thumbnail){
     showLoggedIn(thumbnail);
+
+    const docid = getDocID();
+    let user_cookie = getCookie("code-live");
+    let login = check_if_login;
 
     // save infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/save_user_info",
-        data: { nickname: nickname, email: email, thumbnail:thumbnail }
+        data: { nickname : nickname, email : email, thumbnail :thumbnail,
+            docid: docid, user_cookie: user_cookie, login :login }
     }).done(async function( msg ) {
         // 로그인 완료
 
@@ -86,11 +90,19 @@ function logoutUser(){
     $("#login_btn").removeClass("dis_none");
     $("#logout_btn").addClass("dis_none");
 
+    let docid = getDocID();
+    let user_cookie = getCookie("code-live");
+
     // delete infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/delete_user_info",
-    }).done(function( msg ) {
-          // 로그아웃 완료
+        data: { doc_id: docid, user_cookie: user_cookie, login: false}
+    }).done(async function( msg ) {
+        // 로그아웃 완료
+        await client.detach(doc);
+        await client.attach(doc);
+
+        refreshPeers();
     });
 }

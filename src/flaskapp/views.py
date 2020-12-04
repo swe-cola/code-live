@@ -91,6 +91,7 @@ def route_save_user_info():
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
     user.set_kakao_id(cookie, data['nickname'])
 
+    update_document_clients(data['docid'], data['user_cookie'], data['login'], True)
     update_document_login(cookie)
 
     return "success"
@@ -98,6 +99,9 @@ def route_save_user_info():
 
 @app.route('/api/delete_user_info', methods=["POST"])
 def route_delete_user_info():
+    data = request.form.to_dict()
+
+    # delete from session
     info_keys = ['nickname', 'email', 'thumbnail']
     session_keys = list(session.keys())
 
@@ -105,13 +109,16 @@ def route_delete_user_info():
         if session_key in info_keys:
             session.pop(session_key)
 
+    # update database to login = False
+    update_document_clients(data['doc_id'], data['user_cookie'], data['login'], True)
+
     return "success"
 
 
 @app.route('/api/update_client_list', methods=["POST"])
 def route_update_client_list():
     data = request.form.to_dict()
-    update_document_clients(data['docid'], data['user_cookie'])
+    update_document_clients(data['docid'], data['user_cookie'], data['login'])
     client_dict = get_document_peers(data['docid'])
 
     return jsonify(client_dict)

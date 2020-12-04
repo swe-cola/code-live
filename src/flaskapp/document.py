@@ -45,15 +45,18 @@ def save_document_info(doc_id, owner, login):
     doc.save()
 
 
-def update_document_clients(doc_id, client_id):
+def update_document_clients(doc_id, client_id, login, updatelogin=False):
     if not exists(doc_id):
         raise ValueError('Document does not exist')
 
     doc = get_document(doc_id)
     clients = doc.clients
 
-    nickname, count = clients.get(client_id)
-    clients[client_id] = (nickname, count + 1)
+    nickname, count, _ = clients.get(client_id)
+    if updatelogin:
+        clients[client_id] = (nickname, count, login)
+    else:
+        clients[client_id] = (nickname, count + 1, login)
     doc.save()
 
     return clients.copy()
@@ -91,9 +94,10 @@ def get_document_peers(doc_id):
     clients = doc.clients
 
     peers = {}
-    for client_id, (client_name, _) in clients.items():
+    for client_id, value in clients.items():
+        client_name, _, login = value
         user = get_user(client_id)
-        if user is not None and 'kakaoid' in user:
+        if login == 'true' and user is not None and 'kakaoid' in user:
             client_name = user.kakaoid
         peers[client_id] = client_name
     return peers
@@ -108,9 +112,9 @@ def delete_document_peers(doc_id, user_id):
         return
     clients = doc.clients
     if user_id in clients:
-        nickname, count = clients[user_id]
+        nickname, count, login = clients[user_id]
         if count > 1:
-            clients[user_id] = (nickname, count - 1)
+            clients[user_id] = (nickname, count - 1, login)
         else:
             clients.pop(user_id)
     doc.save()
@@ -160,11 +164,12 @@ def get_nickname(doc_id, client_id):
     doc = get_document(doc_id)
     clients = doc.clients
     data = clients.get(client_id)
+
     if data is None:
         taken = set(x[0] for x in doc['clients'].values())
         nickname = generate_nickname(ignore=taken)
-        clients[client_id] = (nickname, 0)
+        clients[client_id] = (nickname, 0, "false")
         doc.save()
     else:
-        nickname, _ = data
+        nickname, _, _ = data
     return nickname
