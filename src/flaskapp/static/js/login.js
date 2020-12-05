@@ -63,14 +63,14 @@ function loginUser(nickname, email, thumbnail){
 
     const docid = getDocID();
     let user_cookie = getCookie("code-live");
-    let login = check_if_login;
+    let logged_in = isLoggedIn();
 
     // save infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/save_user_info",
         data: { nickname : nickname, email : email, thumbnail :thumbnail,
-            docid: docid, user_cookie: user_cookie, login :login }
+            docid: docid, user_cookie: user_cookie, logged_in :logged_in }
     }).done(async function( msg ) {
         // 로그인 완료
 
@@ -97,7 +97,7 @@ function logoutUser(){
     $.ajax({
         type: "POST",
         url: "/api/delete_user_info",
-        data: { doc_id: docid, user_cookie: user_cookie, login: false}
+        data: { doc_id: docid, user_cookie: user_cookie, logged_in: false}
     }).done(async function( msg ) {
         // 로그아웃 완료
         await client.detach(doc);

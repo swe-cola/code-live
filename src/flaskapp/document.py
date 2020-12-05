@@ -24,12 +24,12 @@ def get_document(doc_id):
     return Document.objects(document_id=doc_id).first()
 
 
-def save_document_info(doc_id, owner, login):
+def save_document_info(doc_id, owner, logged_in):
     doc = get_document(doc_id)
     if doc:
         doc.lastAccess = datetime.utcnow()
         doc.owner = owner
-        doc.login = login
+        doc.logged_in = logged_in
     else:
         now = datetime.utcnow()
         title = now.strftime('%Y-%m-%dT%H:%M:%S.code')
@@ -37,7 +37,7 @@ def save_document_info(doc_id, owner, login):
             lastAccess=datetime.utcnow(),
             document_id=doc_id,
             owner=owner,
-            login=login,
+            logged_in=logged_in,
             title=title,
             desc=f'CodeLive snippet created at {title}',
             mime_type='website',
@@ -45,7 +45,7 @@ def save_document_info(doc_id, owner, login):
     doc.save()
 
 
-def update_document_clients(doc_id, client_id, login, updatelogin=False):
+def update_document_clients(doc_id, client_id, logged_in, new_conn=True):
     if not exists(doc_id):
         raise ValueError('Document does not exist')
 
@@ -53,10 +53,9 @@ def update_document_clients(doc_id, client_id, login, updatelogin=False):
     clients = doc.clients
 
     nickname, count, _ = clients.get(client_id)
-    if updatelogin:
-        clients[client_id] = (nickname, count, login)
-    else:
-        clients[client_id] = (nickname, count + 1, login)
+    if new_conn:
+        count += 1
+    clients[client_id] = (nickname, count, logged_in)
     doc.save()
 
     return clients.copy()
@@ -95,9 +94,9 @@ def get_document_peers(doc_id):
 
     peers = {}
     for client_id, value in clients.items():
-        client_name, _, login = value
+        client_name, _, logged_in = value
         user = get_user(client_id)
-        if login == 'true' and user is not None and 'kakaoid' in user:
+        if logged_in == 'true' and user is not None and 'kakaoid' in user:
             client_name = user.kakaoid
         peers[client_id] = client_name
     return peers
@@ -112,9 +111,9 @@ def delete_document_peers(doc_id, user_id):
         return
     clients = doc.clients
     if user_id in clients:
-        nickname, count, login = clients[user_id]
+        nickname, count, logged_in = clients[user_id]
         if count > 1:
-            clients[user_id] = (nickname, count - 1, login)
+            clients[user_id] = (nickname, count - 1, logged_in)
         else:
             clients.pop(user_id)
     doc.save()

@@ -32,21 +32,19 @@ function displayPeers(peers, clientID) {
     peersHolder.innerHTML = user_str.substring(0, user_str.length - 2);
 }
 
-function check_if_login() {
+function isLoggedIn() {
     let email = localStorage.getItem('email');
-    let login = true;
-    if (email === null) login = false;
-    return login;
+    return email !== null;
 }
 
 function updatePeers() {
     const docid = getDocID();
     let user_cookie = getCookie("code-live");
-    let login = check_if_login;
+    let logged_in = isLoggedIn();
     $.ajax({
         type: "POST",
         url: "/api/update_client_list",
-        data: { docid: docid, user_cookie: user_cookie, login: login}
+        data: { docid: docid, user_cookie: user_cookie, logged_in: logged_in},
     }).done(function( peers ) {
         displayPeers(peers, user_cookie);
     });
