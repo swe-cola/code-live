@@ -1,22 +1,12 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.2.1
-  pytest: thekevjames/pytest@0.0.60
-
-jobs:
-  build-and-test:
-    executor: python/default
-    steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: ./test_codes/test.py test
-          name: Test
+  cypress: cypress-io/cypress@1.26.0
 
 workflows:
-  main:
+  build:
     jobs:
-      - build-and-test
+      - cypress/run:
+          executor: cypress/browsers-chrome69
+          browser: chrome
+
