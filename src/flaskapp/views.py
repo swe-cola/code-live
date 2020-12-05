@@ -152,4 +152,11 @@ def route_delete_client():
 @app.route('/api/nickname', methods=["POST"])
 def route_get_nickname():
     data = request.form.to_dict()
+    docID, clientID = data['docID'], data['clientID']
+    doc = get_document(docID)
+    client_data = doc.clients.get(clientID)
+    if client_data:
+        _, _, logged_in = client_data
+        if logged_in == 'true':
+            return user.get_user(clientID).kakaoid
     return get_nickname(data['docID'], data['clientID'])
