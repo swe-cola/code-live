@@ -20,7 +20,7 @@ from .document import (
     get_document_peers,
     delete_document_peers,
     create_doc_id,
-    get_nicknamem,
+    get_nickname,
 )
 
 
