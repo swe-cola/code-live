@@ -12,7 +12,17 @@ from flask import (
     jsonify
 )
 
-from .document import *
+from .document import (
+    get_document,
+    save_document_info,
+    update_document_clients,
+    update_document_login,
+    get_document_peers,
+    delete_document_peers,
+    create_doc_id,
+    get_nicknamem,
+)
+
 
 CODE_LIVE_COOKIE = 'code-live'
 
@@ -28,7 +38,7 @@ def route_index():
 
     document_id = user.get_doc_id(cookie)
     if document_id is None:
-        document_id = document.create_doc_id()
+        document_id = create_doc_id()
 
     url = url_for('route_document', document_id=document_id)
     redirected = redirect(url)
