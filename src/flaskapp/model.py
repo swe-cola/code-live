@@ -13,7 +13,7 @@ class Document(me.Document):
     document_id = me.StringField(required=True)
     owner = me.StringField(required=True)
     logged_in = me.BooleanField(default=False)
-    clients = me.DictField() # clientID => (nickname, count)
+    clients = me.DictField() # clientID => (nickname, count, logged_in)
     title = me.StringField()
     desc = me.StringField()
     mime_type = me.StringField()

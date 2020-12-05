@@ -62,7 +62,7 @@ def update_document_clients(doc_id, client_id, logged_in, new_conn=True):
 
 
 def update_document_login(owner):
-    Document.objects(owner=owner).update(set__login=True)
+    Document.objects(owner=owner).update(set__logged_in=True)
 
 
 def update_document_title(doc_id, client_id, title):

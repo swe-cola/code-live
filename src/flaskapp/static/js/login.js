@@ -104,5 +104,6 @@ function logoutUser(){
         await client.attach(doc);
 
         refreshPeers();
+        chat.initName();
     });
 }
