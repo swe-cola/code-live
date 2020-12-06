@@ -2,67 +2,20 @@ version: 2.1
 
 orbs:
   cypress: cypress-io/cypress@1.26.0
-  pytest: thekevjames/pytest@0.0.60
 
 jobs:
   pytest:
-    description: |
-      Runs pytest against the current repo.
     docker:
-    - image: python:3.7.2
+    - image: python:3.9.0
     environment:
       MONGO_USER_HOST: api.simon-park.codes
       MONGO_USER_PORT: 27017
-    parameters:
-      args:
-        default: ""
-        description: |
-          Arguments to pass to pytest.
-        type: string
-      cache_prefix:
-        default: ""
-        description: |
-          Optional cache prefix to be used on CircleCI. Can be used for cache busting or to ensure multiple jobs use different caches.
-        type: string
-      enable_caching:
-        default: true
-        description: |
-          Whether the CircleCI cache should be used for pip dependencies.
-        type: boolean
-      install_args:
-        default: pytest
-        description: |
-          Arguments to `pip install` command.
-        type: string
-      python_version:
-        default: 3.7.2
-        description: |
-          The python version used to run pytest.
-        type: string
     steps:
     - checkout
     - run:
         name: Install Dependencies
         command: pip install -r requirements.txt
-    - when:
-        condition: true
-        steps:
-        - restore_cache:
-            keys:
-            - cache-pip-3.7.2-{{
-              .Branch }}-{{ .Revision }}
-            - cache-pip-3.7.2-{{
-              .Branch }}-
-            - cache-pip-3.7.2-
     - run: python -m pip install --progress-bar=off pytest
-    - when:
-        condition: true
-        steps:
-        - save_cache:
-            key: cache-pip-3.7.2-{{
-              .Branch }}-{{ .Revision }}
-            paths:
-            - ~/.cache/pip
     - run: python -m pytest test_codes/test.py
 
 workflows:
@@ -71,4 +24,3 @@ workflows:
       - cypress/run:
           yarn: true
       - pytest
-
