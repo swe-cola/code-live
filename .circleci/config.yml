@@ -1,22 +1,26 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.2.1
+  cypress: cypress-io/cypress@1.26.0
   pytest: thekevjames/pytest@0.0.60
 
 jobs:
   build-and-test:
-    executor: python/default
+    docker:
+      - image: buildpack-deps:trusty
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
+      - run:
+          name: Change test.py script file permissions
+          command: sudo chmod +rx ./test_codes/test.py
       - run:
           command: ./test_codes/test.py test
           name: Test
 
 workflows:
-  main:
+  build:
     jobs:
+      - cypress/run:
+          yarn: true
       - build-and-test
+
