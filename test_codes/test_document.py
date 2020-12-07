@@ -48,10 +48,3 @@ def test_create_doc_id():
 
     doc_id = create_doc_id(8)
     assert len(doc_id) == 8 and doc_id.isalnum()
-
-
-def delete_doc(doc_id):
-    Document.objects(document_id=doc_id).delete()
-
-
-test_save_document_info()

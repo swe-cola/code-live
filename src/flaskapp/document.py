@@ -24,6 +24,10 @@ def get_document(doc_id):
     return Document.objects(document_id=doc_id).first()
 
 
+def delete_doc(doc_id):
+    Document.objects(document_id=doc_id).delete()
+
+
 def save_document_info(doc_id, owner, logged_in):
     doc = get_document(doc_id)
     if doc:
