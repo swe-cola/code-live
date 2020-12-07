@@ -19,7 +19,7 @@ jobs:
     - run: pip install --progress-bar=off pytest pytest-cov
     - run: pytest --cov=src --cov-report=xml
     - codecov/upload:
-        file: coverage.txt
+        file: coverage.xml
 
 workflows:
   build:
