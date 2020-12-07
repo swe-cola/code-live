@@ -34,6 +34,23 @@ $('#login_btn').on('click', function(){
     });
 });
 
+$( document ).ready(function() {
+    const email = localStorage.getItem('email');
+    const nickname = localStorage.getItem('nickname');
+    const thumbnail = localStorage.getItem('thumbnail');
+
+    if (email) {
+        showLoggedIn(thumbnail);
+    }
+});
+
+function showLoggedIn(thumbnail) {
+    $("#user_profile").attr("src", thumbnail);
+    $("#user_profile").removeClass("dis_none");
+    $("#login_btn").addClass("dis_none");
+    $("#logout_btn").removeClass("dis_none");
+}
+
 $('#logout_btn').on('click', function() {
     localStorage.clear();
 
@@ -41,30 +58,28 @@ $('#logout_btn').on('click', function() {
     logoutUser();
 });
 
-$( document ).ready(function() {
-    const email = localStorage.getItem('email');
-    const nickname = localStorage.getItem('nickname');
-    const thumbnail = localStorage.getItem('thumbnail');
-
-    if (email) {
-        loginUser(email, nickname, thumbnail);
-    }
-});
-
-
 function loginUser(nickname, email, thumbnail){
-    $("#user_profile").attr("src", thumbnail);
-    $("#user_profile").removeClass("dis_none");
-    $("#login_btn").addClass("dis_none");
-    $("#logout_btn").removeClass("dis_none");
+    showLoggedIn(thumbnail);
+
+    const docid = getDocID();
+    let user_cookie = getCookie("code-live");
+    let logged_in = isLoggedIn();
 
     // save infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/save_user_info",
-        data: { nickname: nickname, email: email, thumbnail:thumbnail }
-    }).done(function( msg ) {
-          // 로그인 완료
+        data: { nickname : nickname, email : email, thumbnail :thumbnail,
+            docid: docid, user_cookie: user_cookie, logged_in :logged_in }
+    }).done(async function( msg ) {
+        // 로그인 완료
+
+        // Reattach document so that other peers can be notified of the user's login
+        await client.detach(doc);
+        await client.attach(doc);
+
+        refreshPeers();
+        chat.initName();
     });
 }
 
@@ -75,11 +90,20 @@ function logoutUser(){
     $("#login_btn").removeClass("dis_none");
     $("#logout_btn").addClass("dis_none");
 
+    let docid = getDocID();
+    let user_cookie = getCookie("code-live");
+
     // delete infos in flask session
     $.ajax({
         type: "POST",
         url: "/api/delete_user_info",
-    }).done(function( msg ) {
-          // 로그아웃 완료
+        data: { doc_id: docid, user_cookie: user_cookie, logged_in: false}
+    }).done(async function( msg ) {
+        // 로그아웃 완료
+        await client.detach(doc);
+        await client.attach(doc);
+
+        refreshPeers();
+        chat.initName();
     });
 }

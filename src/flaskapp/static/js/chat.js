@@ -1,11 +1,12 @@
 /**
  * Inspired by https://dororongju.tistory.com/151
  */
+
+let chat;
 class Chat {
     constructor() {
         this.clientId = getCookie(CODE_LIVE_COOKIE);
         this.docId = documentName;
-        this.initName.call(this);
 
         this.lastSender = undefined;
         this.init = false;
@@ -20,6 +21,9 @@ class Chat {
         this.sendMessage = this.sendMessage.bind(this);
         this.clearTextarea = this.clearTextarea.bind(this);
         this.receive = this.receive.bind(this);
+        this.initName.bind(this);
+
+        this.initName();
     }
 
     initName() {
@@ -94,7 +98,7 @@ class Chat {
 };
 
 $(() => {
-    const chat = new Chat();
+    chat = new Chat();
     $(document).on('keydown', 'div.input-div textarea', function(event) {
         // keyCode(Enter) == 13
         if(event.keyCode == 13 && !event.shiftKey) {

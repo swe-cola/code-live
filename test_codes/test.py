@@ -4,6 +4,7 @@ import random
 sys.path.insert(1, os.path.join(os.getcwd(), 'src'))
 
 from flaskapp.document import *
+from flaskapp.user import create_user
 
 
 def test_generate_nickname():
@@ -20,10 +21,14 @@ def test_save_document_info():
     client_list = get_document_peers(doc_id)
     assert len(client_list) == 0
 
-    client_id = str(uuid.uuid4())
-    client_id2 = str(uuid.uuid4())
-    update_document_clients(doc_id, client_id)
-    update_document_clients(doc_id, client_id2)
+    client_id = str(create_user().id)
+    client_id2 = str(create_user().id)
+
+    nickname = get_nickname(doc_id, client_id)
+    nickname2 = get_nickname(doc_id, client_id2)
+
+    update_document_clients(doc_id, client_id, False)
+    update_document_clients(doc_id, client_id2, False)
 
     client_list = get_document_peers(doc_id)
     assert len(client_list) == 2

@@ -12,7 +12,17 @@ from flask import (
     jsonify
 )
 
-from .document import *
+from .document import (
+    get_document,
+    save_document_info,
+    update_document_clients,
+    update_document_login,
+    get_document_peers,
+    delete_document_peers,
+    create_doc_id,
+    get_nickname,
+)
+
 
 CODE_LIVE_COOKIE = 'code-live'
 
@@ -28,7 +38,7 @@ def route_index():
 
     document_id = user.get_doc_id(cookie)
     if document_id is None:
-        document_id = document.create_doc_id()
+        document_id = create_doc_id()
 
     url = url_for('route_document', document_id=document_id)
     redirected = redirect(url)
@@ -48,8 +58,8 @@ def route_document(document_id):
     user.log_access(cookie, document_id)
 
     if not document.exists(document_id):
-        login = True if 'email' in session.keys() else False
-        save_document_info(document_id, cookie, login)
+        logged_in = True if 'email' in session.keys() else False
+        save_document_info(document_id, cookie, logged_in)
 
     key = ('code-live', document_id)
 
@@ -91,6 +101,7 @@ def route_save_user_info():
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
     user.set_kakao_id(cookie, data['nickname'])
 
+    update_document_clients(data['docid'], data['user_cookie'], data['logged_in'], new_conn=False)
     update_document_login(cookie)
 
     return "success"
@@ -98,6 +109,9 @@ def route_save_user_info():
 
 @app.route('/api/delete_user_info', methods=["POST"])
 def route_delete_user_info():
+    data = request.form.to_dict()
+
+    # delete from session
     info_keys = ['nickname', 'email', 'thumbnail']
     session_keys = list(session.keys())
 
@@ -105,29 +119,19 @@ def route_delete_user_info():
         if session_key in info_keys:
             session.pop(session_key)
 
+    # update database to logged_in = False
+    update_document_clients(data['doc_id'], data['user_cookie'], data['logged_in'], new_conn=False)
+
     return "success"
 
 
 @app.route('/api/update_client_list', methods=["POST"])
 def route_update_client_list():
     data = request.form.to_dict()
-    client_dict = update_document_clients(data['docid'], data['user_cookie'])
+    update_document_clients(data['docid'], data['user_cookie'], data['logged_in'])
+    client_dict = get_document_peers(data['docid'])
 
     return jsonify(client_dict)
-
-
-@app.route('/api/update_document_title', methods=["POST"])
-def route_update_document_title():
-    data = request.form.to_dict()
-    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['title'])
-    return "success"
-
-
-@app.route('/api/update_document_desc', methods=["POST"])
-def route_update_document_desc():
-    data = request.form.to_dict()
-    client_dict = update_document_clients(data['docid'], data['user_cookie'], data['desc'])
-    return "success"
 
 
 @app.route('/api/get_peers_name', methods=["POST"])
@@ -148,4 +152,11 @@ def route_delete_client():
 @app.route('/api/nickname', methods=["POST"])
 def route_get_nickname():
     data = request.form.to_dict()
+    docID, clientID = data['docID'], data['clientID']
+    doc = get_document(docID)
+    client_data = doc.clients.get(clientID)
+    if client_data:
+        _, _, logged_in = client_data
+        if logged_in == 'true':
+            return user.get_user(clientID).kakaoid
     return get_nickname(data['docID'], data['clientID'])
