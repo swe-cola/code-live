@@ -7,15 +7,6 @@ var rtc_update_my_nickname = function(){
 var _rtc_update_my_nickname = null;
 var _debug_rtc_change_nick = null;
 
-// var _debug_rtc_alert = function(content){
-//     var dom = $('#rtc_alert');
-//     var title = document.createElement("strong");
-//     title.innerText = "Error ";
-//     dom.empty();
-//     dom.append(title);
-//     dom.append(content);
-//     dom.removeClass("hide");
-// }
 
 $(function(){
 
@@ -422,10 +413,4 @@ $(function(){
         rtc_peers[mycid].change_nick(await get_my_nickname())
     }
 
-    
-    // _debug_rtc_change_nick = async function(nw){
-    //     if(!am_I_connected) return;
-        
-    //     rtc_peers[mycid].change_nick(nw)
-    // }
 });

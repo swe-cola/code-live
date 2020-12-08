@@ -5,12 +5,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// function fetchJsonQuery(api_url,params,fetch_option){
-//     api_url.search = new URLSearchParams(params).toString();
-//     return fetch(api_url,fetch_option)
-//         .then(res=>{return res.json()});
-// }
-
 async function fetchJson(url,data){
     return await $.ajax({
         crossDomain: true,

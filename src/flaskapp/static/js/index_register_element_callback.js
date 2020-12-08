@@ -89,6 +89,7 @@ $(function () {
             $(".tab-content").addClass("dis_none");
             $(this).removeClass("active");
             ev.stopPropagation();
+            ev.preventDefault();
             return
         }
         currentNav = clickedNav;
