@@ -7,15 +7,16 @@ var rtc_update_my_nickname = function(){
 var _rtc_update_my_nickname = null;
 var _debug_rtc_change_nick = null;
 
-var _debug_rtc_alert = function(content){
-    var dom = $('#rtc_alert');
-    var title = document.createElement("strong");
-    title.innerText = "Error ";
-    dom.empty();
-    dom.append(title);
-    dom.append(content);
-    dom.removeClass("hide");
-}
+// var _debug_rtc_alert = function(content){
+//     var dom = $('#rtc_alert');
+//     var title = document.createElement("strong");
+//     title.innerText = "Error ";
+//     dom.empty();
+//     dom.append(title);
+//     dom.append(content);
+//     dom.removeClass("hide");
+// }
+
 $(function(){
 
     class Peer{
@@ -34,7 +35,6 @@ $(function(){
             if(this.cid in rtc_peers)
                 on_peer_del(cid);
             this.cid = cid;
-            this.nick = cid;
             this.set_identity();
             this.create_dom();
         }
@@ -150,7 +150,6 @@ $(function(){
             
             var lbl = document.createElement("p")
             this.dom_nick = lbl;
-            this.change_nick(this.nick);
             container.append(lbl)
 
             if(is_me(this.cid))
@@ -177,12 +176,12 @@ $(function(){
                 this.pc.close();
         }
         change_nick(new_nick){
+            if(this.nick == new_nick) return;
 
             this.nick = new_nick;
             if(this.dom_nick){
                 this.dom_nick.innerText = is_me(this.cid) ? "(me)" + this.nick : this.nick;
             }
-            console.log(new_nick)
             if(is_me(this.cid)){
                 socket.emit("peer rename",{new_nick:new_nick});
             }
@@ -252,14 +251,21 @@ $(function(){
     }
 
     var on_peer_del = function(cid){
-        if(!am_I_connected || !(cid in rtc_peers) || is_me(cid))
+        if(!am_I_connected || !(cid in rtc_peers))
             return;
-        
-        // close connection
-        if(rtc_peers[cid].dom)
-            rtc_peers[cid].dom.remove();
-        rtc_peers[cid].close();
-        delete rtc_peers[cid];
+                    
+        if(is_me(cid)){
+            // I'm kicked
+            callback_toggle_voice_chat(false);
+            return;
+        }else{
+            // close connection
+            if(rtc_peers[cid].dom)
+                rtc_peers[cid].dom.remove();
+            rtc_peers[cid].close();
+            delete rtc_peers[cid];
+            return;
+        }
     }
 
     var query_nickname = function(cid){
@@ -346,15 +352,7 @@ $(function(){
 
     socket.on("peer new", on_peer_new_active);
     socket.on("peer del", on_peer_del);
-    socket.on("peer kick",function(cid){
-        if(!am_I_connected) return;
-            
-        if(is_me(cid)){
-            callback_toggle_voice_chat(false);
-        }else if(cid in rtc_peers){
-            on_peer_del(cid)
-        }
-    })
+    socket.on("peer kick",on_peer_del);
     socket.on("peer rename",function(cid){
         if(!am_I_connected) return;
         if(!is_me(cid))
@@ -384,13 +382,13 @@ $(function(){
             return;
         }
 
-        for(var p in parted){
-            on_peer_del({'cid':p});
+        for(var p of parted){
+            on_peer_del(p);
             // part from local
         }
 
-        for(var j in joined){
-            on_peer_new_active({'cid':j});
+        for(var j of joined){
+            on_peer_new_active(j);
             // join from local
         }
     })
