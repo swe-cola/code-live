@@ -23,6 +23,7 @@ from .document import (
     get_nickname,
 )
 
+from . import runner
 
 CODE_LIVE_COOKIE = 'code-live'
 
@@ -160,3 +161,24 @@ def route_get_nickname():
         if logged_in == 'true':
             return user.get_user(clientID).kakaoid
     return get_nickname(data['docID'], data['clientID'])
+
+@app.route('/api/runner/create', methods=["POST"])
+def route_runner_create():
+    data = request.form.to_dict()
+    res = runner.create(data['language'],data['source_code'],data['input'])
+
+    return res
+
+@app.route('/api/runner/get_status', methods=["POST"])
+def route_runner_getStatus():
+    data = request.form.to_dict()
+    res = runner.get_status(data['id'])
+
+    return res
+
+@app.route('/api/runner/get_details', methods=["POST"])
+def route_runner_getDetails():
+    data = request.form.to_dict()
+    res = runner.get_details(data['id'])
+
+    return res

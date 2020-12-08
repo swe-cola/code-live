@@ -1,41 +1,43 @@
 var runner_timeout = 10000;
-var runner_polling_interval = 1000;
+var runner_polling_interval = 512;
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function fetchJsonQuery(api_url,params,fetch_option){
-    api_url.search = new URLSearchParams(params).toString();
-    return fetch(api_url,fetch_option)
-        .then(res=>{return res.json()});
+async function fetchJson(url,data){
+    return await $.ajax({
+        crossDomain: true,
+        url: url,
+        type: "POST",
+        data: data,
+    });
+}
+
+async function runner_api_test(){
+    var a = await runnerGetDetails("db_QO3lJlolQ8TQ2SzL1ng")
+    console.log(a)
 }
 
 function runnerCreate(scriptLang, scriptContents, scriptInput){
-    var url_create = new URL('http://api.paiza.io:80/runners/create');
     var params = {
         source_code: scriptContents,
         language: scriptLang,
-        input: scriptInput,
-        api_key:'guest'
+        input: scriptInput
     };
-    return fetchJsonQuery(url_create,params,{method:'POST'});
+    return fetchJson('/api/runner/create',params);
 }
 function runnerGetStatus(paramid){
-    var url_get_status = new URL('http://api.paiza.io:80/runners/get_status');
     var params = {
-        api_key:'guest',
         id:paramid
     };
-    return fetchJsonQuery(url_get_status,params);
+    return fetchJson('/api/runner/get_status',params);
 }
 function runnerGetDetails(paramid){
-    var url_get_details = new URL('http://api.paiza.io:80/runners/get_details');
     var params = {
-        api_key:'guest',
         id:paramid
     };
-    return fetchJsonQuery(url_get_details,params);
+    return fetchJson('/api/runner/get_details',params);
 }
 
 async function runScript(scriptLang, scriptContents, scriptInput){

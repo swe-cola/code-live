@@ -80,6 +80,7 @@ function loginUser(nickname, email, thumbnail){
 
         refreshPeers();
         chat.initName();
+        rtc_update_my_nickname();
     });
 }
 
@@ -105,5 +106,6 @@ function logoutUser(){
 
         refreshPeers();
         chat.initName();
+        rtc_update_my_nickname();
     });
 }

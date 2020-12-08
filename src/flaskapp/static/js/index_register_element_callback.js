@@ -1,5 +1,9 @@
+var notify_new_chat = null;
+
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger : 'hover'
+    });
 
     $('.btn-group .dropdown-menu .dropdown-item').on('click',function() {
     
@@ -70,4 +74,38 @@ $(function () {
         output = output.filter(o=>{return o!=null && o!="";});
         $('#console').val( output.join('\n') );
     });
+
+    // ================
+    // registering order of
+    // $('.nav-link').on('click')
+    // and $('#tabbutton-chat').on('click')
+    // is important.
+    // register ".nav-link" one first.
+    let currentNav = "";
+    $('.nav-link').on('click', function(ev) {
+        let clickedNav = $(this).attr("href");
+        if (currentNav === clickedNav){
+            currentNav = "";
+            $(".tab-content").addClass("dis_none");
+            $(this).removeClass("active");
+            ev.stopPropagation();
+            ev.preventDefault();
+            return
+        }
+        currentNav = clickedNav;
+        $(".tab-content").removeClass("dis_none");
+    });
+    $('#tabbutton-chat').on('click', function() {
+        let clickedNav = $(this).attr("href");
+        if(clickedNav==currentNav){
+            $("#chat-notification").addClass('hide');
+        }
+    });
+    notify_new_chat = function(){
+        if(currentNav!='#tabChat'){
+            console.log(currentNav);
+            $("#chat-notification").removeClass('hide');
+        }
+    }
+    // ================
 });

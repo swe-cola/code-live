@@ -31,6 +31,16 @@ body {
 .navbar {
     border-bottom: 1px solid #444;
 }
+.nav .nav-link {
+    padding:0;
+}
+.nav .nav-link .tab-tooltip{
+    position: relative;
+    width: 100%;
+    display: block;
+    padding: .5rem 1rem;
+    text-align: center;
+}
 
 .inline {
     display: inline;
@@ -128,6 +138,7 @@ input:checked + .slider:before {
     display:flex;
     flex-flow:column;
     min-width: 130px;
+    overflow:auto;
 }
 .dis_none{
     display: none !important;
@@ -320,7 +331,7 @@ a:hover {
     height: 100%;
 }
 #chat {
-    height: 60%;
+    height: 30rem;
     margin: 0 0 1em 0;
 }
 .chat-wrap .header {
@@ -415,11 +426,10 @@ a:hover {
     color:#dbf547;
 }
 
-#rtc_ui_template{
-    display:none;
-}
 #voice_peers .connectedPeer .mute_button{
+    min-width:2em;
     width:2em;
+    min-height:2em;
     height:2em;
     margin: 0 .75em 0 .25em;
     align-self:center;
@@ -445,5 +455,28 @@ a:hover {
     display:none;
 }
 #voice_peers .connectedPeer.nomic .mute_button .icon_mute{
+    display:none;
+}
+
+.tab-content {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.tab-content::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+#chat-notification{
+    position: absolute;
+    background-color: #F33;
+    clip-path: circle();
+    width: 20%;
+    height: 20%;
+    top: 25%;
+    left: 25%;
+    padding: 0;
+}
+
+.hide{
     display:none;
 }
