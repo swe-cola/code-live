@@ -7,6 +7,15 @@ var rtc_update_my_nickname = function(){
 var _rtc_update_my_nickname = null;
 var _debug_rtc_change_nick = null;
 
+var _debug_rtc_alert = function(content){
+    var dom = $('#rtc_alert');
+    var title = document.createElement("strong");
+    title.innerText = "Error ";
+    dom.empty();
+    dom.append(title);
+    dom.append(content);
+    dom.removeClass("hide");
+}
 $(function(){
 
     class Peer{
@@ -189,6 +198,21 @@ $(function(){
     var timervar = null;
     var am_I_connected = false;
 
+    
+    var print_error = function(content){
+        var dom = $('#rtc_alert');
+        var title = document.createElement("strong");
+        title.innerText = "Error ";
+        dom.empty();
+        dom.append(title);
+        dom.append(content);
+        dom.removeClass("hide");
+    }
+
+    var hide_error = function(){
+        $("#rtc_alert").addClass("hide");
+    }
+
     var get_my_nickname = async function(){
         return await $.ajax({
             crossDomain: true,
@@ -253,7 +277,12 @@ $(function(){
         try{
             local_rtc_stream = await navigator.mediaDevices.getUserMedia({audio: true});
         }catch(err){
-            console.log("failed to get local rtc stream: ",err.message);
+            if(navigator == undefined)
+                print_error("WebRTC is disabled.");
+            else if(navigator.mediaDevices == undefined)
+                print_error("Mic access is diabled.");
+            else
+                print_error(`failed to access mic. ${err.message}`);
 
             local_rtc_stream=null;
         }
@@ -266,6 +295,7 @@ $(function(){
         if(!am_I_connected) return;
 
         clearInterval(timervar);
+        hide_error();
         timervar=null;
 
         socket.emit("peer quit");
@@ -393,6 +423,8 @@ $(function(){
 
         rtc_peers[mycid].change_nick(await get_my_nickname())
     }
+
+    
     // _debug_rtc_change_nick = async function(nw){
     //     if(!am_I_connected) return;
         

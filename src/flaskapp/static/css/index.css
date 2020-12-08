@@ -138,6 +138,7 @@ input:checked + .slider:before {
     display:flex;
     flex-flow:column;
     min-width: 130px;
+    overflow:auto;
 }
 .dis_none{
     display: none !important;
@@ -330,7 +331,7 @@ a:hover {
     height: 100%;
 }
 #chat {
-    height: 60%;
+    height: 30rem;
     margin: 0 0 1em 0;
 }
 .chat-wrap .header {
@@ -425,7 +426,7 @@ a:hover {
     color:#dbf547;
 }
 
-#rtc_ui_template{
+.hide{
     display:none;
 }
 #voice_peers .connectedPeer .mute_button{
@@ -458,4 +459,12 @@ a:hover {
 }
 #voice_peers .connectedPeer.nomic .mute_button .icon_mute{
     display:none;
+}
+
+.tab-content {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.tab-content::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
 }
