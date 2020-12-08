@@ -141,22 +141,24 @@
     </div>
       <nav class = "nav nav-pills flex-column tabs-buttons bg-dark">
         <a class="nav-link" href="#tabFile" data-toggle="tab">
-          <div data-toggle="tooltip" data-placement="left" title="File">
+          <div class="tab-tooltip" data-toggle="tooltip" data-placement="left" title="File">
             <i class="fas fa-file"></i>
           </div>
         </a>
         <a class="nav-link" href="#tabView" data-toggle="tab">
-          <div data-toggle="tooltip" data-placement="left" title="View">
+          <div class="tab-tooltip" data-toggle="tooltip" data-placement="left" title="View">
             <i class="fas fa-font"></i>
           </div>
         </a>
-        <a class="nav-link" href="#tabChat" data-toggle="tab">
-          <div  data-toggle="tooltip" data-placement="left" title="Chat">
-            <i class="far fa-comment-alt"></i>
+        <a class="nav-link" id="tabbutton-chat" href="#tabChat" data-toggle="tab">
+          <div  class="tab-tooltip" data-toggle="tooltip" data-placement="left" title="Chat">
+            <i class="far fa-comment-alt">
+              <div class='hide' id="chat-notification"></div>
+            </i>
           </div>
         </a>
         <a class="nav-link" href="#tabAccount" data-toggle="tab">
-          <div data-toggle="tooltip" data-placement="left" title="Account">
+          <div class="tab-tooltip" data-toggle="tooltip" data-placement="left" title="Account">
             <i class="fas fa-user-circle"></i>
           </div>
         </a>

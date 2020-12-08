@@ -94,7 +94,7 @@ class Chat {
     receive(data) {
         const LR = (data.senderName !== this.nickname) ? 'left' : 'right';
         this.appendMessageTag(LR, data.senderName, data.message);
-        console.log("HERE")
+        notify_new_chat();
     }
 };
 

@@ -34,7 +34,7 @@ body {
 .nav .nav-link {
     padding:0;
 }
-.nav .nav-link div{
+.nav .nav-link .tab-tooltip{
     position: relative;
     width: 100%;
     display: block;
@@ -426,9 +426,6 @@ a:hover {
     color:#dbf547;
 }
 
-.hide{
-    display:none;
-}
 #voice_peers .connectedPeer .mute_button{
     min-width:2em;
     width:2em;
@@ -467,4 +464,19 @@ a:hover {
 }
 .tab-content::-webkit-scrollbar { 
     display: none;  /* Safari and Chrome */
+}
+
+#chat-notification{
+    position: absolute;
+    background-color: #F33;
+    clip-path: circle();
+    width: 20%;
+    height: 20%;
+    top: 25%;
+    left: 25%;
+    padding: 0;
+}
+
+.hide{
+    display:none;
 }

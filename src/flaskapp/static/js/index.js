@@ -1,6 +1,5 @@
 const colors = ['#FECEEA', '#FEF1D2', '#A9FDD8', '#D7F8FF', '#CEC5FA'];
 let nextColorIdx = 0;
-let currentNav = "";
 let client, doc;
 
 const statusHolder = document.getElementById('network-status');
@@ -394,17 +393,6 @@ $('#darkModeSwitch input[type=checkbox]').on('click', function() {
     }
 });
 
-$('.nav-link').on('click', function() {
-    let clickedNav = $(this).attr("href");
-    if (currentNav === clickedNav){
-        currentNav = "";
-        $(".tab-content").addClass("dis_none");
-        $(this).removeClass("active");
-        return
-    }
-    currentNav = clickedNav;
-    $(".tab-content").removeClass("dis_none");
-});
 
 let limitFunc = function () {
     if (window.innerWidth < 1000) {
