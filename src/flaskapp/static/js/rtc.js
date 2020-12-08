@@ -286,7 +286,7 @@ $(function(){
             if(navigator == undefined)
                 print_error("WebRTC is disabled.");
             else if(navigator.mediaDevices == undefined)
-                print_error("Mic access is diabled.");
+                print_error("Mic access is disabled.");
             else
                 print_error(`failed to access mic. ${err.message}`);
 
