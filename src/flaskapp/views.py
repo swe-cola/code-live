@@ -97,7 +97,8 @@ def route_save_user_info():
     info_keys = ['nickname', 'email', 'thumbnail']
 
     for key in info_keys:
-        session[key] = data[key]
+        if key in data.keys():
+            session[key] = data[key]
 
     cookie = request.cookies.get(CODE_LIVE_COOKIE)
     user.set_kakao_id(cookie, data['nickname'])
